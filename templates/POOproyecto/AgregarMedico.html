@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agregar Médico</title>
+</head>
+<body>
+  <h2>Agregar Médico</h2>
+  <form action="/agregar_medico" method="post">
+    <input type="text" name="rfc" placeholder="RFC">
+    <input type="text" name="nombre" placeholder="Nombre completo">
+    <input type="text" name="cedula" placeholder="Cédula profesional">
+    <input type="email" name="correo" placeholder="Correo">
+    <input type="password" name="password" placeholder="Contraseña">
+    <select name="rol">
+      <option value="Medico">Medico</option>
+      <option value="Medico Admin">Medico Admin</option>
+    </select>
+    <button type="submit">Guardar</button>
+  </form>
+  <a href="/medico_admin"> Regresar</a>
+</body>
+</html>
