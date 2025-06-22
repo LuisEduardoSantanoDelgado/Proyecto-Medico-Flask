@@ -5,6 +5,7 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
+# Funciones
 def connectDB(index):
     return getConnection(index).cursor()
 
@@ -12,6 +13,7 @@ def validarSesion(valor, redirigir):
     if valor not in session:
         return redirect(url_for(redirigir))
 
+#Rutas
 @app.route("/")
 def home():
     return render_template("POOproyecto/login.html")
@@ -25,6 +27,23 @@ def medico():
 def medicoAdmin():
     nombre = session.get("nombre_medico", "Invitado")
     return validarSesion("nombre_medico", "login") or render_template("POOproyecto/MedicoAdmin.html", nombre_medico = nombre)
+
+@app.route("/cita")
+def cita():
+    return render_template("POOproyecto/AgregarCita.html")
+
+@app.route("/expediente")
+def expediente():
+    return render_template("POOproyecto/AgregarExp.html")
+
+@app.route("/consulta")
+def expediente():
+    return render_template("POOproyecto/consulta.html")
+
+@app.route("/consultarExpediente")
+def expediente():
+    return render_template("POOproyecto/ConsultarExp.html")
+
 
 
 @app.route("/login", methods = ["POST"])
@@ -65,6 +84,7 @@ def login():
             cursor.close()
     return render_template("POOproyecto/login.html", err = errors)
 
+#Comprobar la conexión a la base de datos
 @app.route("/DBCheck")
 def dbCheck():
     try:
@@ -76,6 +96,7 @@ def dbCheck():
     finally:
         cursor.close()
 
+#ERRORES
 @app.errorhandler(404)
 def paginaNoEncontrada(e):
     return "¡Cuidado, error de capa 8!", 404
