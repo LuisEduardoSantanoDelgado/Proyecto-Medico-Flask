@@ -90,7 +90,7 @@ def login():
 @app.route("/DBCheck")
 def dbCheck():
     try:
-        cursor = connectDB(2) # Cambia el índice según la conexión que quieras probar
+        cursor = connectDB(1) # Cambia el índice según la conexión que quieras probar
         cursor.execute("Select 1")
         return jsonify({"status": "Ok", "message": "Conectado"}), 200
     except Exception as e:
