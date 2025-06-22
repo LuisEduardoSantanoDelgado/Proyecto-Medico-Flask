@@ -37,11 +37,11 @@ def expediente():
     return render_template("POOproyecto/AgregarExp.html")
 
 @app.route("/consulta")
-def expediente():
+def consulta():
     return render_template("POOproyecto/consulta.html")
 
 @app.route("/consultarExpediente")
-def expediente():
+def consutar_expediente():
     return render_template("POOproyecto/ConsultarExp.html")
 
 
@@ -88,7 +88,7 @@ def login():
 @app.route("/DBCheck")
 def dbCheck():
     try:
-        cursor = connectDB(1)
+        cursor = connectDB(2)  # Cambia el índice según la conexión que quieras probar
         cursor.execute("Select 1")
         return jsonify({"status": "Ok", "message": "Conectado"}), 200
     except Exception as e:
