@@ -12,33 +12,32 @@
             {% for msj in mensajes %}
                 <h4 style="color: green;">{{ msj }}</h4>
             {% endfor %}
-        {% endif %}
 
-        {% if errores and errores.emptyValues %}
+        {% elif errores and errores.emptyValues %}
             <p style="color:red">{{errores.emptyValues}}</p>
         {% endif %}
 
     {% endwith %}
         <form action="/agregar_medico" method="post">
-          <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre }}">
-          <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P }}">
-          <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M }}">
-          <input type="text" name="cedula" placeholder="Cédula profesional" value = "{{ request.form.cedula }}">
+          <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre }}" required>
+          <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P }}" required>
+          <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M }}" required>
+          <input type="text" name="cedula" placeholder="Cédula profesional" value = "{{ request.form.cedula }}" required>
           {% if errores and errores.cedulaLen %}
               <p style="color:red">{{errores.cedulaLen}}</p>
           {% endif %}
-          <input type="text" name="rfc" placeholder="RFC" value = "{{ request.form.rfc }}">
+          <input type="text" name="rfc" placeholder="RFC" value = "{{ request.form.rfc }}" required>
           {% if errores and errores.rfcLen %}
               <p style="color:red">{{errores.rfcLen}}</p>
           {% endif %}
           {% if errores and errores.rfcExists %}
               <p style="color:red">{{errores.rfcExists}}</p>
           {% endif %}
-          <input type="email" name="correo" placeholder="Correo" value = "{{ request.form.correo }}">
+          <input type="email" name="correo" placeholder="Correo" value = "{{ request.form.correo }}" required>
           {% if errores and errores.mailExists %}
               <p style="color:red">{{errores.mailExists}}</p>
           {% endif %}
-          <input type="password" name="password" placeholder="Contraseña">
+          <input type="password" name="password" placeholder="Contraseña" required>
           {% if errores and errores.passwordLen %}
               <p style="color:red">{{errores.passwordLen}}</p>
           {% endif %}

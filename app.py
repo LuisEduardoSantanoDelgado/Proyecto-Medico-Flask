@@ -1,12 +1,12 @@
 from connection import getConnection
 from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session
 from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
 # Funciones
-from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt()
 
@@ -25,12 +25,73 @@ def validarSesion(valor, redirigir):
     if valor not in session:
         return redirect(url_for(redirigir))
 
-#Rutas
+#Rutas -----------------------------------
+#Inicio de sesión
 @app.route("/")
 def home():
-    return render_template("AgregarMedico.html")
+    return render_template("login.html")
+@app.route("/a", methods=["GET"])
+def a():
+    prueba = bcrypt.check_password_hash("0x2432622431322452696A77464850654152495739792E435545706F33753959745A7734504839574F3231426D6E4E78696B4B37566F435A4270466369".decode('utf-8'), "12345678")
+    return prueba
+@app.route("/login", methods=["POST"])
+def login():
+    errores = {}
+    rfc = request.form.get("rfc", "").strip()
+    password = request.form.get("password", "").strip()
+
+    if not rfc or not password:
+        errores["emptyValues"] = "RFC o contraseña vacíos"
+
+    if not errores:
+        try:
+            conn = getConnection(2)
+            cursor = conn.cursor()
+            cursor.execute("EXEC Obtener_Contrasena ?", rfc)
+            result = cursor.fetchone()
+
+            if not result:
+                errores["DBError"] = "Error al consultar la base de datos"
+            elif result:
+                passHash = result.Hash_Contrasena
+                if passHash == 0:
+                    errores["RFCNotFound"] = "RFC no encontrado"
+                if passHash and bcrypt.check_password_hash(passHash.decode('utf-8'), password):
+                    cursor.execute("EXEC Obtener_ID_Rol ?", rfc)
+                    rol_result = cursor.fetchone()
+                    if not rol_result:
+                        errores["DBError"] = "Error al consultar el rol"
+                    else:
+                        session["rfc"] = rfc
+                        session["rol"] = rol_result.ID_Rol
+                        match rol_result.ID_Rol:
+                            case 1:
+                                return redirect(url_for("medico"))
+                            case 2:
+                                return redirect(url_for("medicoAdmin"))
+                            case _:
+                                errores["invalidRole"] = "Rol no válido"
+                else:
+                    errores["invalidLogin"] = "Contraseña incorrecta"
+             
+        except Exception as e:
+            errores["loginError"] = "Error al intentar iniciar sesión"
+            print(f"Error: {e}")
+        finally:
+            cursor.close()
+
+    return render_template("login.html", err=errores)
 
 # Manejo de medicos
+#Medico administrador
+@app.route("/medicoAdmin")
+def medicoAdmin():
+    return render_template("medicoAdmin.html")
+#Medico
+@app.route("/medico")
+def medico():
+    return render_template("medico.html")
+#Inserción de médicos
 @app.route("/agregar_medico", methods = ["POST"])
 def agregarMedico():
     errores = {}
@@ -41,7 +102,7 @@ def agregarMedico():
     rfc = request.form.get("rfc", "").strip()
     correo = request.form.get("correo", "").strip()
     passwordNE = request.form.get("password", "").strip()
-    id_rol = request.form.get("rol", "").strip()
+    id_rol = request.form.get("rol", "0").strip()
 
     if not rfc or not nombre or not apellido_paterno or not apellido_materno or not passwordNE or not id_rol or not cedula:
         errores["emptyValues"] = "Valores vacíos"
@@ -90,44 +151,44 @@ def agregarMedico():
 
     return render_template("AgregarMedico.html", errores = errores)
 
-@app.route("/login", methods = ["POST"])
-def login():
-    errors = {}
+# @app.route("/login", methods = ["POST"])
+# def login():
+#     errors = {}
 
-    rfc = request.form.get("rfc", "").strip()
-    password = request.form.get("password", "").strip()
+#     rfc = request.form.get("rfc", "").strip()
+#     password = request.form.get("password", "").strip()
 
-    if not rfc or not password:
-        errors["emptyValues"] = "RFC o contraseña vacíos"
+#     if not rfc or not password:
+#         errors["emptyValues"] = "RFC o contraseña vacíos"
 
-    if not errors:
-        try:
-            conn = getConnection(2)
-            cursor = conn.cursor()
-            cursor.execute("SELECT CONCAT(Nombres, ' ', Apellido_paterno, ' ', Apellido_materno), Contrasena, ID_rol from Medicos WHERE rfc = ?", (rfc,))
-            # cursor.execute("SELECT R.Nombre from Medicos M INNER JOIN Roles R ON M.ID_rol = R.ID_rol WHERE M.RFC = ?", (rfc,))
-            # rol_tuple = cursor.fetchone()
-            # rol_db = rol_tuple[0]
-            result = cursor.fetchone()
-            if not result:
-                errors["invalidData"] = "RFC no encontrado"
-            else:
-                nombre_medico, password_medico, rol_medico = result
-                if password == password_medico:
-                    session["nombre_medico"] = nombre_medico
-                    match rol_medico:
-                        case 1:
-                            return redirect(url_for("medico"))
-                        case 2:
-                            return redirect(url_for("medicoAdmin"))
-                else:
-                    errors["invalidLogin"] = "Contraseña incorrecta"
-        except Exception as e:
-            errors["loginError"] = "Error al intentar iniciar sesión"
-            print(f"Error: {e}")
-        finally:
-            cursor.close()
-    return render_template("POOproyecto/login.html", err = errors)
+#     if not errors:
+#         try:
+#             conn = getConnection(2)
+#             cursor = conn.cursor()
+#             cursor.execute("SELECT CONCAT(Nombres, ' ', Apellido_paterno, ' ', Apellido_materno), Contrasena, ID_rol from Medicos WHERE rfc = ?", (rfc,))
+#             # cursor.execute("SELECT R.Nombre from Medicos M INNER JOIN Roles R ON M.ID_rol = R.ID_rol WHERE M.RFC = ?", (rfc,))
+#             # rol_tuple = cursor.fetchone()
+#             # rol_db = rol_tuple[0]
+#             result = cursor.fetchone()
+#             if not result:
+#                 errors["invalidData"] = "RFC no encontrado"
+#             else:
+#                 nombre_medico, password_medico, rol_medico = result
+#                 if password == password_medico:
+#                     session["nombre_medico"] = nombre_medico
+#                     match rol_medico:
+#                         case 1:
+#                             return redirect(url_for("medico"))
+#                         case 2:
+#                             return redirect(url_for("medicoAdmin"))
+#                 else:
+#                     errors["invalidLogin"] = "Contraseña incorrecta"
+#         except Exception as e:
+#             errors["loginError"] = "Error al intentar iniciar sesión"
+#             print(f"Error: {e}")
+#         finally:
+#             cursor.close()
+#     return render_template("POOproyecto/login.html", err = errors)
 
 #Comprobar la conexión a la base de datos
 @app.route("/DBCheck")
