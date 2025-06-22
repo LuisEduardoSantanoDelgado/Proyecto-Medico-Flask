@@ -5,6 +5,10 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
+@app.before_request
+def session_temporal():
+    session.permanent = False
+
 # Funciones
 def connectDB(index):
     return getConnection(index).cursor()
@@ -13,7 +17,7 @@ def validarSesion(valor, redirigir):
     if valor not in session:
         return redirect(url_for(redirigir))
 
-#Rutas
+# Rutas
 @app.route("/")
 def home():
     return render_template("POOproyecto/login.html")
@@ -43,8 +47,6 @@ def consulta():
 @app.route("/consultarExpediente")
 def consutar_expediente():
     return render_template("POOproyecto/ConsultarExp.html")
-
-
 
 @app.route("/login", methods = ["POST"])
 def login():
@@ -84,11 +86,11 @@ def login():
             cursor.close()
     return render_template("POOproyecto/login.html", err = errors)
 
-#Comprobar la conexión a la base de datos
+# Comprobar la conexión a la base de datos
 @app.route("/DBCheck")
 def dbCheck():
     try:
-        cursor = connectDB(2)  # Cambia el índice según la conexión que quieras probar
+        cursor = connectDB(2) # Cambia el índice según la conexión que quieras probar
         cursor.execute("Select 1")
         return jsonify({"status": "Ok", "message": "Conectado"}), 200
     except Exception as e:
@@ -96,7 +98,7 @@ def dbCheck():
     finally:
         cursor.close()
 
-#ERRORES
+# ERRORES
 @app.errorhandler(404)
 def paginaNoEncontrada(e):
     return "¡Cuidado, error de capa 8!", 404
