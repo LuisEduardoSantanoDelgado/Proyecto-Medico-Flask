@@ -8,11 +8,20 @@
 <body>
 
   <h2>Inicio de Sesión</h2>
-  <form action="/consulta" method="get">
-    <input type="text" name="rfc" placeholder="RFC">
-    <input type="password" name="password" placeholder="Contraseña">
+
+  <form action="/login" method="POST">
+    <input type="text" name="rfc" placeholder="RFC" value="{{request.form.rfc}}">
+    <input type="password" name="password" placeholder="Contraseña" value="{{request.form.password}}">
+    {% if err and err.emptyValues %}
+      <p style="color: red">{{err.emptyValues}}</p>
+    {% elif err and err.invalidData %}
+      <p style="color: red">{{err.invalidData}}</p>
+    {% elif err and err.invalidLogin %}
+      <p style="color: red">{{err.invalidLogin}}</p>
+    {% elif err and err.loginError %}
+      <p style="color: red">{{err.loginError}}</p>
+    {% endif %}
     <button type="submit">Ingresar</button>
   </form>
-
 </body>
 </html>

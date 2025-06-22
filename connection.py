@@ -1,9 +1,16 @@
 import pyodbc
 
 def getConnection(index):
-    connections = ["DRIVER={SQL Server};SERVER=WANGXING;DATABASE=Medicos;Trusted_Connection=yes;", "DRIVER={SQL Server};SERVER=POLISTP98;DATABASE=Medicos;Trusted_Connection=yes;"]
+    connections = [
+        "DRIVER={SQL Server};SERVER=WANGXING;DATABASE=Medicos;Trusted_Connection=yes;",
+        "DRIVER={SQL Server};SERVER=POLISTP98;DATABASE=Medicos;Trusted_Connection=yes;"
+    ]
+    
+    if index not in range(len(connections)):
+        raise IndexError("Índice de conexión fuera de rango")
+
     try:
         connection = pyodbc.connect(connections[index])
         return connection
-    except Exception as e:
-        return f"Error: {e}"
+    except pyodbc.Error as e:
+        raise ConnectionError(f"Error al conectar a la base de datos: {e}")
