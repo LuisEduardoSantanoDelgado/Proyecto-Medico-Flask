@@ -6,24 +6,60 @@
     <title>{{nombre_medico}}</title>
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/consulta_admin">Citas</a></li>
+                <li><a href="/expedientes_admin">Expedientes</a></li>
+                <li><a href="/agregar_medico">Agregar médico</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>Médico admin</h1>
+    
 
-    <h2 style="color:blue">Bienvenid@ {{nombre_medico}}</h2>
-
-    {% with mensajes = get_flashed_messages() %}
-        {% if mensajes %}
-            {% for msj in mensajes %}
-                <h4 style="color: green">{{msj}}</h4>
+    
+    {% with  %}
+        {% if errores and errores.medicoNotFound %}
+            <p style="color: red">{{errores.medicoNotFound}}</p>
+        {% else %}
+             <h2 style="color:blue">Bienvenid@ {{nombreMedico}}</h2>
+        {% endif %}
+    {% endwith %}
+    
+    <h2>Medicos registrados</h2>
+    {% with %}
+        {% if errores and errores.noMedicos %}
+            <h4 style="color: red">{{errores.noMedicos}}</h4>
+        {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre completo</th>
+                    <th>Cédula</th>
+                    <th>RFC</th>
+                    <th>Correo electrónico</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for m in tblMedicos %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ m.Nombre_Medico }}</td>
+                    <td>{{ m.Cedula_profesional }}</td>
+                    <td>{{ m.RFC }}</td>
+                    <td>{{ m.Correo_electronico }}</td>
+                    <td><a href="{{ url_for('editarMedico', rfc=m.RFC) }}"><button style="background-color: aliceblue; color: black; ">Editar</button></a></td>
+                    <td><a href="{{ url_for('eliminarMedico', rfc=m.RFC) }}"><button style="background-color: red; color: whitesmoke; ">Eliminar</button></a></td>
+                </tr>
             {% endfor %}
+            </tbody>
+        </table>
         {% endif %}
     {% endwith %}
 
-    <nav>
-        <ul>
-            <li><a href="/consulta_admin">Citas</a></li>
-            <li><a href="/expedientes_admin">Expedientes</a></li>
-            <li><a href="/agregar_medico">Agregar médico</a></li>
-        </ul>
-    </nav>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 from connection import getConnection
 from flask import Flask, jsonify, render_template, request, url_for, flash, redirect, session
 from flask_bcrypt import Bcrypt
-from flask_bcrypt import Bcrypt
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
@@ -21,9 +21,24 @@ def encriptar_contrasena(password_plano):
     return hash_bytes
 
 
-def validarSesion(valor, redirigir):
-    if valor not in session:
-        return redirect(url_for(redirigir))
+def login_required(*roles):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapped_view(*args, **kwargs):
+            
+            if "rfc" not in session:
+                flash("Inicia sesión para continuar")
+                return redirect(url_for("home"))
+
+            if roles and session.get("rol") not in roles:
+                flash("No tienes permisos para ver esa página")
+                # vuelve a la página anterior o al home
+                return redirect(request.referrer or url_for("home"))
+
+            
+            return view_func(*args, **kwargs)
+        return wrapped_view
+    return decorator
 
 #Rutas -----------------------------------
 #Inicio de sesión
@@ -86,18 +101,50 @@ def login():
 # Manejo de medicos
 #Medico administrador
 @app.route("/medicoAdmin")
+@login_required(2)
 def medicoAdmin():
-    return render_template("medicoAdmin.html")
+    errores = {}
+    
+    try:
+        rfc = session.get("rfc")
+        conn = getConnection(2)
+        cursor = conn.cursor()  
+        cursor.execute("SELECT dbo.NombreCompletoMedico(?) AS Nombre", (rfc,))
+        nombre = cursor.fetchone()
+        if not nombre:
+            errores["medicoNotFound"] = "Médico no encontrado"
+        else:
+            nombreMedico = nombre.Nombre
+       
+        tblMedicos = cursor.execute("SELECT CONCAT(Nombres,' ',Apellido_paterno,' ',Apellido_materno) AS Nombre_Medico, Cedula_profesional,RFC,Correo_electronico FROM Medicos WHERE Estatus = ?", 1).fetchall()
+       
+        if not tblMedicos:
+            errores["noMedicos"] = "No hay médicos registrados"
+
+        if not errores:   
+            return render_template("medicoAdmin.html", tblMedicos=tblMedicos, nombreMedico=nombreMedico)
+    except Exception as e:
+        print(f"Error al obtener datos: {e}")
+        nombreMedico = None
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    return render_template("medicoAdmin.html", errores=errores)
 #Medico
 @app.route("/medico")
+@login_required(1)
 def medico():
     return render_template("medico.html")
 #Agregar médico
 @app.get("/agregar_medico")
+@login_required(2)
 def agregarMedico():
     return render_template("AgregarMedico.html")
 #Inserción de médicos
 @app.route("/agregar_medico", methods = ["POST"])
+@login_required(2)
 def insertarMedico():
     errores = {}
     nombre = request.form.get("nombre", "").strip()
@@ -156,8 +203,62 @@ def insertarMedico():
 
     return render_template("AgregarMedico.html", errores = errores)
 
+#Edicion de médicos
+@app.route("/editar_medico/<rfc>")
+@login_required(2)
+def editarMedico(rfc):
+    errores = {}
+    try:
+        conn = getConnection(2)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Medicos WHERE RFC = ?", rfc)
+        medico = cursor.fetchone()
 
+        if not medico:
+            errores["medicoNotFound"] = "Médico no encontrado"
+            return render_template("EditarMedico.html", errores=errores)
 
+        return render_template("EditarMedico.html", medico=medico)
+
+    except Exception as e:
+        errores["dbError"] = "Error al obtener datos del médico"
+        print(f"Error: {e}")
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    return render_template("EditarMedico.html", errores=errores)
+
+#Eliminación de médicos
+@app.route("/eliminar_medico/<rfc>", methods=["POST"])
+@login_required(2)
+def eliminarMedico(rfc):
+    errores = {}
+    try:
+        conn = getConnection(2)
+        cursor = conn.cursor()
+        cursor.execute("EXEC EliminarMedico ?", rfc)
+        resultado = cursor.fetchone()
+
+        if not resultado:
+            errores["medicoNotFound"] = "Médico no encontrado"
+            return render_template("medicoAdmin.html", errores=errores)
+
+        if resultado.Resultado == 1:
+            flash("Médico eliminado exitosamente")
+            return redirect(url_for("medicoAdmin"))
+        else:
+            errores["dbError"] = "Error al eliminar médico"
+
+    except Exception as e:
+        errores["dbError"] = "Error al eliminar médico"
+        print(f"Error: {e}")
+    finally:
+        cursor.close()
+
+    return render_template("medicoAdmin.html", errores=errores)
 #Comprobar la conexión a la base de datos
 @app.route("/DBCheck")
 def dbCheck():

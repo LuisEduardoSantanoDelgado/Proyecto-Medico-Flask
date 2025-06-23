@@ -8,7 +8,13 @@
 <body>
 
   <h2>Inicio de Sesión</h2>
-
+   {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4 style="color: red;">{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
   <form action="/login" method="POST">
     <input type="text" name="rfc" placeholder="RFC" value="{{request.form.rfc}}">
     <input type="password" name="password" placeholder="Contraseña" value="{{request.form.password}}">
