@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar Médico</title>
+</head>
+<body>
+  <h2>Editar Médico</h2>
+  <form action="/editar_medico" method="post">
+
+    <input type="hidden" name="rfc" value="{{rfc}}">
+    
+
+
+    <input type="text" name="nombre" placeholder="Nombre completo" value="{{nombre}}">
+    <input type="text" name="cedula" placeholder="Cédula profesional" value="{{cedula}}">
+    <input type="email" name="correo" placeholder="Correo" value="{{correo}}">
+    
+    <input type="password" name="password" placeholder="Nueva Contraseña (opcional)">
+    
+    <select name="rol">
+      <option value="Medico" {{ 'selected' if rol == 'Medico' else '' }}>Medico</option>
+      <option value="Medico Admin" {{ 'selected' if rol == 'Medico Admin' else '' }}>Medico Admin</option>
+    </select>
+    
+    <button type="submit">Guardar</button>
+  </form>
+  <a href="/medico_admin">Regresar</a>
+</body>
+</html>
