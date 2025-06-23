@@ -11,7 +11,7 @@ def medicoAdmin():
     try:
         rfc = session.get("rfc")
        
-        nombre = execute_query("SELECT dbo.NombreCompletoMedico(?) AS Nombre", (rfc,), fetch="one", connection_index=2)
+        nombre = execute_query("SELECT dbo.NombreCompletoMedico(?)", (rfc,), fetch="one")
         if not nombre:
             errores["medicoNotFound"] = "Médico no encontrado"
         else:
@@ -20,7 +20,7 @@ def medicoAdmin():
         tblMedicos = execute_query(
             "SELECT CONCAT(Nombres, ' ', Apellido_paterno, ' ', Apellido_materno) AS Nombre_Medico, "
             "Cedula_profesional, RFC, Correo_electronico FROM Medicos WHERE Estatus = ?", 
-            (1,), fetch="all", connection_index=2
+            (1,), fetch="all"
         )
         if not tblMedicos:
             errores["noMedicos"] = "No hay médicos registrados"

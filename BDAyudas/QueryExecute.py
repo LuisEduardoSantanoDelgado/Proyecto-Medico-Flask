@@ -1,8 +1,8 @@
 from connection import getConnection
 
-def execute_query(query, params=None, fetch="all", commit = False, connection_index=0):
+def execute_query(query, params=None, fetch="all", commit = False):
     try:
-        conn = getConnection(connection_index)
+        conn = getConnection()
         cursor = conn.cursor()
 
        

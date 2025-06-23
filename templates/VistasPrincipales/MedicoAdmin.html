@@ -51,8 +51,8 @@
                     <td>{{ m.Cedula_profesional }}</td>
                     <td>{{ m.RFC }}</td>
                     <td>{{ m.Correo_electronico }}</td>
-                    <td><a href="{{ url_for('editarMedico', rfc=m.RFC) }}"><button style="background-color: aliceblue; color: black; ">Editar</button></a></td>
-                    <td><a href="{{ url_for('eliminarMedico', rfc=m.RFC) }}"><button style="background-color: red; color: whitesmoke; ">Eliminar</button></a></td>
+                    <td><a href="{{ url_for('Medicos.mostrarEditarMedico', rfc=m.RFC) }}"><button style="background-color: aliceblue; color: black; ">Editar</button></a></td>
+                    <td><a href="{{ url_for('Medicos.mostrarEliminarMedico', rfc=m.RFC) }}"><button style="background-color: red; color: whitesmoke; ">Eliminar</button></a></td>
                 </tr>
             {% endfor %}
             </tbody>

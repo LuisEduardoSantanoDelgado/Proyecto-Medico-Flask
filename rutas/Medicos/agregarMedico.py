@@ -4,6 +4,10 @@ from decorators.loginRequired import login_required
 from utility.encriptarContrasena import encriptar_contrasena
 
 agregarMedico_bp = Blueprint('agregarMedico', __name__)
+@agregarMedico_bp.route("/agregarMedico", methods=["GET"])
+@login_required(2) 
+def mostrarAgregarMedico():
+    return render_template("Medicos/AgregarMedico.html")
 @agregarMedico_bp.route("/agregarMedico", methods = ["POST"])
 @login_required(2)
 def agregarMedico():
@@ -38,7 +42,7 @@ def agregarMedico():
             resultado = execute_query(
                 "EXEC InsertarMedico ?, ?, ?, ?, ?, ?, ?, ?",
                 (nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
-                fetch="one", commit=True, connection_index=2
+                fetch="one", commit=True
             )
 
             if resultado and resultado.Resultado == 1:

@@ -19,14 +19,14 @@ def login():
 
     if not errores:
         try:
-            result = execute_query("EXEC Obtener_Contrasena ?", (rfc,), fetch="one", connection_index=2)
+            result = execute_query("EXEC Obtener_Contrasena ?", (rfc,), fetch="one")
             if not result.Hash_Contrasena:
                 errores["DBError"] = "Error al obtener la contraseña de la base de datos"
             else:
                 if result.Hash_Contrasena == 0:
                     errores["RFCNotFound"] = "RFC no encontrado"
                 if verificar_contrasena(password, result.Hash_Contrasena):
-                    rol_result = execute_query("EXEC Obtener_ID_Rol ?", (rfc,), fetch="one", connection_index=2)
+                    rol_result = execute_query("EXEC Obtener_ID_Rol ?", (rfc,), fetch="one")
                     if not rol_result:
                         errores["DBError"] = "Error al consultar el rol"
                     else:

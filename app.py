@@ -3,6 +3,7 @@ from decorators.loginRequired import login_required
 from rutas.login import login_bp
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
 from rutas.Medicos.agregarMedico import agregarMedico_bp
+from rutas.Medicos.editarMedico import editarMedico_bp
 
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
@@ -24,32 +25,8 @@ app.register_blueprint(medicoAdmin_bp)
 app.register_blueprint(agregarMedico_bp)
 
 #Edicion de médicos
-@app.route("/editar_medico/<rfc>")
-@login_required(2)
-def editarMedico(rfc):
-    errores = {}
-    try:
-        conn = getConnection(2)
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM Medicos WHERE RFC = ?", rfc)
-        medico = cursor.fetchone()
+app.register_blueprint(editarMedico_bp)
 
-        if not medico:
-            errores["medicoNotFound"] = "Médico no encontrado"
-            return render_template("EditarMedico.html", errores=errores)
-
-        return render_template("EditarMedico.html", medico=medico)
-
-    except Exception as e:
-        errores["dbError"] = "Error al obtener datos del médico"
-        print(f"Error: {e}")
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-
-    return render_template("EditarMedico.html", errores=errores)
 
 #Eliminación de médicos
 @app.route("/eliminar_medico/<rfc>", methods=["POST"])
