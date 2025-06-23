@@ -40,7 +40,7 @@ def agregarMedico():
             hashed_bytes = encriptar_contrasena(passwordNE)
 
             resultado = execute_query(
-                "EXEC InsertarMedico ?, ?, ?, ?, ?, ?, ?, ?",
+                "DECLARE @res INT; EXEC InsertarMedico ?, ?, ?, ?, ?, ?, ?, ?, @res OUTPUT; SELECT @res AS Resultado",
                 (nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
                 fetch="one", commit=True
             )

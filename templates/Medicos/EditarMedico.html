@@ -21,6 +21,10 @@
             <p style="color:red">{{errores.medicoNotFound}}</p>
         {% endif %}
 
+        {% elif errores and errores.queryError %}
+            <p style="color:red">{{errores.queryError}}</p>
+        {% endif %}
+
     {% endwith %}
     
         <form action="/agregar_medico" method="post">
