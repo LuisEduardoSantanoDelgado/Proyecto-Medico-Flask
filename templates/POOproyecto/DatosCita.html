@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Datos Cita</title>
+</head>
+<body>
+
+  <h2>Datos Cita</h2>
+
+  <form action="/guardar_cita" method="post">
+    <label for="sintomas">Síntomas:</label><br>
+    <textarea id="sintomas" name="sintomas" rows="2" cols="40" required></textarea><br><br>
+
+    <label for="diagnostico">Diagnóstico (Dx):</label><br>
+    <input type="text" id="diagnostico" name="diagnostico" required><br><br>
+
+    <label for="tratamiento">Tratamiento (medicamentos e indicaciones):</label><br>
+    <textarea id="tratamiento" name="tratamiento" rows="2" cols="40" required></textarea><br><br>
+
+    <label for="estudios">Solicitud de estudios (opcional):</label><br>
+    <textarea id="estudios" name="estudios" rows="2" cols="40"></textarea><br><br>
+
+    <button type="submit">Guardar</button>
+    <button type="button" onclick="window.history.back()">Cancelar</button>
+  </form>
+
+</body>
+</html>
