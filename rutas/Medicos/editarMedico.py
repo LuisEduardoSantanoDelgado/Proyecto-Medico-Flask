@@ -9,11 +9,14 @@ editarMedico_bp = Blueprint('editarMedico', __name__)
 @login_required(2) 
 def mostrarEditarMedico(rfc):
     errores = {}
+    print(f"-----------------Aqui datos del edirar medico------------------ {rfc}")
     try:
-        medico = execute_query("SELECT dbo.DatosMedico(?) ", (rfc,), fetch="one")
+        medico = execute_query("SELECT * FROM dbo.DatosMedico(?)", (rfc,), fetch="one")
         if not medico:
             errores["medicoNotFound"] = "Médico no encontrado"
         else:
+            for med in medico:
+                print(f"Medico encontrado: {med}")
             return render_template("Medicos/EditarMedico.html", medico=medico)
     except Exception as e:
         errores["dbError"] = "Error al obtener datos del médico"
@@ -51,7 +54,7 @@ def editarMedico():
         hashed_bytes = encriptar_contrasena(passwordNE)
 
         resultado = execute_query(
-                "DECLARE @resultado INT; EXEC ActualizarMedico ?, ?, ?, ?, ?, ?, ?, ?, @resultado OUTPUT; SELECT @resultado AS Resultado",
+                "DECLARE @resultado INT; EXEC ActualizarMedico ?, ?, ?, ?, ?, ?, ?, ?,?, @resultado OUTPUT; SELECT @resultado AS Resultado",
                 (id_med,nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
                 fetch="one", commit=True
             )
@@ -76,4 +79,4 @@ def editarMedico():
         print(f"Error: {e}")
     
 
-    return render_template("EditarMedico.html", errores=errores)
+    return render_template("Medicos/EditarMedico.html", errores=errores)

@@ -23,17 +23,22 @@
             {% for msj in mensajes %}
                 <h4 style="color: green;">{{ msj }}</h4>
             {% endfor %}
-        {% elif errores and errores.medicoNotFound %}
+        {% endif %}
+        {% if errores and errores.emptyValues %}
+            <p style="color:red">{{errores.emptyValues}}</p>
+        {% endif %}
+        {% if errores and errores.medicoNotFound %}
             <p style="color:red">{{errores.medicoNotFound}}</p>
-        {% elif errores and errores.queryError %}
+        {% endif %}
+        {% if errores and errores.queryError %}
             <p style="color:red">{{errores.queryError}}</p>
         {% endif %}
     {% endwith %}
     <form action="/eliminar_medico" method="post">
-        <p>¿Estás seguro de que deseas eliminar al médico {{ medico.Nombre_Medico }}?</p>
+        <p>¿Estás seguro de que deseas eliminar al médico {{ medico.Nombres }}?</p>
         <input type="hidden" name="id" value="{{ medico.ID_medico }}">
         <button type="submit" style="background-color: red; color: whitesmoke;">Eliminar</button>
-        <a href="{{ url_for('medicoAdmin') }}"><button type="button" style="background-color: whitesmoke; color: black;">Cancelar</button></a>
+        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}"><button type="button" style="background-color: whitesmoke; color: black;">Cancelar</button></a>
     </form>
 </body>
 </html>

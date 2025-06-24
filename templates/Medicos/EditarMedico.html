@@ -12,37 +12,37 @@
             {% for msj in mensajes %}
                 <h4 style="color: green;">{{ msj }}</h4>
             {% endfor %}
-
-        {% elif errores and errores.emptyValues %}
+        {% endif %}
+        {% if errores and errores.emptyValues %}
             <p style="color:red">{{errores.emptyValues}}</p>
         {% endif %}
 
-        {% elif errores and errores.medicoNotFound %}
+        {% if errores and errores.medicoNotFound %}
             <p style="color:red">{{errores.medicoNotFound}}</p>
         {% endif %}
 
-        {% elif errores and errores.queryError %}
+        {% if errores and errores.queryError %}
             <p style="color:red">{{errores.queryError}}</p>
         {% endif %}
 
     {% endwith %}
     
-        <form action="/agregar_medico" method="post">
-          <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre or medico.Nombres or ''}}" required>
-          <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P or medico.Apellido_paterno or ''}}" required>
-          <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M or medico.Apellido_materno or ''}}" required>
-          <input type="text" name="cedula" placeholder="Cédula profesional" value = "{{ request.form.cedula or medico.Cedula_profesional or ''}}" required>
+        <form action="/editar_medico" method="post">
+          <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre or medico.Nombres }}" required>
+          <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P or medico.Apellido_paterno }}" required>
+          <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M or medico.Apellido_materno  }}" required>
+          <input type="text" name="cedula" placeholder="Cédula profesional" value = "{{ request.form.cedula or medico.Cedula_profesional }}" required>
           {% if errores and errores.cedulaLen %}
               <p style="color:red">{{errores.cedulaLen}}</p>
           {% endif %}
-          <input type="text" name="rfc" placeholder="RFC" value = "{{ request.form.rfc or medico.RFC or ''}}" required>
+          <input type="text" name="rfc" placeholder="RFC" value = "{{ request.form.rfc or medico.RFC }}" required>
           {% if errores and errores.rfcLen %}
               <p style="color:red">{{errores.rfcLen}}</p>
           {% endif %}
           {% if errores and errores.rfcExists %}
               <p style="color:red">{{errores.rfcExists}}</p>
           {% endif %}
-          <input type="email" name="correo" placeholder="Correo" value = "{{ request.form.correo or medico.Correo_electronico or ''}}" required>
+          <input type="email" name="correo" placeholder="Correo" value = "{{ request.form.correo or medico.Correo_electronico }}" required>
           {% if errores and errores.mailExists %}
               <p style="color:red">{{errores.mailExists}}</p>
           {% endif %}
@@ -57,6 +57,6 @@
     <input type = "hidden" name = "id" value = "{{medico.ID_medico}}">
     <button type="submit">Guardar</button>
   </form>
-  <a href="{{ url_for('medicoAdmin') }}">Regresar</a>
+  <a href="{{ url_for('medicoAdmin.medicoAdmin') }}">Regresar</a>
 </body>
 </html>

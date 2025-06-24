@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template ,  request, flash
+from flask import Blueprint, render_template ,  request, flash, redirect
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
 
@@ -24,6 +24,7 @@ def mostrarEliminarMedico(rfc):
 @login_required(2)
 def eliminarMedico():
     errores = {}
+    eliminado = {}
     try:
         
         id_med = request.form.get("id", "0").strip()
@@ -40,8 +41,8 @@ def eliminarMedico():
             if resultado is not None:
                 match resultado.Resultado:
                     case 0:
-                        flash("Médico eliminado correctamente", "success")
-                        return render_template("VistasPrincipales/MedicoAdmin.html")
+                        flash("Médico eliminado exitosamente")
+                        return redirect("/medicoAdmin")
                     case 1:
                         errores["medicoNotFound"] = "Error al encontrar el médico"
                     case 2:

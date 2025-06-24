@@ -18,7 +18,7 @@
         {% endif %}
 
     {% endwith %}
-        <form action="/agregar_medico" method="post">
+        <form action="/agregarMedico" method="post">
           <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre }}" required>
           <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P }}" required>
           <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M }}" required>
@@ -47,6 +47,6 @@
     </select>
     <button type="submit">Guardar</button>
   </form>
-  <a href="{{ url_for('medicoAdmin') }}"> Regresar</a>
+  <a href="{{ url_for('medicoAdmin.medicoAdmin') }}"> Regresar</a>
 </body>
 </html>

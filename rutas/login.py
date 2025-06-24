@@ -36,7 +36,7 @@ def login():
                             case 1:
                                 return redirect(url_for("VistasPrincipales.medico"))
                             case 2:
-                                return redirect(url_for("VistasPrincipales.medicoAdmin"))
+                                return redirect(url_for("medicoAdmin.medicoAdmin"))
                             case _:
                                 errores["invalidRole"] = "Rol no válido"
                 else:
@@ -47,3 +47,4 @@ def login():
             print(f"Error: {e}")
 
     return render_template("login.html", err=errores)
+    

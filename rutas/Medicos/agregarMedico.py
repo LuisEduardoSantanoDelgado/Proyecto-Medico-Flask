@@ -4,7 +4,7 @@ from decorators.loginRequired import login_required
 from utility.encriptarContrasena import encriptar_contrasena
 
 agregarMedico_bp = Blueprint('agregarMedico', __name__)
-@agregarMedico_bp.route("/agregarMedico", methods=["GET"])
+@agregarMedico_bp.route("/agregarMedico")
 @login_required(2) 
 def mostrarAgregarMedico():
     return render_template("Medicos/AgregarMedico.html")
