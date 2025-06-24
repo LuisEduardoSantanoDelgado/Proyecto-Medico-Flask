@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar medico</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/consulta_admin">Citas</a></li>
+                <li><a href="/expedientes_admin">Expedientes</a></li>
+                <li><a href="/agregar_medico">Agregar médico</a></li>
+                <li><a href="/agregar_medico">Ver medico</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Eliminar Médico</h1>
+
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4 style="color: green;">{{ msj }}</h4>
+            {% endfor %}
+        {% elif errores and errores.medicoNotFound %}
+            <p style="color:red">{{errores.medicoNotFound}}</p>
+        {% elif errores and errores.queryError %}
+            <p style="color:red">{{errores.queryError}}</p>
+        {% endif %}
+    {% endwith %}
+    <form action="/eliminar_medico" method="post">
+        <p>¿Estás seguro de que deseas eliminar al médico {{ medico.Nombre_Medico }}?</p>
+        <input type="hidden" name="id" value="{{ medico.ID_medico }}">
+        <button type="submit" style="background-color: red; color: whitesmoke;">Eliminar</button>
+        <a href="{{ url_for('medicoAdmin') }}"><button type="button" style="background-color: whitesmoke; color: black;">Cancelar</button></a>
+    </form>
+</body>
+</html>

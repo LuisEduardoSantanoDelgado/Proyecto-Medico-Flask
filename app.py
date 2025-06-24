@@ -4,7 +4,7 @@ from rutas.login import login_bp
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
 from rutas.Medicos.agregarMedico import agregarMedico_bp
 from rutas.Medicos.editarMedico import editarMedico_bp
-
+from rutas.Medicos.eliminarMedico import eliminarMedico_bp
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
@@ -29,45 +29,19 @@ app.register_blueprint(editarMedico_bp)
 
 
 #Eliminación de médicos
-@app.route("/eliminar_medico/<rfc>", methods=["POST"])
-@login_required(2)
-def eliminarMedico(rfc):
-    errores = {}
-    try:
-        conn = getConnection(2)
-        cursor = conn.cursor()
-        cursor.execute("EXEC EliminarMedico ?", rfc)
-        resultado = cursor.fetchone()
-
-        if not resultado:
-            errores["medicoNotFound"] = "Médico no encontrado"
-            return render_template("medicoAdmin.html", errores=errores)
-
-        if resultado.Resultado == 1:
-            flash("Médico eliminado exitosamente")
-            return redirect(url_for("medicoAdmin"))
-        else:
-            errores["dbError"] = "Error al eliminar médico"
-
-    except Exception as e:
-        errores["dbError"] = "Error al eliminar médico"
-        print(f"Error: {e}")
-    finally:
-        cursor.close()
-
-    return render_template("medicoAdmin.html", errores=errores)
+app.register_blueprint(eliminarMedico_bp)
 #Comprobar la conexión a la base de datos
-@app.route("/DBCheck")
-def dbCheck():
-    try:
-        conn = getConnection(2)
-        cursor = conn.cursor()
-        cursor.execute("Select 1")
-        return jsonify({"status": "Ok", "message": "Conectado"}), 200
-    except Exception as e:
-        return jsonify({"status": "Error", "message": str(e)}), 500
-    finally:
-        cursor.close()
+# @app.route("/DBCheck")
+# def dbCheck():
+#     try:
+#         conn = getConnection(2)
+#         cursor = conn.cursor()
+#         cursor.execute("Select 1")
+#         return jsonify({"status": "Ok", "message": "Conectado"}), 200
+#     except Exception as e:
+#         return jsonify({"status": "Error", "message": str(e)}), 500
+#     finally:
+#         cursor.close()
 
 #ERRORES
 @app.errorhandler(404)
