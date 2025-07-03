@@ -2,26 +2,62 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inicio Sesión</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
+  <div class="container">
+    <img src="{{ url_for('static', filename='img/Img1.png') }}" alt="Logo médico" class="logo">
 
-  <h2>Inicio de Sesión</h2>
+    <h2 class="titulo">INICIO SESIÓN</h2>
 
-  <form action="/login" method="POST">
-    <input type="text" name="rfc" placeholder="RFC" value="{{request.form.rfc}}">
-    <input type="password" name="password" placeholder="Contraseña" value="{{request.form.password}}">
-    {% if err and err.emptyValues %}
-      <p style="color: red">{{err.emptyValues}}</p>
-    {% elif err and err.invalidData %}
-      <p style="color: red">{{err.invalidData}}</p>
-    {% elif err and err.invalidLogin %}
-      <p style="color: red">{{err.invalidLogin}}</p>
-    {% elif err and err.loginError %}
-      <p style="color: red">{{err.loginError}}</p>
-    {% endif %}
-    <button type="submit">Ingresar</button>
-  </form>
+    <form action="/login" method="POST" class="login-form">
+      <div class="input-group">
+        <span class="icon">
+          <img src="{{ url_for('static', filename='img/Img6.png') }}" alt="Icono RFC">
+        </span>
+        <input type="text" name="rfc" placeholder="RFC" value="{{ request.form.rfc }}">
+      </div>
+
+      <div class="input-group">
+        <span class="icon">
+          <img src="{{ url_for('static', filename='img/Img7.png') }}" alt="Icono contraseña">
+        </span>
+        <input type="password" name="password" id="password" placeholder="CONTRASEÑA" value="{{ request.form.password }}">
+        <span class="toggle-password" onclick="togglePassword()">
+          <img id="toggleIcon" src="{{ url_for('static', filename='img/Img8.png') }}" alt="Mostrar contraseña">
+        </span>
+      </div>
+
+      {% if err and err.emptyValues %}
+        <p class="error">{{ err.emptyValues }}</p>
+      {% elif err and err.invalidData %}
+        <p class="error">{{ err.invalidData }}</p>
+      {% elif err and err.invalidLogin %}
+        <p class="error">{{ err.invalidLogin }}</p>
+      {% elif err and err.loginError %}
+        <p class="error">{{ err.loginError }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn-ingresar">INGRESAR</button>
+    </form>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("toggleIcon");
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.src = "{{ url_for('static', filename='img/Img9.png') }}";
+        icon.alt = "Ocultar contraseña";
+      } else {
+        input.type = "password";
+        icon.src = "{{ url_for('static', filename='img/Img8.png') }}";
+        icon.alt = "Mostrar contraseña";
+      }
+    }
+  </script>
 </body>
 </html>
