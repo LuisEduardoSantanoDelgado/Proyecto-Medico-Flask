@@ -2,23 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agregar Médico</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Agregar_medico.css') }}">
 </head>
 <body>
-  <h2>Agregar Médico</h2>
-  <form action="/agregar_medico" method="post">
-    <input type="text" name="rfc" placeholder="RFC">
-    <input type="text" name="nombre" placeholder="Nombre completo">
-    <input type="text" name="cedula" placeholder="Cédula profesional">
-    <input type="email" name="correo" placeholder="Correo">
-    <input type="password" name="password" placeholder="Contraseña">
-    <select name="rol">
-      <option value="Medico">Medico</option>
-      <option value="Medico Admin">Medico Admin</option>
-    </select>
-    <button type="submit">Guardar</button>
-  </form>
-  <a href="/medico_admin"> Regresar</a>
+  <div class="header">
+    <h2>AGREGAR MÉDICO</h2>
+    <div class="nav-icons">
+      <img src="{{ url_for('static', filename='img/Img4.png') }}" alt="Inicio">
+      <img src="{{ url_for('static', filename='img/Img5.png') }}" alt="Editar">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="left">
+      <img src="{{ url_for('static', filename='img/Img2.png') }}" alt="Doctor" class="doctor-img">
+    </div>
+    <div class="right">
+      <form action="/agregar_medico" method="POST">
+        <label>RFC:</label>
+        <input type="text" name="rfc" placeholder="RFC">
+
+        <label>Nombre completo:</label>
+        <input type="text" name="nombre" placeholder="Nombre ApellidoP ApellidoM">
+
+        <label>Cédula profesional:</label>
+        <input type="text" name="cedula" placeholder="cédula">
+
+        <label>Correo electrónico:</label>
+        <input type="email" name="correo" placeholder="ejemplo@correo.com">
+
+        <label>Contraseña:</label>
+        <div class="password-group">
+          <input type="password" id="password" name="password" class="input-password" placeholder="Contraseña">
+          <button type="button" class="toggle-password" onclick="togglePassword()">
+            <img id="toggleIcon" src="{{ url_for('static', filename='img/Img9.png') }}" alt="Mostrar/Ocultar">
+          </button>
+        </div>
+
+        <label>Rol:</label>
+        <select name="rol">
+          <option value="Medico">Médico</option>
+          <option value="Medico Admin">Médico Admin</option>
+        </select>
+
+        <div class="btn-group">
+          <button type="submit" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/Img10.png') }}" class="btn-icon" alt="Guardar"> GUARDAR
+          </button>
+          <a href="/dashboard" class="btn-cancelar">
+            <img src="{{ url_for('static', filename='img/Img11.png') }}" class="btn-icon" alt="Cancelar"> CANCELAR
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("toggleIcon");
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      icon.src = isHidden
+        ? "{{ url_for('static', filename='img/Img8.png') }}"
+        : "{{ url_for('static', filename='img/Img9.png') }}";
+    }
+  </script>
 </body>
 </html>
