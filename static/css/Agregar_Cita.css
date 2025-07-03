@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #d5f2ff;
+}
+.contenedor {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #e6f7ff;
+    border: 2px solid #32a3c7;
+    padding: 20px;
+    border-radius: 10px;
+}
+.titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8dd2ec;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #32a3c7;
+}
+.titulo h2 {
+    margin: 0;
+    color: #fff;
+}
+.iconos .icono {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.contenido {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+.icono-cita img {
+    width: 56px;
+    height: 62px;
+}
+.formulario {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.formulario label {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+.formulario input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.botones {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+.continuar {
+    background-color: #ffffff;
+    color: green;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px solid green;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.cancelar {
+    background-color: #ffffff;
+    color: red;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px solid red;
+    border-radius: 8px;
+    cursor: pointer;
+}
