@@ -55,7 +55,7 @@
     <input type="text" id="apellido_materno" name="apellido_materno" value="{{ request.form.apellido_materno or paciente.3 }}" required>
 
     <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or paciente.4.strftime('%Y-%m-%d') }}" required>
+    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or paciente.4 }}" required>
 
     <label for="alergias">Alergias:</label>
     <textarea id="alergias" name="alergias" required>{{ request.form.alergias or paciente.5 }}</textarea>

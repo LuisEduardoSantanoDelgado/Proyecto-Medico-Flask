@@ -18,13 +18,13 @@ def mostrarEliminarMedico(rfc):
         errores["dbError"] = "Error al obtener datos del médico"
         print(f"Error: {e}")
 
-    return render_template("Medicos/EliminarMedico.html", errores=errores) 
+    return render_template("Medicos/EliminarMedico.html", errores=errores, medico=None) 
 
 @eliminarMedico_bp.route("/eliminar_medico", methods=["POST"])
 @role_required(2)
 def eliminarMedico():
     errores = {}
-    eliminado = {}
+    
     try:
         
         id_med = request.form.get("id", "0").strip()
@@ -54,4 +54,4 @@ def eliminarMedico():
         errores["dbError"] = "Error al eliminar el médico"
         print(f"Error: {e}")
 
-    return render_template("Medicos/EliminarMedico.html", errores=errores)
+    return render_template("Medicos/EliminarMedico.html", errores=errores, medico=None)

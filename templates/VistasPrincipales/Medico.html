@@ -53,7 +53,7 @@
             {% for paciente in tblPacientes %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ f"{paciente.Nombres} {paciente.Apellido_paterno} {paciente.Apellido_materno}" }}</td>
+                <td>{{ paciente.Nombres }} {{ paciente.Apellido_paterno }} {{ paciente.Apellido_materno }}</td>
                 <td>
                     <a href="/editarPaciente/{{ paciente.ID_paciente }}"><button>Editar</button></a>
                 </td>

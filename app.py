@@ -1,9 +1,15 @@
 from flask import Flask
 from rutas.login import login_bp
+# Importar las rutas de los médicos
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
 from rutas.Medicos.agregarMedico import agregarMedico_bp
 from rutas.Medicos.editarMedico import editarMedico_bp
 from rutas.Medicos.eliminarMedico import eliminarMedico_bp
+# Importar las rutas de los pacientes
+from rutas.VistasPrincipales.medico import medico_bp
+from rutas.Pacientes.agregarPaciente import agregarPaciente_bp
+from rutas.Pacientes.editarPaciente import editarPaciente_bp
+from rutas.Pacientes.eliminarPaciente import eliminarPaciente_bp
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
@@ -29,6 +35,18 @@ app.register_blueprint(editarMedico_bp)
 
 #Eliminación de médicos
 app.register_blueprint(eliminarMedico_bp)
+
+# Manejo de pacientes
+app.register_blueprint(medico_bp)
+
+#Agregar paciente
+app.register_blueprint(agregarPaciente_bp)
+
+#Edición de pacientes
+app.register_blueprint(editarPaciente_bp)
+
+#Eliminación de pacientes
+app.register_blueprint(eliminarPaciente_bp)
 #Comprobar la conexión a la base de datos
 # @app.route("/DBCheck")
 # def dbCheck():
