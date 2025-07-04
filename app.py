@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, render_template,  url_for, flash, redirect
-from decorators.loginRequired import login_required
+from flask import Flask
 from rutas.login import login_bp
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
 from rutas.Medicos.agregarMedico import agregarMedico_bp

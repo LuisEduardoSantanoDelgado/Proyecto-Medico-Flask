@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template ,  request, flash
 from BDAyudas.QueryExecute import execute_query
-from decorators.loginRequired import login_required
+from decorators.roleRequired import role_required
 from utility.encriptarContrasena import encriptar_contrasena
 
 editarMedico_bp = Blueprint('editarMedico', __name__)
 
 @editarMedico_bp.route("/editar_medico/<rfc>", methods=["GET"])
-@login_required(2) 
+@role_required(2) 
 def mostrarEditarMedico(rfc):
     errores = {}
     print(f"-----------------Aqui datos del edirar medico------------------ {rfc}")
@@ -25,7 +25,7 @@ def mostrarEditarMedico(rfc):
     return render_template("Medicos/EditarMedico.html", errores=errores)
 
 @editarMedico_bp.route("/editar_medico", methods=["POST"])
-@login_required(2)
+@role_required(2)
 def editarMedico():
     errores = {}
     try:

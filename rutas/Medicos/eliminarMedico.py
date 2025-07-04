@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template ,  request, flash, redirect
 from BDAyudas.QueryExecute import execute_query
-from decorators.loginRequired import login_required
+from decorators.roleRequired import role_required
 
 eliminarMedico_bp = Blueprint('eliminarMedico', __name__)
 
 @eliminarMedico_bp.route("/eliminar_medico/<rfc>", methods=["GET"])
-@login_required(2)
+@role_required(2)
 def mostrarEliminarMedico(rfc):
     errores = {}
     try:
@@ -21,7 +21,7 @@ def mostrarEliminarMedico(rfc):
     return render_template("Medicos/EliminarMedico.html", errores=errores) 
 
 @eliminarMedico_bp.route("/eliminar_medico", methods=["POST"])
-@login_required(2)
+@role_required(2)
 def eliminarMedico():
     errores = {}
     eliminado = {}

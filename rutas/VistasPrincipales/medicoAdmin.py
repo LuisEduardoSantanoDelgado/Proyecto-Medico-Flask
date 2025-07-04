@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template , session
 from BDAyudas.QueryExecute import execute_query
-from decorators.loginRequired import login_required
+from decorators.roleRequired import role_required
 
 
 medicoAdmin_bp = Blueprint('medicoAdmin', __name__)
 @medicoAdmin_bp.route("/medicoAdmin")
-@login_required(2)
+@role_required(2)
 def medicoAdmin():
     errores = {}
     try:

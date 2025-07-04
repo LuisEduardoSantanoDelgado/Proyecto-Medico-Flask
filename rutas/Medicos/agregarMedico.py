@@ -1,15 +1,15 @@
 from flask import Blueprint, render_template ,  request, flash
 from BDAyudas.QueryExecute import execute_query
-from decorators.loginRequired import login_required
+from decorators.roleRequired import role_required
 from utility.encriptarContrasena import encriptar_contrasena
 
 agregarMedico_bp = Blueprint('agregarMedico', __name__)
 @agregarMedico_bp.route("/agregarMedico")
-@login_required(2) 
+@role_required(2) 
 def mostrarAgregarMedico():
     return render_template("Medicos/AgregarMedico.html")
 @agregarMedico_bp.route("/agregarMedico", methods = ["POST"])
-@login_required(2)
+@role_required(2)
 def agregarMedico():
     errores = {}
 
