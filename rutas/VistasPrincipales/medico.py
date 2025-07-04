@@ -10,13 +10,13 @@ def medico():
     errores = {}
     try:
         rfc = session.get("rfc")
-        nombre = execute_query("EXEC obtenerPacientes @ID_medico = ?", (rfc,), fetch="one")
+        idMedico = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
+        nombre = execute_query("EXEC obtenerPacientes @ID_medico = ?", (idMedico,), fetch="one")
         if not nombre:
             errores["medicoNotFound"] = "Médico no encontrado"
         else:
             nombreMedico = nombre[0]
-            idMedico = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
-            tblPacientes = execute_query("EXEC obtenerPacientes @ID_medico = ?", (idMedico[0],), fetch="all")
+            tblPacientes = execute_query("EXEC obtenerPacientes @ID_medico = ?", (idMedico,), fetch="all")
             if not tblPacientes:
                 errores["pacientesNotFound"] = "No se encontraron pacientes"
             else:

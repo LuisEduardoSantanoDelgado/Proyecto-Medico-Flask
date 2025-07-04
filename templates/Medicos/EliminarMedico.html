@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar medico</title>
+    <title>Eliminar Médico</title>
 </head>
 <body>
     <header>
@@ -12,10 +12,11 @@
                 <li><a href="/consulta_admin">Citas</a></li>
                 <li><a href="/expedientes_admin">Expedientes</a></li>
                 <li><a href="/agregar_medico">Agregar médico</a></li>
-                <li><a href="/agregar_medico">Ver medico</a></li>
+                <li><a href="/agregar_medico">Ver médico</a></li>
             </ul>
         </nav>
     </header>
+
     <h1>Eliminar Médico</h1>
 
     {% with mensajes = get_flashed_messages() %}
@@ -24,21 +25,34 @@
                 <h4 style="color: green;">{{ msj }}</h4>
             {% endfor %}
         {% endif %}
-        {% if errores and errores.emptyValues %}
-            <p style="color:red">{{errores.emptyValues}}</p>
-        {% endif %}
-        {% if errores and errores.medicoNotFound %}
-            <p style="color:red">{{errores.medicoNotFound}}</p>
-        {% endif %}
-        {% if errores and errores.queryError %}
-            <p style="color:red">{{errores.queryError}}</p>
-        {% endif %}
     {% endwith %}
-    <form action="/eliminar_medico" method="post">
-        <p>¿Estás seguro de que deseas eliminar al médico {{ medico.Nombres }}?</p>
-        <input type="hidden" name="id" value="{{ medico.ID_medico }}">
-        <button type="submit" style="background-color: red; color: whitesmoke;">Eliminar</button>
-        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}"><button type="button" style="background-color: whitesmoke; color: black;">Cancelar</button></a>
-    </form>
+
+    {% if errores and errores.emptyValues %}
+        <p style="color:red">{{ errores.emptyValues }}</p>
+    {% endif %}
+    {% if errores and errores.medicoNotFound %}
+        <p style="color:red">{{ errores.medicoNotFound }}</p>
+    {% endif %}
+    {% if errores and errores.queryError %}
+        <p style="color:red">{{ errores.queryError }}</p>
+    {% endif %}
+
+    {% if medico %}
+        <form action="/eliminar_medico" method="post">
+            <p>¿Estás seguro de que deseas eliminar al médico 
+                <strong>{{ medico.Nombres }} {{ medico.Apellido_paterno }} {{ medico.Apellido_materno }}</strong>?
+            </p>
+            <input type="hidden" name="id" value="{{ medico.ID_medico }}">
+            <button type="submit" style="background-color: red; color: whitesmoke;">Eliminar</button>
+            <a href="{{ url_for('medicoAdmin.medicoAdmin') }}">
+                <button type="button" style="background-color: whitesmoke; color: black;">Cancelar</button>
+            </a>
+        </form>
+    {% else %}
+        <p>No se pudo cargar la información del médico.</p>
+        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}">
+            <button type="button">Regresar</button>
+        </a>
+    {% endif %}
 </body>
 </html>

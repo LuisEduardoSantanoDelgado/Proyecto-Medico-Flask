@@ -7,11 +7,62 @@
 </head>
 <body>
 
+  <nav>
+    <ul>
+      <li><a href="/">Cerrar sesión</a></li>
+      <li><a href="/medico">Regresar</a></li>
+    </ul>
+  </nav>
   <h2>Agregar Expediente</h2>
 
-  <a href="/expedientes"> Lista de Expedientes</a>
-  <a href="/medico_admin"> Médicos</a>
-  <a href="/consulta"> Citas</a>
+   {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+      {% for msj in mensajes %}
+        <h4 style="color: green;">{{ msj }}</h4>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% if errores and errores.emptyValues %}
+    <p style="color: red">{{ errores.emptyValues }}</p>
+  {% endif %}
+
+  {% if errores and errores.fechaError %}
+    <p style="color: red">{{ errores.fechaError }}</p>
+  {% endif %}
+
+  {% if errores and errores.pacienteExists %}
+    <p style="color: red">{{ errores.pacienteExists }}</p>
+  {% endif %}
+
+  {% if errores and errores.dbError %}
+    <p style="color: red">{{ errores.dbError }}</p>
+  {% endif %}
+
+  <form method="POST" action="/agregarPaciente">
+    <label for="nombres">Nombres:</label>
+    <input type="text" id="nombres" name="nombres" value="{{ request.form.nombres or '' }}" required>
+
+    <label for="apellido_P">Apellido paterno:</label>
+    <input type="text" id="apellido_P" name="apellido_P" value="{{ request.form.apellido_P or '' }}" required>
+
+    <label for="apellido_M">Apellido materno:</label>
+    <input type="text" id="apellido_M" name="apellido_M" value="{{ request.form.apellido_M or '' }}" required>
+
+    <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or '' }}" required>
+
+    <label for="alergias">Alergias:</label>
+    <textarea id="alergias" name="alergias">{{ request.form.alergias or '' }}</textarea>
+
+    <label for="enfermedades_cronicas">Enfermedades crónicas:</label>
+    <textarea id="enfermedades_cronicas" name="enfermedades_cronicas">{{ request.form.enfermedades_cronicas or '' }}</textarea>
+
+    <label for="antecedentes_familiares">Antecedentes familiares:</label>
+    <textarea id="antecedentes_familiares" name="antecedentes_familiares">{{ request.form.antecedentes_familiares or '' }}</textarea>
+
+    <button type="submit">Agregar Paciente</button>
+  </form>
 
 </body>
 </html>

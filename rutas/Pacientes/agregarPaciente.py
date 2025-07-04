@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template , request, flash
+from flask import Blueprint, render_template , request, flash, session
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
+from datetime import datetime
 
 agregarPaciente_bp = Blueprint('agregarPaciente', __name__)
 @agregarPaciente_bp.route("/agregarPaciente")
@@ -16,9 +17,7 @@ def agregarPaciente():
         nombres = request.form.get("nombres", "").strip()
         apellido_paterno = request.form.get("apellido_P", "").strip()
         apellido_materno = request.form.get("apellido_M", "").strip()
-        dia_nacimiento = request.form.get("dia_nacimiento", "").strip()
-        mes_nacimiento = request.form.get("mes_nacimiento", "").strip()
-        año_nacimiento = request.form.get("año_nacimiento", "").strip()
+        fecha_nac = request.form.get("fecha_nacimiento", "").strip()
         alergias = request.form.get("alergias", "").strip()
         enfermedades_cronicas = request.form.get("enfermedades_cronicas", "").strip()
         antecedentes_familiares = request.form.get("antecedentes_familiares", "").strip()
@@ -30,15 +29,28 @@ def agregarPaciente():
         if not antecedentes_familiares:
             antecedentes_familiares = "Ninguna"
         
-        if not nombres or not apellido_paterno or not apellido_materno or not dia_nacimiento:
+        if not nombres or not apellido_paterno or not apellido_materno or not fecha_nac:
             errores["emptyValues"] = "Valores vacíos"
             return render_template("Pacientes/AgregarExp.html", errores=errores)
-        else:
-            fecha_nacimiento = f"{año_nacimiento}-{mes_nacimiento}-{dia_nacimiento}"
+        try:
+            fecha_nacimiento = datetime.strptime(fecha_nac, '%Y-%m-%d').date()
+        except ValueError:
+                errores["fechaError"] = "Fecha de nacimiento inválida"
+                return render_template("Pacientes/AgregarExp.html", errores=errores)
+        else: 
             resultado = execute_query(
                 "EXEC InsertarPaciente ?, ?, ?, ?, ?, ?, ?, ?",
                 (nombres, apellido_paterno, apellido_materno, fecha_nacimiento, alergias, enfermedades_cronicas, antecedentes_familiares),
                 fetch="one", commit=True
+            )
+
+            rfc = session.get("rfc")
+            idMedico = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
+            idPaciente = execute_query("SELECT dbo.IDPaciente(?)", (nombres, apellido_paterno, apellido_materno, fecha_nacimiento), fetch="one")
+            execute_query(
+                "INSERT INTO Atiende (ID_paciente, ID_medico) VALUES (?, ?)",
+                (idPaciente, idMedico),
+                commit=True
             )
             
             if resultado and resultado.Resultado == 1:
@@ -46,7 +58,7 @@ def agregarPaciente():
                 return render_template("Pacientes/AgregarExp.html", errores=errores)
             else:
                 flash("Paciente agregado exitosamente")
-                
+                return render_template("VistasPrincipales/Medico.html", errores=errores)
     except Exception as e:
         errores["dbError"] = "Error al agregar paciente"
         print(f"Error: {e}")

@@ -6,9 +6,23 @@
     <title>{{nombre_medico}}</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/">Cerrar sesion</a></li>
+            <li><a href="/agregarPaciente">Agregar expediente</a></li>
+        </ul>
+    </nav> 
+
     <h1>Médico</h1>
 
-    <h2 style="color:blue">Bienvenid@ {{nombre_medico}}</h2>
+    {% if errores %}
+        {% for error in errores.values() %}
+            <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+
+    <h2 style="color:blue">Bienvenid@ {{nombreMedico}}</h2>
 
     {% with mensajes = get_flashed_messages() %}
         {% if mensajes %}
@@ -18,11 +32,40 @@
         {% endif %}
     {% endwith %}
 
-    <nav>
-        <ul>
-            <li><a href="/consulta_admin">Citas</a></li>
-            <li><a href="/expedientes_admin">Expedientes</a></li>
-        </ul>
-    </nav> 
+    <!--No se como vayan a mostrar esto, espero en cards de Bootstrap, pero por ahora es una tabla, solo disuelvan sus componenetes y a 
+    los elementos de jinja no les cambien el nombre-->
+    <h2>Expedientes de pacientes</h2>
+    {% if tblPacientes|length == 0 %}
+    <p style="color: red;">No hay pacientes registrados</p>
+    {% endif %}     
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre de paciente</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+                <th>Crear cita</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in tblPacientes %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ f"{paciente.Nombres} {paciente.Apellido_paterno} {paciente.Apellido_materno}" }}</td>
+                <td>
+                    <a href="/editarPaciente/{{ paciente.ID_paciente }}"><button>Editar</button></a>
+                </td>
+                <td>
+                    <a href="/eliminarPaciente/{{ paciente.ID_paciente }}"><button>Eliminar</button></a>
+                </td>
+                <td>
+                    <a href="/crearCita/{{ paciente.ID_paciente }}"><button>Crear cita</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

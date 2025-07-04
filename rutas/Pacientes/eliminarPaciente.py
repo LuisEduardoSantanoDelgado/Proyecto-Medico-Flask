@@ -3,7 +3,7 @@ from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
 
 eliminarPaciente_bp = Blueprint('eliminarPaciente', __name__)
-@eliminarPaciente_bp.route("/eliminarPaciente")
+@eliminarPaciente_bp.route("/eliminarPaciente/<id_paciente>")
 @login_required
 def mostrarEliminarPaciente(id_paciente):
     errores = {}
@@ -17,7 +17,7 @@ def mostrarEliminarPaciente(id_paciente):
         errores["dbError"] = "Error al obtener datos del paciente"
         print(f"Error: {e}")
 
-    return render_template("Pacientes/EliminarExp.html", errores=errores, paciente=[])
+    return render_template("Pacientes/EliminarExp.html", errores=errores, paciente=None)
 
 
 @eliminarPaciente_bp.route("/eliminarPaciente", methods = ["POST"])
@@ -47,4 +47,4 @@ def eliminarPaciente():
     except Exception as e:
         errores["dbError"] = "Error al eliminar el paciente"
         print(f"Error: {e}")
-    return render_template("Pacientes/EliminarExp.html", errores=errores, paciente=[])
+    return render_template("Pacientes/EliminarExp.html", errores=errores, paciente=None)
