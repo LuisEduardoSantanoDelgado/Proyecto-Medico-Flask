@@ -34,7 +34,7 @@ def login():
                         session["rol"] = rol_result.ID_Rol
                         match rol_result.ID_Rol:
                             case 1:
-                                return redirect(url_for("VistasPrincipales.medico"))
+                                return redirect(url_for("medico.medico"))
                             case 2:
                                 return redirect(url_for("medicoAdmin.medicoAdmin"))
                             case _:

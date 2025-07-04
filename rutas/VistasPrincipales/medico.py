@@ -29,5 +29,6 @@ def medico():
     except Exception as e:
         errores["DBError"] = "Error al obtener los datos de los pacientes"
         print(f"Error: {e}")
-    
+    if nombreMedico and not tblPacientes:
+        return render_template("VistasPrincipales/Medico.html", errores=errores, nombreMedico=nombreMedico, tblPacientes=[])
     return render_template("VistasPrincipales/Medico.html", errores=errores, nombreMedico=[], tblPacientes=[])
