@@ -3,72 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/CSS/Agregar_medico.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Editar Expediente</title>
 </head>
 <body>
-  <nav>
-        <ul>
-            
-            <li><a href="/">Cerrar sesion</a></li>
-            <li><a href="/medico"> Regresar</a></li>
-        </ul>
-    </nav> 
+  <div class="header">
+    <h2>EDITAR EXPEDIENTE</h2>
+    <nav class="nav-icons">
+    <ul>
+        <li><a href="/medico"><img src="/static/Img/CitaIcono.svg" alt="Citas"></a></li>
+        <li><a href="/"><img src="/static/Img/Cerrar sesion.svg" alt="Cerrar sesión"></a></li>
+    </ul>
+    </nav>
+  </div>
 
-  <h2>Editar Expediente</h2>
   {% with mensajes = get_flashed_messages() %}
     {% if mensajes %}
-      {% for msj in mensajes %}
-        <h4 style="color: green;">{{ msj }}</h4>
-      {% endfor %}
+    <script>
+      Swal.fire({
+        icon: 'success', 
+        title: 'Mensaje',
+        text: "{{ mensajes[0] }}",
+        showConfirmButton: true
+      });
+    </script>
     {% endif %}
   {% endwith %}
 
   {% if errores and errores.pacienteNotFound %}
-    <p style="color: red">{{ errores.pacienteNotFound }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.pacienteNotFound }}",
+        showConfirmButton: true
+      });
+    </script> 
   {% endif %}
 
   {% if errores and errores.emptyValues %}
-    <p style="color: red">{{ errores.emptyValues }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.emptyValues }}",
+        showConfirmButton: true
+      });
+    </script> 
   {% endif %}
 
   {% if errores and errores.updateError %}
-    <p style="color: red">{{ errores.updateError }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.updateError }}",
+        showConfirmButton: true
+      });
+    </script> 
   {% endif %}
 
- 
   {% if errores and errores.dbError %}
-    <p style="color: red">{{ errores.dbError }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.dbError }}",
+        showConfirmButton: true
+      });
+    </script> 
   {% endif %}
 
   {% if errores and errores.fechaError %}
-  <p style="color: red">{{ errores.fechaError }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.fechaError }}",
+        showConfirmButton: true
+      });
+    </script>
   {% endif %}
-  <P>Medico que atiende: {{ nombreMedico }}</P>
-  <form method="POST" action="/editarPaciente">
-    <label for="nombre">Nombres:</label>
-    <input type="text" id="nombre" name="nombre" value="{{ request.form.nombre or paciente.1 }}"  required>
 
-    <label for="apellido_paterno">Apellido paterno:</label>
-    <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{ request.form.apellido_paterno or paciente.2 }}" required>
+  <p>Medico que atiende: {{ nombreMedico }}</p>
+  <div class="card">
+    <div class="left">
+      <img src="/static/Img/Expediente.svg" alt="Expediente" class="doctor-img">
+    </div>
+    <div class="right">
+      <form method="POST" action="/editarPaciente">
+        <label for="nombre">Nombres:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ request.form.nombre or paciente.1 }}">
 
-    <label for="apellido_materno">Apellido Materno:</label>
-    <input type="text" id="apellido_materno" name="apellido_materno" value="{{ request.form.apellido_materno or paciente.3 }}" required>
+        <label for="apellido_paterno">Apellido paterno:</label>
+        <input type="text" id="apellido_paterno" name="apellido_paterno" value="{{ request.form.apellido_paterno or paciente.2 }}">
 
-    <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or paciente.4 }}" required>
+        <label for="apellido_materno">Apellido Materno:</label>
+        <input type="text" id="apellido_materno" name="apellido_materno" value="{{ request.form.apellido_materno or paciente.3 }}">
 
-    <label for="alergias">Alergias:</label>
-    <textarea id="alergias" name="alergias" required>{{ request.form.alergias or paciente.5 }}</textarea>
+        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ request.form.fecha_nacimiento or paciente.4 }}">
 
-    <label for="enfermedadesCronicas">Emfermedades cronicas:</label>
-    <textarea id="enfermedadesCronicas" name="enfermedadesCronicas" required>{{ request.form.enfermedadesCronicas or paciente.6 }}</textarea>
+        <label for="alergias">Alergias:</label>
+        <textarea id="alergias" name="alergias">{{ request.form.alergias or paciente.5 }}</textarea>
 
-    <label for="antecedentesFamiliares">Antecedentes Familiares:</label>
-    <textarea id="antecedentesFamiliares" name="antecedentesFamiliares" required>{{ request.form.antecedentesFamiliares or paciente.7 }}</textarea>
+        <label for="enfermedadesCronicas">Emfermedades cronicas:</label>
+        <textarea id="enfermedadesCronicas" name="enfermedadesCronicas">{{ request.form.enfermedadesCronicas or paciente.6 }}</textarea>
 
-    <input type="hidden" name="id_paciente" value="{{ request.form.id_paciente or paciente.0 }}">
-    <button type="submit">Guardar Cambios</button>
-  </form>
+        <label for="antecedentesFamiliares">Antecedentes Familiares:</label>
+        <textarea id="antecedentesFamiliares" name="antecedentesFamiliares">{{ request.form.antecedentesFamiliares or paciente.7 }}</textarea>
 
+        <input type="hidden" name="id_paciente" value="{{ request.form.id_paciente or paciente.0 }}">
+
+        <div class="btn-group">
+          <button type="submit" class="btn-guardar">
+            <img src="/static/Img/Guardar.svg" class="btn-icon" alt="Guardar"> GUARDAR
+          </button>
+          <button type="button" class="btn-cancelar" onclick="window.location.href='/medico'">
+            <img src="/static/Img/Cancelar.svg" class="btn-icon" alt="Cancelar"> CANCELAR
+          </button>
+          </div>
+      </form>
 </body>
 </html>

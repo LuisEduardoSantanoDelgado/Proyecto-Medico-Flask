@@ -87,6 +87,12 @@ form {
   gap: 15px;
 }
 
+p {
+  font-weight: bold;
+  color: #333;
+  padding: 20px;
+}
+
 label {
   font-weight: bold;
   color: #333;
