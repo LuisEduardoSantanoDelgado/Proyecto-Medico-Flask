@@ -68,7 +68,7 @@ def agregarPaciente():
     if codigo == 1:          
         errores["pacienteExists"] = "El paciente ya está registrado."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
-    elif codigo == -2:       # fecha inválida (por si el SP hace otra validación)
+    elif codigo == -2:       
         errores["fechaError"] = "Formato de fecha inválido."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
 
@@ -93,6 +93,7 @@ def agregarPaciente():
         
         errores["asignacion"] = "Paciente creado, pero no se pudo asignar al médico."
         print("Error al asignar paciente–médico:", e)
+        return render_template("Pacientes/AgregarExp.html", errores=errores)
 
     
     flash("Paciente agregado exitosamente.")

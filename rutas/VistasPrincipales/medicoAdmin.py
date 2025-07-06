@@ -28,11 +28,11 @@ def medicoAdmin():
         if not errores:   
             print(nombreMedico)
             for medico in tblMedicos:
-                print(medico)  # Para ver cómo se ve la fila completa
+                print(medico)  
             return render_template("VistasPrincipales/medicoAdmin.html", tblMedicos=tblMedicos, nombreMedico=nombreMedico)
     except Exception as e:
         print(f"Error al obtener datos: {e}")
         nombreMedico = None
     
-    return render_template("VistasPrincipales/medicoAdmin.html", errores=errores)
+    return render_template("VistasPrincipales/medicoAdmin.html", errores=errores, tblMedicos=[], nombreMedico=None)
 

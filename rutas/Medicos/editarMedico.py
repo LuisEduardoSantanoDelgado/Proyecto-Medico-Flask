@@ -50,15 +50,18 @@ def editarMedico():
 
         if len(cedula) < 7:
             errores["cedulaLen"] = "La cédula profesional debe tener al menos 7 caracteres"
-
+        print(f"Datos recibidos para editar: nombre={nombre}, apellido_paterno={apellido_paterno}, apellido_materno={apellido_materno}, "
+              f"cedula={cedula}, rfc={rfc}, correo={correo}, passwordNE={passwordNE}, id_rol={id_rol}, id_med={id_med}")
+        
         hashed_bytes = encriptar_contrasena(passwordNE)
-
+        idMed = int(id_med)
         resultado = execute_query(
                 "DECLARE @resultado INT; EXEC ActualizarMedico ?, ?, ?, ?, ?, ?, ?, ?,?, @resultado OUTPUT; SELECT @resultado AS Resultado",
-                (id_med,nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
+                (idMed,nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
                 fetch="one", commit=True
             )
-        if resultado is not None:
+        print(f"Resultado de la consulta de edición: {resultado}")
+        if resultado is not None and not errores:
             match resultado.Resultado:
                 case 1:
                     errores["medicoNotFound"] = "El medico no existe"
@@ -79,4 +82,4 @@ def editarMedico():
         print(f"Error: {e}")
     
 
-    return render_template("Medicos/EditarMedico.html", errores=errores)
+    return render_template("Medicos/EditarMedico.html", errores=errores, medico=None)

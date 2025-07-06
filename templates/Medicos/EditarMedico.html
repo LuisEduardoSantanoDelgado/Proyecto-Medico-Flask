@@ -152,7 +152,7 @@
           <option value="2" >Médico Admin</option>
         </select>
 
-        <input type="hidden" name="id" value="{{ medico.ID_medico }}">
+        <input type="hidden" name="id" value="{{ request.form.id or medico.ID_medico }}">
 
         <div class="btn-group">
           <button type="submit" class="btn-guardar">
