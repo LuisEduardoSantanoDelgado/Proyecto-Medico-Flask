@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<<<<<<< HEAD
   <title>Eliminar Expediente</title>
   <link rel="stylesheet" href="/static/css/Agregar_medico.css">
 </head>
@@ -19,6 +20,25 @@
     </div>
 
     {% with mensajes = get_flashed_messages() %}
+=======
+    <title>Eliminar Expediete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosEliminarMedico.css') }}">
+</head>
+<body>
+  <div class="header">
+        <h2>ELIMINAR EXPEDIENTE</h2>
+        <div class="nav-icons">
+            <a href="{{ url_for('medico.medico') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+            </a>
+            <a href="{{ url_for('login.home') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+            </a>
+        </div>
+    </div>
+
+  {% with mensajes = get_flashed_messages() %}
+>>>>>>> cf5b4fd4dca44b8492f17419fbfccbace29f49db
     {% if mensajes %}
       <script>
         Swal.fire({
@@ -31,6 +51,7 @@
     {% endif %}
     {% endwith %}
 
+<<<<<<< HEAD
     {% if errores and errores.pacienteNotFound %}
       <script>
       Swal.fire({
@@ -46,10 +67,28 @@
       <script>
       Swal.fire({
         icon: 'error', 
+=======
+  {% if errores and errores.pacienteNotFound %}
+    <script>
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: "{{ errores.pacienteNotFound }}",
+                  showConfirmButton: true
+                });
+            </script>
+  {% endif %}
+
+  {% if errores and errores.deleteError %}
+    <script>
+      Swal.fire({
+        icon: 'error',
+>>>>>>> cf5b4fd4dca44b8492f17419fbfccbace29f49db
         title: 'Error',
         text: "{{ errores.deleteError }}",
         showConfirmButton: true
       });
+<<<<<<< HEAD
       </script> 
     {% endif %}
 
@@ -57,10 +96,20 @@
       <script>
       Swal.fire({
         icon: 'error', 
+=======
+    </script>
+  {% endif %}
+
+  {% if errores and errores.dbError %}
+    <script>
+      Swal.fire({
+        icon: 'error',
+>>>>>>> cf5b4fd4dca44b8492f17419fbfccbace29f49db
         title: 'Error',
         text: "{{ errores.dbError }}",
         showConfirmButton: true
       });
+<<<<<<< HEAD
       </script> 
     {% endif %}
 
@@ -92,5 +141,40 @@
         </a>
       </div>
     {% endif %}
+=======
+    </script>
+  {% endif %}
+
+  {% if paciente %}
+    <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/Expediente.svg') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form action="/eliminarPaciente" method="post">
+                    <p>¿Estás seguro de que deseas eliminar al paciente 
+                        <strong>{{ paciente.1 }} {{ paciente.2 }} {{ paciente.3 }}</strong>?
+                    </p>
+                    <input type="hidden" name="id_paciente" value="{{ paciente.0 }}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn-eliminar">
+                            <img src="{{ url_for('static', filename='img/borrarUsuario.svg') }}" class="btn-icon" alt="Eliminar"> ELIMINAR
+                        </button>
+                        <a href="{{ url_for('medico.medico') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+  {% else %}
+    <p>No se pudo cargar la información del médico.</p>
+        <a href="{{ url_for('medico.medico') }}">
+            <button type="button" class="btn-regresar">Regresar</button>
+        </a>
+  {% endif %}
+>>>>>>> cf5b4fd4dca44b8492f17419fbfccbace29f49db
 </body>
 </html>
