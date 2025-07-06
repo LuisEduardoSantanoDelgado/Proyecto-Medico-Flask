@@ -3,69 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{nombre_medico}}</title>
+    <title>Expedientes de Pacientes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosMedico.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Cerrar sesion</a></li>
-            <li><a href="/agregarPaciente">Agregar expediente</a></li>
-        </ul>
-    </nav> 
 
-    <h1>Médico</h1>
+    
+    <div class="header">
+        <h2>Expedientes de Pacientes</h2>
+        <div class="nav-icons">
+            {% if rol == 2 %}
+                 <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="nav-icon">
+                     <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Médico Admin">
+                </a>
+            {% endif %}
+            <a href="{{ url_for('agregarPaciente.mostrarAgregarPaciente') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" alt="Agregar expediente">
+            </a>
+            <a href="{{ url_for('medico.medico') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Ver expediente">
+            </a>
+            <a href="{{ url_for('login.home') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+            </a>
+        </div>
+    </div>
 
-    {% if errores %}
-        {% for error in errores.values() %}
-            <p style="color: red">{{ error }}</p>
-        {% endfor %}
-    {% endif %}
-
-
-    <h2 style="color:blue">Bienvenid@ {{nombreMedico}}</h2>
-
+   
     {% with mensajes = get_flashed_messages() %}
         {% if mensajes %}
-            {% for msj in mensajes %}
-                <h4 style="color: green">{{msj}}</h4>
-            {% endfor %}
+            <script>
+                Swal.fire({
+                    icon: 'success', 
+                    title: 'Mensaje',
+                    text: "{{ mensajes[0] }}",
+                    showConfirmButton: true
+                });
+            </script>
+        {% endif %}
+        {% if errores and errores.medicoNotFound %}
+            <script>
+                Swal.fire({
+                    icon: 'error', 
+                    title: 'Error',
+                    text: "{{ errores.medicoNotFound }}",
+                    showConfirmButton: true
+                });
+            </script>
+        {% endif %}
+        {% if errores and errores.DBError %}
+            <script>
+                Swal.fire({
+                    icon: 'error', 
+                    title: 'Error',
+                    text: "{{ errores.DBError }}",
+                    showConfirmButton: true
+                });
+            </script>
         {% endif %}
     {% endwith %}
 
-    <!--No se como vayan a mostrar esto, espero en cards de Bootstrap, pero por ahora es una tabla, solo disuelvan sus componenetes y a 
-    los elementos de jinja no les cambien el nombre-->
-    <h2>Expedientes de pacientes</h2>
     {% if tblPacientes|length == 0 %}
-    <p style="color: red;">No hay pacientes registrados</p>
-    {% endif %}     
+        <p style="color: red;">No hay pacientes registrados</p>
+    {% else %}
+    <h2>Lista de expedientes registrados</h2>
+        <div class="container">
+            <div class="row d-flex flex-wrap justify-content-start">
+                {% for paciente in tblPacientes[:10] %}
+                    <div class="col-md-2 mb-4">
+                        <div class="card">
+                            <img src="{{ url_for('static', filename='img/Expediente.svg') }}" class="card-img-top" alt="Imagen del expediente">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ paciente.Nombres }} {{ paciente.Apellido_paterno }} {{ paciente.Apellido_materno }}</h5>
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" class="btn-crear-cita">
+                                        <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Crear Cita" class="btn-icon" style="width: 24px; height: 24px;"> 
+                                    </a>
+                                    <a href="{{ url_for('editarPaciente.mostrarEditarPaciente', id_paciente=paciente.ID_paciente) }}" class="btn-editar">
+                                        <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="btn-icon" style="width: 24px; height: 24px;"> 
+                                    </a>
+                                    <a href="{{ url_for('eliminarPaciente.mostrarEliminarPaciente', id_paciente=paciente.ID_paciente) }}" class="btn-eliminar">
+                                        <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="btn-icon" style="width: 24px; height: 24px;"> 
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nombre de paciente</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
-                <th>Crear cita</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for paciente in tblPacientes %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ paciente.Nombres }} {{ paciente.Apellido_paterno }} {{ paciente.Apellido_materno }}</td>
-                <td>
-                    <a href="/editarPaciente/{{ paciente.ID_paciente }}"><button>Editar</button></a>
-                </td>
-                <td>
-                    <a href="/eliminarPaciente/{{ paciente.ID_paciente }}"><button>Eliminar</button></a>
-                </td>
-                <td>
-                    <a href="/crearCita/{{ paciente.ID_paciente }}"><button>Crear cita</button></a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
