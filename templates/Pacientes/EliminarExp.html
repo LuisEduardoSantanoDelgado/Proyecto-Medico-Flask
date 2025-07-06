@@ -3,48 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Eliminar Expediente</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Eliminar Expediete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosEliminarMedico.css') }}">
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="/">Cerrar sesión</a></li>
-      <li><a href="/medico">Regresar</a></li>
-    </ul>
-  </nav>
-
-  <h2>Eliminar Expediente</h2>
+  <div class="header">
+        <h2>ELIMINAR EXPEDIENTE</h2>
+        <div class="nav-icons">
+            <a href="{{ url_for('medico.medico') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+            </a>
+            <a href="{{ url_for('login.home') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+            </a>
+        </div>
+    </div>
 
   {% with mensajes = get_flashed_messages() %}
     {% if mensajes %}
-      {% for msj in mensajes %}
-        <h4 style="color: green;">{{ msj }}</h4>
-      {% endfor %}
+      <script>
+        Swal.fire({
+          icon: 'success', 
+          title: 'Mensaje',
+          text: "{{ mensajes[0] }}",
+          showConfirmButton: true
+        });
+      </script>
     {% endif %}
   {% endwith %}
 
   {% if errores and errores.pacienteNotFound %}
-    <p style="color: red">{{ errores.pacienteNotFound }}</p>
+    <script>
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: "{{ errores.pacienteNotFound }}",
+                  showConfirmButton: true
+                });
+            </script>
   {% endif %}
 
   {% if errores and errores.deleteError %}
-    <p style="color: red">{{ errores.deleteError }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "{{ errores.deleteError }}",
+        showConfirmButton: true
+      });
+    </script>
   {% endif %}
 
   {% if errores and errores.dbError %}
-    <p style="color: red">{{ errores.dbError }}</p>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "{{ errores.dbError }}",
+        showConfirmButton: true
+      });
+    </script>
   {% endif %}
 
   {% if paciente %}
-    <p>¿Desea eliminar a <strong>{{ paciente.1 }} {{ paciente.2 }} {{ paciente.3 }}</strong>?</p>
-    <form method="POST" action="/eliminarPaciente">
-      <input type="hidden" name="id_paciente" value="{{ paciente.0 }}">
-      <button type="submit">Eliminar</button>
-      <a href="/medico"><button type="button">Cancelar</button></a>
-    </form>
+    <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/Expediente.svg') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form action="/eliminarPaciente" method="post">
+                    <p>¿Estás seguro de que deseas eliminar al paciente 
+                        <strong>{{ paciente.1 }} {{ paciente.2 }} {{ paciente.3 }}</strong>?
+                    </p>
+                    <input type="hidden" name="id_paciente" value="{{ paciente.0 }}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn-eliminar">
+                            <img src="{{ url_for('static', filename='img/borrarUsuario.svg') }}" class="btn-icon" alt="Eliminar"> ELIMINAR
+                        </button>
+                        <a href="{{ url_for('medico.medico') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
   {% else %}
-    <p>No se pudo cargar la información del paciente.</p>
-    <a href="/medico"><button>Regresar</button></a>
+    <p>No se pudo cargar la información del médico.</p>
+        <a href="{{ url_for('medico.medico') }}">
+            <button type="button" class="btn-regresar">Regresar</button>
+        </a>
   {% endif %}
 </body>
 </html>
