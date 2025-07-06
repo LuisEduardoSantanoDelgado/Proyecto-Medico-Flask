@@ -11,7 +11,7 @@ def getConnection():
     #     raise IndexError("Índice de conexión fuera de rango")
 
     try:
-        connection = pyodbc.connect(connections[2])
+        connection = pyodbc.connect(connections[1])
         return connection
     except pyodbc.Error as e:
         raise ConnectionError(f"Error al conectar a la base de datos: {e}")

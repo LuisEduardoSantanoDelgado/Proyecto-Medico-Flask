@@ -6,6 +6,6 @@ def login_required(view_func):
     def wrapped_view(*args, **kwargs):
         if "rfc" not in session:
             flash("Inicia sesión para continuar")
-            return redirect(url_for("home"))
+            return redirect(url_for("login.home"))
         return view_func(*args, **kwargs)
     return wrapped_view

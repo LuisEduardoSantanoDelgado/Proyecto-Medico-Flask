@@ -7,11 +7,11 @@ def role_required(*roles):
         def wrapped_view(*args, **kwargs):
             if "rfc" not in session:
                 flash("Inicia sesión para continuar")
-                return redirect(url_for("home"))
+                return redirect(url_for("login.home"))
 
             if roles and session.get("rol") not in roles:
                 flash("No tienes permisos para ver esa página")
-                return redirect(request.referrer or url_for("home"))
+                return redirect(request.referrer or url_for("login.home"))
 
             return view_func(*args, **kwargs)
         return wrapped_view

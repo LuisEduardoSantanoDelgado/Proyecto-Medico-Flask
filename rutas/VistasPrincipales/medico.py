@@ -5,7 +5,7 @@ from decorators.loginRequired import login_required
 medico_bp = Blueprint('medico', __name__)
 @medico_bp.route("/medico")
 
-@login_required
+#@login_required
 def medico():
     errores = {}
     try:
