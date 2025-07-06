@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/CSS/prueba.css">
+  <link rel="stylesheet" href="/static/CSS/Agregar_medico.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Agregar Expediente</title>
 </head>
@@ -12,8 +12,8 @@
     <h2>AGREGAR EXPEDIENTE</h2>
     <nav class="nav-icons">
       <ul>
-        <li><a href="/consulta"><img src="/static/Img/CitaIcono.svg" alt="Citas"></a></li>
-        <li><a href="/login"><img src="/static/Img/Cerrar sesion.svg" alt="Cerrar sesión"></a></li>
+        <li><a href="/medico"><img src="/static/Img/CitaIcono.svg" alt="Citas"></a></li>
+        <li><a href="/"><img src="/static/Img/Cerrar sesion.svg" alt="Cerrar sesión"></a></li>
       </ul>
     </nav>
   </div>
@@ -80,7 +80,7 @@
       <img src="/static/Img/Expediente.svg" alt="Expediente" class="doctor-img">
     </div>
     <div class="right">
-      <form method="POST" action="/expediente">
+      <form method="POST" action="/agregarPaciente">
         <label for="nombres">Nombres:</label>
         <input type="text" id="nombres" name="nombres" value="{{ request.form.nombres or '' }}">
 
@@ -106,7 +106,7 @@
           <button type="submit" class="btn-guardar">
             <img src="/static/Img/Guardar.svg" class="btn-icon" alt="Guardar"> GUARDAR
           </button>
-          <button type="button" class="btn-cancelar" onclick="window.location.href='/consultar_expediente'">
+          <button type="button" class="btn-cancelar" onclick="window.location.href='/medico'">
             <img src="/static/Img/Cancelar.svg" class="btn-icon" alt="Cancelar"> CANCELAR
           </button>
         </div>

@@ -93,8 +93,15 @@ label {
   margin-bottom: 4px;
 }
 
+textarea {
+  min-height: 100px;
+  max-height: 200px;
+  resize: vertical;
+}
+
 input,
-select {
+select,
+textarea {
   padding: 10px 14px;
   border: none;
   border-radius: 12px;
