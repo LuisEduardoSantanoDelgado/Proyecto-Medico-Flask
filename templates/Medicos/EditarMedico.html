@@ -3,60 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Editar Médico</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Editar_medico.css') }}">
 </head>
 <body>
-  <h2>Editar Médico</h2>
+ 
+  <div class="header">
+    <h2>EDITAR MÉDICO</h2>
+    <div class="nav-icons">
+        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="nav-icon">
+            <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+        </a>
+        <a href="{{ url_for('login.home') }}" class="nav-icon">
+            <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+        </a>
+    </div>
+  </div>
+
+  
   {% with mensajes = get_flashed_messages() %}
         {% if mensajes %}
-            {% for msj in mensajes %}
-                <h4 style="color: green;">{{ msj }}</h4>
-            {% endfor %}
+            <script>
+                Swal.fire({
+                  icon: 'success', 
+                  title: 'Mensaje',
+                  text: "{{ mensajes[0] }}",
+                  showConfirmButton: true
+                });
+            </script>
         {% endif %}
         {% if errores and errores.emptyValues %}
-            <p style="color:red">{{errores.emptyValues}}</p>
+            <script>
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: "{{ errores.emptyValues }}",
+                  showConfirmButton: true
+                });
+            </script>
         {% endif %}
-
         {% if errores and errores.medicoNotFound %}
-            <p style="color:red">{{errores.medicoNotFound}}</p>
+            <script>
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: "{{ errores.medicoNotFound }}",
+                  showConfirmButton: true
+                });
+            </script>
         {% endif %}
-
         {% if errores and errores.queryError %}
-            <p style="color:red">{{errores.queryError}}</p>
+            <script>
+                Swal.fire({
+                  icon: 'error', 
+                  title: 'Error',
+                  text: "{{ errores.queryError }}",
+                  showConfirmButton: true
+                });
+            </script>
+        {% endif %}
+    {% endwith %}
+
+ 
+  <div class="card">
+    <div class="left">
+      <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="doctor-img">
+    </div>
+    <div class="right">
+      <form action="/editar_medico" method="POST">
+        <label>RFC:</label>
+        <input type="text" name="rfc" placeholder="RFC" value="{{ request.form.rfc or medico.RFC }}" required>
+        {% if errores and errores.rfcLen %}
+          <script>
+            Swal.fire({
+              icon: 'error', 
+              title: 'Error',
+              text: "{{ errores.rfcLen }}",
+              showConfirmButton: true
+            });
+          </script>
+        {% endif %}
+        {% if errores and errores.rfcExists %}
+          <script>
+            Swal.fire({
+              icon: 'error', 
+              title: 'Error',
+              text: "{{ errores.rfcExists }}",
+              showConfirmButton: true
+            });
+          </script>
         {% endif %}
 
-    {% endwith %}
-    
-        <form action="/editar_medico" method="post">
-          <input type="text" name="nombre" placeholder="Nombres" value = "{{ request.form.nombre or medico.Nombres }}" required>
-          <input type="text" name="apellido_P" placeholder="Apellido Paterno" value = "{{ request.form.apellido_P or medico.Apellido_paterno }}" required>
-          <input type="text" name="apellido_M" placeholder="Apellido Materno" value = "{{ request.form.apellido_M or medico.Apellido_materno  }}" required>
-          <input type="text" name="cedula" placeholder="Cédula profesional" value = "{{ request.form.cedula or medico.Cedula_profesional }}" required>
-          {% if errores and errores.cedulaLen %}
-              <p style="color:red">{{errores.cedulaLen}}</p>
-          {% endif %}
-          <input type="text" name="rfc" placeholder="RFC" value = "{{ request.form.rfc or medico.RFC }}" required>
-          {% if errores and errores.rfcLen %}
-              <p style="color:red">{{errores.rfcLen}}</p>
-          {% endif %}
-          {% if errores and errores.rfcExists %}
-              <p style="color:red">{{errores.rfcExists}}</p>
-          {% endif %}
-          <input type="email" name="correo" placeholder="Correo" value = "{{ request.form.correo or medico.Correo_electronico }}" required>
-          {% if errores and errores.mailExists %}
-              <p style="color:red">{{errores.mailExists}}</p>
-          {% endif %}
-          <input type="password" name="password" placeholder="Contraseña" required>
-          {% if errores and errores.passwordLen %}
-              <p style="color:red">{{errores.passwordLen}}</p>
-          {% endif %}
-    <select name="rol">
-      <option value="1">Medico</option>
-      <option value="2">Medico Admin</option>
-    </select>
-    <input type = "hidden" name = "id" value = "{{medico.ID_medico}}">
-    <button type="submit">Guardar</button>
-  </form>
-  <a href="{{ url_for('medicoAdmin.medicoAdmin') }}">Regresar</a>
+        <label>Nombres:</label>
+        <input type="text" name="nombre" placeholder="Nombres" value="{{ request.form.nombre or medico.Nombres }}" required>
+        
+        <label>Apellidos:</label>
+        <input type="text" name="apellido_P" placeholder="Apellido Paterno" value="{{ request.form.apellido_P or medico.Apellido_paterno }}" required>
+        <input type="text" name="apellido_M" placeholder="Apellido Materno" value="{{ request.form.apellido_M or medico.Apellido_materno }}" required>
+
+        <label>Cédula profesional:</label>
+        <input type="text" name="cedula" placeholder="Cédula profesional" value="{{ request.form.cedula or medico.Cedula_profesional }}" required>
+        {% if errores and errores.cedulaLen %}
+          <script>
+            Swal.fire({
+              icon: 'error', 
+              title: 'Error',
+              text: "{{ errores.cedulaLen }}",
+              showConfirmButton: true
+            });
+          </script>
+        {% endif %}
+
+        <label>Correo electrónico:</label>
+        <input type="email" name="correo" placeholder="ejemplo@correo.com" value="{{ request.form.correo or medico.Correo_electronico }}" required>
+        {% if errores and errores.mailExists %}
+          <script>
+            Swal.fire({
+              icon: 'error', 
+              title: 'Error',
+              text: "{{ errores.mailExists }}",
+              showConfirmButton: true
+            });
+          </script>
+        {% endif %}
+
+        <label>Contraseña:</label>
+        <div class="password-group">
+          <input type="password" id="password" name="password" class="input-password" placeholder="Contraseña" required>
+          <button type="button" class="toggle-password" onclick="togglePassword()">
+            <img id="toggleIcon" src="{{ url_for('static', filename='img/Img9.png') }}" alt="Mostrar/Ocultar">
+          </button>
+        </div>
+        {% if errores and errores.passwordLen %}
+         <script>
+            Swal.fire({
+              icon: 'error', 
+              title: 'Error',
+              text: "{{ errores.passwordLen }}",
+              showConfirmButton: true
+            });
+          </script>
+        {% endif %}
+
+        <label>Rol:</label>
+        <select name="rol" required>
+          <option value="1" >Médico</option>
+          <option value="2" >Médico Admin</option>
+        </select>
+
+        <input type="hidden" name="id" value="{{ medico.ID_medico }}">
+
+        <div class="btn-group">
+          <button type="submit" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Guardar"> EDITAR
+          </button>
+          <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="btn-cancelar">
+            <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("toggleIcon");
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      icon.src = isHidden
+        ? "{{ url_for('static', filename='img/Img8.png') }}"
+        : "{{ url_for('static', filename='img/Img9.png') }}";
+    }
+  </script>
+
 </body>
 </html>

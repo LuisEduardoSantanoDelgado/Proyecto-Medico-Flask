@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inicio Sesión</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -15,9 +16,14 @@
 
     {% with mensajes = get_flashed_messages() %}
       {% if mensajes %}
-        {% for msj in mensajes %}
-          <h4 style="color: red;">{{ msj }}</h4>
-        {% endfor %}
+           <script>
+          Swal.fire({
+            icon: 'success',
+            title: 'Mensaje',
+            text: "{{ mensajes[0] }}",
+            showConfirmButton: true
+          });
+        </script>
       {% endif %}
     {% endwith %}
 
@@ -40,13 +46,41 @@
       </div>
 
       {% if err and err.emptyValues %}
-        <p class="error">{{ err.emptyValues }}</p>
+      <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.emptyValues }}",
+          showConfirmButton: true
+        });
+        </script>
       {% elif err and err.invalidData %}
-        <p class="error">{{ err.invalidData }}</p>
+       <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.invalidData }}",
+          showConfirmButton: true
+        });
+        </script>
       {% elif err and err.invalidLogin %}
-        <p class="error">{{ err.invalidLogin }}</p>
+         <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.invalidLogin }}",
+          showConfirmButton: true
+        });
+        </script>
       {% elif err and err.loginError %}
-        <p class="error">{{ err.loginError }}</p>
+        <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.loginError }}",
+          showConfirmButton: true
+        });
+        </script>
       {% endif %}
 
       <button type="submit" class="btn-ingresar">INGRESAR</button>

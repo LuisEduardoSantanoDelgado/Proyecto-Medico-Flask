@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template ,  request, flash
+from flask import Blueprint, render_template ,  request, flash, redirect
 from BDAyudas.QueryExecute import execute_query
 from decorators.roleRequired import role_required
 from utility.encriptarContrasena import encriptar_contrasena
@@ -38,7 +38,7 @@ def agregarMedico():
         try:
            
             hashed_bytes = encriptar_contrasena(passwordNE)
-
+            id_rol = int(id_rol) 
             resultado = execute_query(
                 "DECLARE @res INT; EXEC InsertarMedico ?, ?, ?, ?, ?, ?, ?, ?, @res OUTPUT; SELECT @res AS Resultado",
                 (nombre, apellido_paterno, apellido_materno, cedula, rfc, correo, hashed_bytes, id_rol),
@@ -54,7 +54,7 @@ def agregarMedico():
                 return render_template("AgregarMedico.html", errores=errores)
             
             flash("Médico agregado exitosamente")
-
+            return redirect("/medicoAdmin")
         except Exception as e:
             errores["dbError"] = "Error al agregar médico"
             print(f"Error: {e}")

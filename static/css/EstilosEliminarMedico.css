@@ -1,0 +1,160 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #c3ebf7;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #7fc6dc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header h2 {
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #666;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-icons img {
+    width: 55px;
+    height: 55px;
+    padding: 10px;
+    background-color: #d0ecf3;
+    border-radius: 16px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.nav-icons img:hover {
+    transform: scale(1.1);
+}
+
+.card {
+    margin: 50px auto;
+    background: white;
+    width: 90%;
+    max-width: 950px;
+    display: flex;
+    border-radius: 15px;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px 40px;
+}
+
+.left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doctor-img {
+    width: 220px;
+    border-radius: 12px;
+}
+
+.right {
+    flex: 2;
+    padding: 0 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+input {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 12px;
+    background-color: #caf0f8;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botones */
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-eliminar,
+.btn-cancelar {
+    padding: 16px 40px;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.3s ease;
+}
+
+.btn-eliminar {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.btn-eliminar:hover {
+    background-color: #e80000;
+    transform: scale(1.05);
+}
+
+.btn-cancelar {
+    background-color: #f0f8ff;
+    color: black;
+    border: none;
+}
+
+.btn-cancelar:hover {
+    background-color: #d0ecf3;
+    transform: scale(1.05);
+}
+
+.btn-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.btn-regresar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #7fc6dc;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-regresar:hover {
+    background-color: #55a3b5;
+}

@@ -19,8 +19,8 @@ def medicoAdmin():
                
         tblMedicos = execute_query(
             "SELECT CONCAT(Nombres, ' ', Apellido_paterno, ' ', Apellido_materno) AS Nombre_Medico, "
-            "Cedula_profesional, RFC, Correo_electronico FROM Medicos WHERE Estatus = ?", 
-            (1,), fetch="all"
+            "Cedula_profesional, RFC, Correo_electronico FROM Medicos WHERE Estatus = ? AND RFC != ?", 
+            (1, rfc), fetch="all"
         )
         if not tblMedicos:
             errores["noMedicos"] = "No hay médicos registrados"

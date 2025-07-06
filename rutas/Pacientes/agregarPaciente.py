@@ -6,40 +6,40 @@ from datetime import datetime
 
 agregarPaciente_bp = Blueprint('agregarPaciente', __name__)
 
-# ---------- GET (formulario) ----------
+
 @agregarPaciente_bp.route("/agregarPaciente")
 @login_required
 def mostrarAgregarPaciente():
     return render_template("Pacientes/AgregarExp.html")
 
-# ---------- POST (envío del formulario) ----------
+
 @agregarPaciente_bp.route("/agregarPaciente", methods=["POST"])
 @login_required
 def agregarPaciente():
     errores = {}
 
-    # 1. Leer y limpiar datos -----------------------
+   
     nombres                = request.form.get("nombres", "").strip()
     apellido_paterno       = request.form.get("apellido_P", "").strip()
     apellido_materno       = request.form.get("apellido_M", "").strip()
-    fecha_nac_txt          = request.form.get("fecha_nacimiento", "").strip()   # «yyyy-mm-dd»
+    fecha_nac_txt          = request.form.get("fecha_nacimiento", "").strip()   
     alergias               = request.form.get("alergias", "").strip() or None
     enfermedades_cronicas  = request.form.get("enfermedades_cronicas", "").strip() or None
     antecedentes_familiares= request.form.get("antecedentes_familiares", "").strip() or None
 
-    # 2. Validaciones básicas -----------------------
+   
     if not (nombres and apellido_paterno and apellido_materno and fecha_nac_txt):
         errores["emptyValues"] = "Todos los campos obligatorios deben llenarse."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
 
-    # Validar formato de fecha (solo formato, no conversión a date)
+    # Validar formato de fecha 
     try:
         datetime.strptime(fecha_nac_txt, "%Y-%m-%d")
     except ValueError:
         errores["fechaError"] = "La fecha debe tener formato AAAA-MM-DD."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
 
-    # 3. Ejecutar el procedimiento almacenado -------
+    
     resultado = execute_query(
         """
         DECLARE @r INT;
@@ -51,7 +51,7 @@ def agregarPaciente():
             nombres,
             apellido_paterno,
             apellido_materno,
-            fecha_nac_txt,               # se envía como VARCHAR(10)
+            fecha_nac_txt,              
             alergias,
             enfermedades_cronicas,
             antecedentes_familiares
@@ -65,14 +65,14 @@ def agregarPaciente():
         return render_template("Pacientes/AgregarExp.html", errores=errores)
 
     codigo = resultado[0]
-    if codigo == 1:          # duplicado
+    if codigo == 1:          
         errores["pacienteExists"] = "El paciente ya está registrado."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
     elif codigo == -2:       # fecha inválida (por si el SP hace otra validación)
         errores["fechaError"] = "Formato de fecha inválido."
         return render_template("Pacientes/AgregarExp.html", errores=errores)
 
-    # 4. Relacionar paciente con médico -------------
+   
     try:
         rfc = session.get("rfc")
         id_medico   = execute_query("SELECT dbo.IDMedico(?)",
@@ -90,10 +90,10 @@ def agregarPaciente():
                       (id_pac, id_med), fetch=None,  
                       commit=True)
     except Exception as e:
-        # No detiene la inserción del paciente; solo reporta
+        
         errores["asignacion"] = "Paciente creado, pero no se pudo asignar al médico."
         print("Error al asignar paciente–médico:", e)
 
-    # 5. Éxito -------------------------------------
+    
     flash("Paciente agregado exitosamente.")
-    return redirect(url_for("medico.medico"))  # ajusta al nombre real de tu ruta
+    return redirect(url_for("medico.medico")) 

@@ -5,7 +5,7 @@ from datetime import datetime
 
 editarPaciente_bp = Blueprint('editarPaciente', __name__)
 
-# ---------- GET: mostrar formulario ----------
+
 @editarPaciente_bp.route("/editarPaciente/<id_paciente>")
 @login_required
 def mostrarEditarPaciente(id_paciente):
@@ -27,13 +27,13 @@ def mostrarEditarPaciente(id_paciente):
 
     return render_template("Pacientes/EditarExp.html", errores=errores, paciente=None, nombreMedico="No disponible")
 
-# ---------- POST: editar paciente ----------
+
 @editarPaciente_bp.route("/editarPaciente", methods=["POST"])
 @login_required
 def editarPaciente():
     errores = {}
 
-    # 1. Leer y validar campos --------------------
+    
     id_paciente = request.form.get("id_paciente", "").strip()
     nombre = request.form.get("nombre", "").strip()
     apellido_paterno = request.form.get("apellido_paterno", "").strip()
@@ -56,7 +56,7 @@ def editarPaciente():
         errores["fechaError"] = "Formato de fecha inválido (esperado: AAAA-MM-DD)"
         return render_template("Pacientes/EditarExp.html", errores=errores, paciente=None, nombreMedico="No disponible")
 
-    # 2. Ejecutar SP de actualización -------------
+    
     resultado = execute_query("""
         DECLARE @res INT;
         EXEC ActualizarPaciente ?, ?, ?, ?, ?, ?, ?, ?, @res OUTPUT;
@@ -66,7 +66,7 @@ def editarPaciente():
         nombre,
         apellido_paterno,
         apellido_materno,
-        fecha_nac_txt,  # Se pasa como texto
+        fecha_nac_txt,  
         alergias,
         enfermedades,
         antecedentes
