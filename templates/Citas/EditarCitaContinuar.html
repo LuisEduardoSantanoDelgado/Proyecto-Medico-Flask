@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <title>Agregar Cita</title>
+  <title>Editar Cita</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/Agregar_medico.css') }}">
 </head>
 <body>
 
   <div class="header">
-    <h2>EDITAR CITA</h2>
+    <h2>TERMINAR EDITAR CITA</h2>
     <div class="nav-icons">
         <a href="{{ url_for('citasLista.citasLista') }}" class="nav-icon">
             <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
@@ -42,7 +42,7 @@
       </script>
     {% endif %}
   {% endwith %} -->
-      <script>
+        <script>
       Swal.fire({
                     icon: 'question', 
                     title: 'Información',
@@ -57,35 +57,27 @@
     </div>
     <div class="right">
       <form action="/#" method="POST">
-        <label>Paciente selecionado:</label>
-        <input type="text" name="paciente" placeholder="Paciente ejemplo" value="Paciente generico 1" required>
+        <label for="sintomas">Síntomas:</label>
+        <textarea name="sintomas" placeholder="Síntomas del paciente" required></textarea>
 
-        <label for="fecha_exploracion">Fecha de exploracion:</label>
-        <input type="date" id="fecha_exploracion" name="fecha_exploracion" >
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" required></textarea>
+        
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" required></textarea>
 
-        <label for = "peso">Peso en kg:</label>
-        <input type="number" name="peso"  value = "549517" required>
+        <label for="tratamiento">Tratamiento:</label>
+        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" required></textarea>
 
-        <label for = "altura">Altura en cm:</label>
-        <input type="number" name="altura"  value = "405142" required>
-
-        <label for = "temperatura">Temperatura en °C:</label>
-        <input type="number" name="temperatura"  value = "575913" required>
-
-        <label for = "latidos">Latidos en bpm:</label>
-        <input type="number" name="latidos"  value = "582370" required>
-
-        <label for = "oxigeno">Saturación de oxígeno en %:</label>
-        <input type="number" name="oxigeno"  value = "299089" required>
-
-       
+        <label for="estudios">Estudios:</label>
+        <textarea name="estudios" placeholder="Estudios requeridos" required></textarea>
 
         <div class="btn-group">
-          <!-- <button href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
+          <!-- <button href="{{ url_for('citasLista.citasLista') }}" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> Guardar
           </button> -->
-          <a href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
+          <a href="{{ url_for('citasLista.citasLista') }}" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> Guardar
           </a>
           <a href="{{ url_for('citasLista.citasLista') }}" class="btn-cancelar">
             <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
