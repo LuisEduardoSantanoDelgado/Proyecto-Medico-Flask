@@ -25,7 +25,9 @@ def medico():
                 errores["pacientesNotFound"] = "No se encontraron pacientes"
             else:
                 print(f"Desde medico esto se envia a la vista: {tblPacientes} y {nombreMedico}")
-                return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes)
+                rol = session.get("rol")
+                print(f"Desde medico Rol del médico: {rol}")
+                return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes, rol=rol)
     except Exception as e:
         errores["DBError"] = "Error al obtener los datos de los pacientes"
         print(f"Error: {e}")
