@@ -7,7 +7,7 @@ editarPaciente_bp = Blueprint('editarPaciente', __name__)
 
 
 @editarPaciente_bp.route("/editarPaciente/<id_paciente>")
-#@login_required
+@login_required
 def mostrarEditarPaciente(id_paciente):
     errores = {}
     try:
@@ -29,7 +29,7 @@ def mostrarEditarPaciente(id_paciente):
 
 
 @editarPaciente_bp.route("/editarPaciente", methods=["POST"])
-#@login_required
+@login_required
 def editarPaciente():
     errores = {}
 
