@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Cita</title>
-    <link rel="stylesheet" href="Agregar_Cita.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agregar Cita</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Agregar_Cita.css') }}">
 </head>
 <body>
-    <div class="contenedor">
-        <div class="nav-icons">
-      <img src="{{ url_for('static', filename='img/Img4.png') }}" alt="Inicio">
-      <img src="{{ url_for('static', filename='img/Img5.png') }}" alt="Editar">
+  <div class="contenedor">
+    <div class="titulo">
+      <h2>AGREGAR CITA</h2>
+      <div class="iconos">
+        <button class="icono">
+          <img src="{{ url_for('static', filename='img/Img4.png') }}" alt="Inicio" width="32">
+        </button>
+        <button class="icono">
+          <img src="{{ url_for('static', filename='img/Img5.png') }}" alt="Cerrar sesión" width="32">
+        </button>
+      </div>
+    </div>
+
+    <div class="contenido">
+      <div class="icono-cita">
+        <img src="{{ url_for('static', filename='img/Img12.png') }}" alt="Calendario">
+      </div>
+
+      <form class="formulario" action="/agregar_cita" method="POST">
+        <label>Paciente seleccionado: <input type="text" name="paciente"></label>
+        <label>Fecha de exploración: <input type="date" name="fecha"></label>
+        <label>Peso: <input type="text" name="peso"></label>
+        <label>Altura: <input type="text" name="altura"></label>
+        <label>Temperatura: <input type="text" name="temperatura"></label>
+        <label>Latidos por minuto: <input type="text" name="latidos"></label>
+        <label>Saturación de oxígeno: <input type="text" name="oxigeno"></label>
+        <label>Glucosa: <input type="text" name="glucosa"></label>
+
+        <div class="botones">
+          <button type="submit" class="continuar">Continuar Diagnóstico</button>
+          <button type="reset" class="cancelar">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
-        <div class="contenido">
-            <div class="icono-cita">
-                <img src="Img12.png" alt="Calendario" width="56" height="62">
-            </div>
-
-            <form class="formulario">
-                <label>Paciente seleccionado: <input type="text" name="paciente"></label>
-                <label>Fecha de exploración: <input type="date" name="fecha"></label>
-                <label>Peso: <input type="text" name="peso"></label>
-                <label>Altura: <input type="text" name="altura"></label>
-                <label>Temperatura: <input type="text" name="temperatura"></label>
-                <label>Latidos por minuto: <input type="text" name="latidos"></label>
-                <label>Saturación de oxígeno: <input type="text" name="oxigeno"></label>
-                <label>Glucosa: <input type="text" name="glucosa"></label>
-
-                <div class="botones">
-                    <button type="submit" class="continuar">Continuar Diagnóstico</button>
-                    <button type="reset" class="cancelar">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </body>
 </html>
