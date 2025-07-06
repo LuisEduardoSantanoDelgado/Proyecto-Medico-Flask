@@ -203,3 +203,23 @@ textarea {
   width: 22px;
   height: 22px;
 }
+
+.btn-regresar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #7fc6dc;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-regresar:hover {
+    background-color: #55a3b5;
+}
+
+.centrar-btn {
+  display: flex;
+  justify-content: center;
+}

@@ -4,7 +4,7 @@ from decorators.loginRequired import login_required
 
 eliminarPaciente_bp = Blueprint('eliminarPaciente', __name__)
 @eliminarPaciente_bp.route("/eliminarPaciente/<id_paciente>")
-@login_required
+#@login_required
 def mostrarEliminarPaciente(id_paciente):
     errores = {}
     try:
@@ -21,7 +21,7 @@ def mostrarEliminarPaciente(id_paciente):
 
 
 @eliminarPaciente_bp.route("/eliminarPaciente", methods = ["POST"])
-@login_required
+#@login_required
 def eliminarPaciente():
     errores = {}
     try:

@@ -5,7 +5,7 @@ from decorators.roleRequired import role_required
 eliminarMedico_bp = Blueprint('eliminarMedico', __name__)
 
 @eliminarMedico_bp.route("/eliminar_medico/<rfc>", methods=["GET"])
-@role_required(2)
+#@role_required(2)
 def mostrarEliminarMedico(rfc):
     errores = {}
     try:
@@ -21,7 +21,7 @@ def mostrarEliminarMedico(rfc):
     return render_template("Medicos/EliminarMedico.html", errores=errores, medico=None) 
 
 @eliminarMedico_bp.route("/eliminar_medico", methods=["POST"])
-@role_required(2)
+#@role_required(2)
 def eliminarMedico():
     errores = {}
     
