@@ -3,14 +3,16 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #d5f2ff;
 }
+
 .contenedor {
-    max-width: 700px;
+    max-width: 900px;
     margin: 30px auto;
     background: #e6f7ff;
     border: 2px solid #32a3c7;
     padding: 20px;
     border-radius: 10px;
 }
+
 .titulo {
     display: flex;
     justify-content: space-between;
@@ -20,62 +22,78 @@ body {
     border-radius: 8px 8px 0 0;
     border-bottom: 2px solid #32a3c7;
 }
+
 .titulo h2 {
     margin: 0;
     color: #fff;
+    font-size: 24px;
 }
-.iconos .icono {
+
+.iconos {
+    display: flex;
+    gap: 10px;
+}
+
+.icono {
     background: transparent;
     border: none;
-    font-size: 20px;
     cursor: pointer;
-    margin-left: 10px;
 }
+
 .contenido {
     display: flex;
+    gap: 30px;
     padding: 20px;
-    gap: 20px;
 }
+
 .icono-cita img {
-    width: 56px;
-    height: 62px;
+    width: 120px;
+    height: auto;
 }
+
 .formulario {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    width: 100%;
 }
+
 .formulario label {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
     font-weight: bold;
     color: #333;
 }
+
 .formulario input {
-    width: 100%;
-    padding: 5px;
-    margin-top: 3px;
+    padding: 6px;
+    margin-top: 4px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
+    background-color: #f0faff;
 }
+
 .botones {
     margin-top: 20px;
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
+
 .continuar {
     background-color: #ffffff;
     color: green;
     font-weight: bold;
-    padding: 10px;
+    padding: 12px 20px;
     border: 2px solid green;
     border-radius: 8px;
     cursor: pointer;
 }
+
 .cancelar {
     background-color: #ffffff;
     color: red;
     font-weight: bold;
-    padding: 10px;
+    padding: 12px 20px;
     border: 2px solid red;
     border-radius: 8px;
     cursor: pointer;
