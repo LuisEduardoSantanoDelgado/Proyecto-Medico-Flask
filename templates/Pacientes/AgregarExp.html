@@ -10,12 +10,14 @@
 <body>
   <div class="header">
     <h2>AGREGAR EXPEDIENTE</h2>
-    <nav class="nav-icons">
-      <ul>
-        <li><a href="/medico"><img src="/static/Img/CitaIcono.svg" alt="Citas"></a></li>
-        <li><a href="/"><img src="/static/Img/Cerrar sesion.svg" alt="Cerrar sesión"></a></li>
-      </ul>
-    </nav>
+    <div class="nav-icons">
+        <a href="{{ url_for('medico.medico') }}" class="nav-icon">
+            <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+        </a>
+        <a href="{{ url_for('login.home') }}" class="nav-icon">
+            <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+        </a>
+    </div>
   </div>
 
   {% with mensajes = get_flashed_messages() %}
