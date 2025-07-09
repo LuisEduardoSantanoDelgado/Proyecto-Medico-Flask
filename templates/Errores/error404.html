@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Eliminar Expediente</title>
+  <link rel="stylesheet" href="/static/css/EstilosEliminarMedico.css">
+</head>
+<body>
+    <div class="header">
+        <h2>ALGO SALIO MAL</h2>
+        <div class="nav-icons">
+            <a href="{{ url_for('medico.medico') }}" class="nav-icon">
+                <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+            </a>
+        </div>
+    </div>
+
+
+      <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/error404.png') }}" alt="error404Imagen" class="doctor-img">
+            </div>
+            <div class="right">
+                <h2>Lo sentimos página no encontrada</h2>
+                <p>Por favor, verifica la URL o regresa a la página principal.</p>
+                <a href="{{ url_for('medico.medico') }}">
+                    <button type="button" class="btn-cancelar">
+                        <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR A LA LISTA DE PACIENTES
+                    </button>
+                </a>
+            </div>
+        </div>
+</body>
+</html>

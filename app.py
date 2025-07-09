@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from rutas.login import login_bp
 # Importar las rutas de los médicos
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
@@ -80,12 +80,14 @@ app.register_blueprint(editarCita_bp)
 
 #ERRORES
 @app.errorhandler(404)
-def paginaNoEncontrada(e):
-    return "¡Cuidado, error de capa 8!", 404
+def error404(e):
+    print(f"Error 404: {e}")
+    return render_template("Errores/error404.html"), 404
 
 @app.errorhandler(405)
-def error505(e):
-    return "¡Revisa el método de envio!", 405
+def error405(e):
+    print(f"Error 405: {e}")
+    return render_template("Errores/error405.html"), 405
 
 if __name__ == "__main__":
     app.run(port = 3000, debug = True)
