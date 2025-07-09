@@ -91,7 +91,7 @@ def editarPaciente():
                     print('El paciente no existe')
                     errores["pacienteNotFound"] = "Error al encontrar el paciente en la base de datos"
                     return render_template("Pacientes/EditarExp.html", errores=errores, paciente=None, nombreMedico="No disponible")
-                case 2:
+                case -2:
                     print('Error al convertir la fecha desde la base de datos')
                     errores["fechaError"] = "Fecha inválida al procesar en la base de datos."
                     return render_template("Pacientes/EditarExp.html", errores=errores, paciente=None, nombreMedico="No disponible")

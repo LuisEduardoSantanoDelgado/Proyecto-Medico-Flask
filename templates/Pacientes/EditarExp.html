@@ -42,6 +42,15 @@
         showConfirmButton: true
       });
     </script> 
+  {% elif errores and errores.medicoNotFound %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.medicoNotFound }}",
+        showConfirmButton: true
+      });
+    </script> 
   {% elif errores and errores.emptyValues %}
     <script>
       Swal.fire({

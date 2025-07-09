@@ -10,8 +10,8 @@ def role_required(*roles):
                 return redirect(url_for("login.home"))
 
             if roles and session.get("rol") not in roles:
-                flash("No tienes permisos para ver esa página")
-                return redirect(request.referrer or url_for("login.home"))
+                flash("No tienes permisos para ver esa página, vuelve a iniciar sesión con una cuenta que si los tenga")
+                return redirect(url_for("login.home"))
 
             return view_func(*args, **kwargs)
         return wrapped_view

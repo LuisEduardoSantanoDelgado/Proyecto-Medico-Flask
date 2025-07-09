@@ -56,11 +56,22 @@ def agregarPaciente():
             print('El formato de la fecha enviada del form esta erroneo')
             errores["fechaError"] = "Error en el formato de fecha"
             return render_template("Pacientes/AgregarExp.html", errores=errores)
+        try:
+            rfc = session.get("rfc")
+            print(f'RFC del medico que atiende {rfc}')
+            id_medico   = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
+            print(f'ID del medico {id_medico}')
+            id_med = int(id_medico[0])
+            print(f"ID formateado {type(id_med)} de {id_med}")
+        except Exception as e:
+            print("Error al obtener el ID del médico")
+            errores["dbError"] = "Error al encontrar al médico que atiende"
+            return render_template("Pacientes/AgregarExp.html", errores=errores)
 
         try:
             resultado = execute_query(
-                "DECLARE @r INT; EXEC InsertarPaciente ?, ?, ?, ?, ?, ?, ?, @r OUTPUT; SELECT @r AS Resultado; ",
-                ( nombres, apellido_paterno, apellido_materno, fecha_nac_txt,alergias, enfermedades_cronicas, antecedentes_familiares),
+                "DECLARE @r INT; EXEC InsertarPaciente ?, ?, ?, ?, ?, ?, ?, ?, @r OUTPUT; SELECT @r AS Resultado; ",
+                ( nombres, apellido_paterno, apellido_materno, fecha_nac_txt,alergias, enfermedades_cronicas, antecedentes_familiares, id_med),
                 fetch="one", commit=True
             )
             if resultado:
@@ -69,34 +80,18 @@ def agregarPaciente():
                         print('El paciente existe')
                         errores["pacienteExists"] = "El paciente ya está registrado."
                         return render_template("Pacientes/AgregarExp.html", errores=errores)
-                    case 2:
+                    case -2:
                         print('Error al transformar la fecha')
                         errores["fechaError"] = "Formato de fecha inválido."
                         return render_template("Pacientes/AgregarExp.html", errores=errores)
+                    case 3:
+                        print('Error al asignar el paciente al medico')
+                        errores["asignacionError"] = "Error al asignar el médico al paciente"
+                        return render_template("Pacientes/AgregarExp.html", errores=errores)
                     case 0:
                         print('Se inserto el paciente')
-                        if errores:
-                            print('No se inicio con la asignacion del paciente al medico')
-                        else:
-                            print('Intentando asignar paciente al medico')
-                            try:
-                                rfc = session.get("rfc")
-                                id_medico   = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
-                                id_paciente = execute_query("SELECT dbo.IDPaciente(?, ?, ?, ?)",
-                                                            (nombres, apellido_paterno, apellido_materno, fecha_nac_txt), fetch="one")
-                                
-                                print(f"ID Médico: {id_medico}, ID Paciente: {id_paciente}")
-                                id_med = int(id_medico[0])
-                                id_pac = int(id_paciente[0])
-                                print(f"ID Médico: {type(id_med)}, ID Paciente: {type(id_pac)}")
-                                execute_query("INSERT INTO Atiende(ID_paciente, ID_medico) VALUES (?, ?)",(id_pac, id_med), fetch=None,commit=True)
-                                flash("Paciente agregado exitosamente")
-                                return redirect(url_for("medico.medico"))
-                            except Exception as e:
-                                errores["asignacionError"] = "Paciente creado, pero no se pudo asignar al médico."
-                                print("Error al asignar paciente–médico:", e)
-                                return render_template("Pacientes/AgregarExp.html", errores=errores)
-                            
+                        flash("Paciente agregado exitosamente")
+                        return redirect(url_for("medico.medico"))     
                     case _:
                         print("Error desconocido al agregar paciente")
                         errores["dbError"] = "Error desconocido al agregar paciente"

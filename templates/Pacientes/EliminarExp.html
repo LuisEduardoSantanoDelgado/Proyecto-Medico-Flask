@@ -87,10 +87,26 @@
             </div>
         </div>
     {% else %}
-      <p>No se pudo cargar la información del paciente.</p>
-        <a href="{{ url_for('medico.medico') }}">
-            <button type="button" class="btn-regresar">Regresar</button>
-        </a>
+      <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form>
+                    <p>Ha ocurrido un pequeño error, regresa e intenta de nuevo.
+                    </p>
+                    <p>Si el problema persiste, entonces llama
+                    </p>
+                    <div class="btn-group">
+                        <a href="{{ url_for('medico.medico') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     {% endif %}
 </body>
 </html>
