@@ -14,7 +14,7 @@
         <a href="{{ url_for('medico.medico') }}" class="nav-icon">
             <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
         </a>
-        <a href="{{ url_for('login.home') }}" class="nav-icon">
+        <a href="{{ url_for('cerrarSesion') }}" class="nav-icon">
             <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
         </a>
     </div>
@@ -42,9 +42,7 @@
         showConfirmButton: true
       });
     </script> 
-  {% endif %}
-
-  {% if errores and errores.emptyValues %}
+  {% elif errores and errores.emptyValues %}
     <script>
       Swal.fire({
         icon: 'error', 
@@ -53,9 +51,7 @@
         showConfirmButton: true
       });
     </script> 
-  {% endif %}
-
-  {% if errores and errores.updateError %}
+  {% elif errores and errores.updateError %}
     <script>
       Swal.fire({
         icon: 'error', 
@@ -64,9 +60,7 @@
         showConfirmButton: true
       });
     </script> 
-  {% endif %}
-
-  {% if errores and errores.dbError %}
+  {% elif errores and errores.dbError %}
     <script>
       Swal.fire({
         icon: 'error', 
@@ -75,9 +69,7 @@
         showConfirmButton: true
       });
     </script> 
-  {% endif %}
-
-  {% if errores and errores.fechaError %}
+  {% elif errores and errores.fechaError %}
     <script>
       Swal.fire({
         icon: 'error', 

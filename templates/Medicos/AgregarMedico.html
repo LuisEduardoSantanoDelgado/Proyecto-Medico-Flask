@@ -129,8 +129,8 @@
 
         <label for="rol">Rol:</label>
         <select name="rol" required>
-          <option value="1">Médico</option>
-          <option value="2">Médico Admin</option>
+          <option value="1"  {% if request.form.rol == '1' %}selected{% endif %}>Médico</option>
+          <option value="2" {% if request.form.rol == '2' %}selected{% endif %}>Médico Admin</option>
         </select>
 
         <div class="btn-group">
