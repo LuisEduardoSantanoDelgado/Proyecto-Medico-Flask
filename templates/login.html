@@ -81,6 +81,24 @@
           showConfirmButton: true
         });
         </script>
+      {% elif err and err.sessionError %}
+        <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.sessionError }}",
+          showConfirmButton: true
+        });
+        </script>
+      {% elif err and err.DBError %}
+        <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ err.DBError }}",
+          showConfirmButton: true
+        });
+        </script>
       {% endif %}
 
       <button type="submit" class="btn-ingresar">INGRESAR</button>

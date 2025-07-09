@@ -15,7 +15,7 @@
             <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="nav-icon">
                 <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
             </a>
-            <a href="{{ url_for('login.home') }}" class="nav-icon">
+            <a href="{{ url_for('cerrarSesion') }}" class="nav-icon">
                 <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
             </a>
         </div>
@@ -70,7 +70,7 @@
                 <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="doctor-img">
             </div>
             <div class="right">
-                <form action="/eliminar_medico" method="post">
+                <form action="/eliminarMedico" method="post">
                     <p>¿Estás seguro de que deseas eliminar al médico 
                         <strong>{{ medico.Nombres }} {{ medico.Apellido_paterno }} {{ medico.Apellido_materno }}</strong>?
                     </p>

@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, flash, url_for, redirect
 from rutas.login import login_bp
+from decorators.loginRequired import login_required
 # Importar las rutas de los médicos
 from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
 from rutas.Medicos.agregarMedico import agregarMedico_bp
@@ -65,29 +66,36 @@ app.register_blueprint(agregarCita_bp)
 app.register_blueprint(eliminarCita_bp)
 #Editar cita
 app.register_blueprint(editarCita_bp)
-#Comprobar la conexión a la base de datos
-# @app.route("/DBCheck")
-# def dbCheck():
-#     try:
-#         conn = getConnection(2)
-#         cursor = conn.cursor()
-#         cursor.execute("Select 1")
-#         return jsonify({"status": "Ok", "message": "Conectado"}), 200
-#     except Exception as e:
-#         return jsonify({"status": "Error", "message": str(e)}), 500
-#     finally:
-#         cursor.close()
+#Cerrar sesion
+@app.route("/cerrarSesion")
+@login_required
+def cerrarSesion():
+    print("Entrando a cerrar sesión ------------------")
+    try:
+        session.clear()  
+        flash("Sesión cerrada correctamente.")
+        return redirect(url_for("login.home"))
+    except Exception as e:
+        errores = {}
+        errores["sessionError"] = "Error al cerrar sesión"
+        print(f"Error al cerrar sesión: {str(e)}")
+        return render_template("login.html", err=errores)
 
 #ERRORES
 @app.errorhandler(404)
 def error404(e):
-    print(f"Error 404: {e}")
+    print(f"Error 404: {str(e)}")
     return render_template("Errores/error404.html"), 404
 
 @app.errorhandler(405)
 def error405(e):
-    print(f"Error 405: {e}")
+    print(f"Error 405: {str(e)}")
     return render_template("Errores/error405.html"), 405
+
+@app.errorhandler(Exception)
+def handle_unexpected_error(e):
+    print(f"Error inesperado: {str(e)}")
+    return render_template("Errores/errorGenerico.html"), 500
 
 if __name__ == "__main__":
     app.run(port = 3000, debug = True)

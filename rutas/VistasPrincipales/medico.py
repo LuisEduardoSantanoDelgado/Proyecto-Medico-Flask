@@ -7,6 +7,7 @@ medico_bp = Blueprint('medico', __name__)
 
 @login_required
 def medico():
+    print("------------Entrando a la vista de pacientes------------")
     errores = {}
     try:
         rfc = session.get("rfc")
@@ -27,7 +28,7 @@ def medico():
                 print(f"Desde medico esto se envia a la vista: {tblPacientes} y {nombreMedico}")
                 rol = session.get("rol")
                 print(f"Desde medico Rol del médico: {rol}")
-                return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes, rol=rol)
+                return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes, rol=rol, errores=errores)
     except Exception as e:
         errores["DBError"] = "Error al obtener los datos de los pacientes"
         print(f"Error: {e}")

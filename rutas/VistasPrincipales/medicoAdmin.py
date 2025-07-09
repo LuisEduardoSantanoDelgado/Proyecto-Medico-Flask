@@ -8,12 +8,14 @@ medicoAdmin_bp = Blueprint('medicoAdmin', __name__)
 @role_required(2)
 def medicoAdmin():
     errores = {}
+    print("Accediendo a la lista de médicos --------------------------")
     try:
         rfc = session.get("rfc")
-       
+        print(f"RFC del médico: {rfc}")
         nombre = execute_query("SELECT dbo.NombreCompletoMedico(?)", (rfc,), fetch="one")
+        print(f"Nombre del médico: {nombre} y tipo: {type(nombre)}")
         if not nombre:
-            errores["medicoNotFound"] = "Médico no encontrado"
+            errores["medicoNotFound"] = "Nombre de médico no encontrado"
         else:
             nombreMedico = nombre[0]
                
@@ -22,11 +24,12 @@ def medicoAdmin():
             "Cedula_profesional, RFC, Correo_electronico FROM Medicos WHERE Estatus = ? AND RFC != ?", 
             (1, rfc), fetch="all"
         )
+        print(f"Tabla de médicos obtenida: {tblMedicos}")
         if not tblMedicos:
             errores["noMedicos"] = "No hay médicos registrados"
 
         if not errores:   
-            print(nombreMedico)
+            print("No hay errores, mostrando la lista de médicos")
             for medico in tblMedicos:
                 print(medico)  
             return render_template("VistasPrincipales/medicoAdmin.html", tblMedicos=tblMedicos, nombreMedico=nombreMedico)

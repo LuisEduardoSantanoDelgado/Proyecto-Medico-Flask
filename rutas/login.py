@@ -10,12 +10,23 @@ def home():
 
 @login_bp.route("/login", methods=["POST"])
 def login():
+    print('Entrando a login ---------------------------')
     errores = {}
     rfc = request.form.get("rfc", "").strip()
     password = request.form.get("password", "").strip()
 
     if not rfc or not password:
         errores["emptyValues"] = "RFC o contraseña vacíos"
+
+    DMexico = execute_query("SELECT Estatus FROM Medicos WHERE RFC = ?",(rfc,), fetch="one")
+
+    if DMexico is None:
+        print(f"Error al obtener el estatus estado: {DMexico}")
+        errores["DBError"] = "Error al consultar el estatus"
+    elif DMexico[0] == 0:
+        print(f"El usuario {rfc} esta inactivo")
+        errores["DBError"] = "Error en las credenciales"
+        
 
     if not errores:
         try:
