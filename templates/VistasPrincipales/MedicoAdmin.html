@@ -73,7 +73,7 @@
             </div>
             <div class="right">
                 <form action="/eliminarMedico" method="post">
-                    <p>No tienes pacientes, preciona AGREGAR PACIENTE para añadir uno
+                    <p>No tienes mas compañeros, presiona AGREGAR MÉDICO para añadir uno
                     </p>
                     <p>Si se tenía que mostrar algo, cierra sesión y reintenta, si no funciona llama.
                     </p>
@@ -84,9 +84,9 @@
                                 <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> CERRAR SESION
                             </button>
                         </a>
-                        <a href="{{ url_for('agregarPaciente.mostrarAgregarPaciente') }}">
+                        <a href="{{ url_for('agregarMedico.mostrarAgregarMedico') }}">
                             <button type="button" class="btn-cancelar">
-                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="btn-icon" alt="Cancelar"> AGREGAR PACIENTE
+                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="btn-icon" alt="Cancelar"> AGREGAR MÉDICO
                             </button>
                         </a>
                     </div>
