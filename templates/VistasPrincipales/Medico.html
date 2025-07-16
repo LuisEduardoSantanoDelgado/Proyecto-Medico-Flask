@@ -114,7 +114,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ paciente.Nombres }} {{ paciente.Apellido_paterno }} {{ paciente.Apellido_materno }}</h5>
                                 <div class="d-flex justify-content-between">
-                                    <a href="{{ url_for('agregarCita.mostrarAgregarCita')}}" class="btn-crear-cita">
+                                    <a href="{{ url_for('agregarCita.mostrarAgregarCita', id_paciente = paciente.ID_paciente)}}" class="btn-crear-cita">
                                         <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Crear Cita" class="btn-icon" style="width: 24px; height: 24px;"> 
                                     </a>
                                     <a href="{{ url_for('editarPaciente.mostrarEditarPaciente', id_paciente=paciente.ID_paciente) }}" class="btn-editar">

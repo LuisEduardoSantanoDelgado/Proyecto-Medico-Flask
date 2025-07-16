@@ -21,77 +21,58 @@
     </div>
   </div>
 
-  <!-- {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-      <script>
-        Swal.fire({
-          icon: 'success', 
-          title: 'Mensaje',
-          text: "{{ mensajes[0] }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.emptyValues %}
+  {% if errores and errores.dbError %}
       <script>
         Swal.fire({
           icon: 'error', 
           title: 'Error',
-          text: "{{ errores.emptyValues }}",
+          text: "{{ errores.dbError }}",
           showConfirmButton: true
         });
       </script>
-    {% endif %}
-  {% endwith %} -->
-      <script>
-      Swal.fire({
-                    icon: 'question', 
-                    title: 'Información',
-                    text: "Esto es solo una vista previa de Agregar cita. No se guardarán los datos.",
-                    showConfirmButton: true
-                });
-            </script>
+  {% endif %}
 
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
     </div>
     <div class="right">
-      <form >
+      <form action="/agregarCita" method="POST">
         <label>Paciente selecionado:</label>
-        <input type="text" name="paciente" placeholder="Paciente ejemplo" value="Paciente generico 1">
+        <input type="text" name="paciente" placeholder="Paciente ejemplo" value="{{nombrePaciente}}">
 
         <label for="fecha_exploracion">Fecha de exploracion:</label>
-        <input type="date" id="fecha_exploracion" name="fecha_exploracion" >
+        <input type="date" id="fecha_exploracion" name="fecha_exploracion" value="{{request.form.fecha_exploracion or ''}}">
 
         <label for = "peso">Peso en kg:</label>
-        <input type="number" name="peso" >
+        <input type="number" name="peso" value="{{request.form.peso or ''}}">
 
         <label for = "altura">Altura en cm:</label>
-        <input type="number" name="altura"   >
+        <input type="number" name="altura"   value="{{request.form.altura or ''}}">
 
         <label for = "temperatura">Temperatura en °C:</label>
-        <input type="number" name="temperatura"  >
+        <input type="number" name="temperatura"  value="{{request.form.temperatura or ''}}">
 
         <label for = "latidos">Latidos en bpm:</label>
-        <input type="number" name="latidos"   >
+        <input type="number" name="latidos"   value="{{request.form.latidos or ''}}">
 
         <label for = "oxigeno">Saturación de oxígeno en %:</label>
         <input type="number" name="oxigeno"  >
 
        
 
+        <div class="btn-group">
+          <!-- <a href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
+          </a> -->
+          <button type = "submit" href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
+            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
+          </button>
+          <a href="{{ url_for('medico.medico') }}" class="btn-cancelar">
+            <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
+          </a>
+        </div>
       </form>
-      <div class="btn-group">
-        <a href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-          <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
-        </a>
-        <!-- <button href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-          <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
-        </button> -->
-        <a href="{{ url_for('medico.medico') }}" class="btn-cancelar">
-          <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
-        </a>
-      </div>
     </div>
   </div>
 
