@@ -5,21 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Médicos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-     {% if errores and errores.noMedicos %}
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosEliminarMedico.css') }}">
-     {% else %}
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosMedicoAdmin.css') }}">
-     {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosMedicoAdmin.css') }}">
+     <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
-<body>
-    <div class="header">
-        {% if nombreMedico %}
-            <h2>Bienvenido, {{ nombreMedico}}</h2>
-        {% else %}
-            <h2>Medicos registrados</h2>
-        {% endif %}
+<body class="bg-[#c3ebf7]">
+    <div class="header bg-[#7fc6dc] p-4 shadow-md flex justify-between items-center">
+        <!--NOMBRE-->
+        <h2 class="text-white text-2xl font-bold text-center flex-1">
+            {% if nombreMedico %}
+                {{ nombreMedico}}
+            {% else %}
+                Medicos registrados
+            {% endif %}
+        </h2>
+
+     <!-- FILTRADO -->
+    <form method="POST" class="flex space-x-3 items-center">
+        <select name="filtro" class="form-select w-36">
+            <option value="Nombre">Nombre completo</option>
+            <option value="RFC">RFC</option>
+            <option value="Rol">Rol</option>
+        </select>
+        <input type="text" name="busqueda" class="form-input w-64 p-2 rounded-md" placeholder="Buscar...">
+        <button type="submit"class="bg-blue-500 text-white px-6 py-2 rounded-md">Buscar</button>
+    </form>
+
+    <!--BOTONES-->
     <div class="nav-icons">
         <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=session['rfc']) }}" class="nav-icon">
             <img src="{{ url_for('static', filename='img/selfMedicoIcon.svg') }}" alt="Médico Admin">
@@ -62,31 +76,31 @@
         {% endif %}
     {% endwith %}
     
-    <h2>Lista de medicos registrados</h2>
+    <h2 class="text-center text-xl font-semibold my-4">Lista de medicos registrados</h2>
 
-    <div class="container">
-    <div class="row d-flex flex-wrap justify-content-start">
+    <div class="container mx-auto px-4">
+    <div class="flex flex-wrap justify-start space-x-6">
         {% if errores and errores.noMedicos %}
-            <div class="card">
-            <div class="left">
-                <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="doctor-img">
+            <div class="card w-full max-w-[950px] flex mb-8 bg-white p-8 rounded-lg shadow-xl">
+            <div class="flex-1 flex justify-center items-center">
+                <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
             </div>
-            <div class="right">
+            <div class="flex-2 px-8">
                 <form action="/eliminarMedico" method="post">
                     <p>No tienes mas compañeros, presiona AGREGAR MÉDICO para añadir uno
                     </p>
                     <p>Si se tenía que mostrar algo, cierra sesión y reintenta, si no funciona llama.
                     </p>
                     
-                    <div class="btn-group">
-                        <a href="{{ url_for('cerrarSesion') }}">
+                    <div class="flex justify-center gap-6 mt-8">
+                        <a href="{{ url_for('cerrarSesion') }}" class="bg-red-500 text-white px-8 py-3 rounded-lg hover:bg-red-600">
                             <button type="button" class="btn-eliminar">
-                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> CERRAR SESION
+                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="w-6 h-6" alt="Cancelar"> CERRAR SESION
                             </button>
                         </a>
-                        <a href="{{ url_for('agregarMedico.mostrarAgregarMedico') }}">
+                        <a href="{{ url_for('agregarMedico.mostrarAgregarMedico') }}" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600">
                             <button type="button" class="btn-cancelar">
-                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="btn-icon" alt="Cancelar"> AGREGAR MÉDICO
+                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="w-6 h-6" alt="Cancelar"> AGREGAR MÉDICO
                             </button>
                         </a>
                     </div>
@@ -95,17 +109,17 @@
         </div>
         {% else %}
             {% for m in tblMedicos[:10] %}
-                <div class="col-md-2 mb-4">
-                    <div class="card">
-                        <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" class="card-img-top" alt="Imagen del médico">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ m.Nombre_Medico }}</h5>
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=m.RFC) }}">
-                                    <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" style="width: 24px; height: 24px;">
+                <div class="col-md-2 mb-6">
+                    <div class="card w-full max-w-[300px] flex bg-white p-6 rounded-lg shadow-xl">
+                        <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" class="w-full h-auto rounded-lg object-cover" alt="Imagen del médico">
+                        <div class="card-body text-center mt-4">
+                            <h5 class="text-lg font-semibold text-[#003366] mb-2">{{ m.Nombre_Medico }}</h5>
+                            <div class="flex justify-between gap-2">
+                                <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=m.RFC) }}" class="text-blue-500 hover:bg-[#c3ebf7]" title="Editar médico">
+                                    <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="w-6 h-6">
                                 </a>
-                                <a href="{{ url_for('eliminarMedico.mostrarEliminarMedico', rfc=m.RFC) }}">
-                                    <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" style="width: 24px; height: 24px;">
+                                <a href="{{ url_for('eliminarMedico.mostrarEliminarMedico', rfc=m.RFC) }}" class="text-red-500 hover:opacity-80" title="Eliminar médico">
+                                    <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="w-6 h-6">
                                 </a>
                             </div>
                         </div>

@@ -42,43 +42,92 @@
       </script>
     {% endif %}
   {% endwith %} -->
-        <script>
-      Swal.fire({
-                    icon: 'question', 
-                    title: 'Información',
-                    text: "Esto es solo una vista previa de Agregar cita. No se guardarán los datos.",
-                    showConfirmButton: true
-                });
-            </script>
+        
+    {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+      <script>
+        Swal.fire({
+          icon: 'success', 
+          title: 'Mensaje',
+          text: "{{ mensajes[0] }}",
+          showConfirmButton: true
+        });
+      </script>
+      {% elif errores and errores.emptyDatos %}
+      <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ errores.emptyDatos }}",
+          showConfirmButton: true
+        });
+      </script>
+      {% elif errores and errores.citaError %}
+      <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ errores.citaError }}",
+          showConfirmButton: true
+        });
+      </script>
+      {% elif errores and errores.dbError %}
+      <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ errores.dbError }}",
+          showConfirmButton: true
+        });
+      </script>
+    {% endif %}
+  {% endwith %}
 
+  {{if errores and errores.citaError}}
+      <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form>
+                    <p>Ha ocurrido un pequeño error, regresa e intenta de nuevo.
+                    </p>
+                    <p>Si el problema persiste, entonces llama
+                    </p>
+                    <div class="btn-group">
+                        <a href="{{ url_for('citasLista.citasLista') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>  
+  {{ else }}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
     </div>
     <div class="right">
-      <form action="/#" method="POST">
+      <form action="/agregarCita/continuar" method="POST">
         <label for="sintomas">Síntomas:</label>
-        <textarea name="sintomas" placeholder="Síntomas del paciente" required></textarea>
+        <textarea name="sintomas" placeholder="Síntomas del paciente" value="{{request.form.sintomas or ''}}"></textarea>
 
         <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" required></textarea>
-        
-        <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" required></textarea>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" value="{{request.form.diagnostico or ''}}"></textarea>
 
         <label for="tratamiento">Tratamiento:</label>
-        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" required></textarea>
+        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" value="{{request.form.tratamiento or ''}}"></textarea>
 
         <label for="estudios">Estudios:</label>
-        <textarea name="estudios" placeholder="Estudios requeridos" required></textarea>
+        <textarea name="estudios" placeholder="Estudios requeridos" value="{{request.form.estudios or ''}}"></textarea>
 
         <div class="btn-group">
-          <!-- <button href="{{ url_for('citasLista.citasLista') }}" class="btn-guardar">
+          <button type="submit" class="btn-guardar">
             <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> Guardar
-          </button> -->
-          <a href="{{ url_for('citasLista.citasLista') }}" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> Guardar
-          </a>
+          </button>
+    
           <a href="{{ url_for('medico.medico') }}" class="btn-cancelar">
             <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
           </a>
@@ -86,6 +135,7 @@
       </form>
     </div>
   </div>
+  {{ endif }}
 
   
 

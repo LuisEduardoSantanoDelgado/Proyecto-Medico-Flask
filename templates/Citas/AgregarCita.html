@@ -30,19 +30,32 @@
           showConfirmButton: true
         });
       </script>
+    {% elif errores and errores.emptyDatos%}
+      <script>
+        Swal.fire({
+          icon: 'error', 
+          title: 'Error',
+          text: "{{ errores.emptyDatos }}",
+          showConfirmButton: true
+        });
+      </script>
   {% endif %}
 
+  {{% if paciente and nombrePaciente and fechaExploracion  and edadPaciente%}}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
     </div>
     <div class="right">
       <form action="/agregarCita" method="POST">
-        <label>Paciente selecionado:</label>
-        <input type="text" name="paciente" placeholder="Paciente ejemplo" value="{{nombrePaciente}}">
+        <label for = "paciente">Paciente selecionado:</label>
+        <input type="text" name="paciente"  value="{{request.form.paciente or nombrePaciente }}" readonly>
+
+        <label for = "edad">Edad:</label>
+        <input type="text" name="edad"  value="{{request.form.edad or edadPaciente }}" readonly>
 
         <label for="fecha_exploracion">Fecha de exploracion:</label>
-        <input type="date" id="fecha_exploracion" name="fecha_exploracion" value="{{request.form.fecha_exploracion or ''}}">
+        <input type="date" id="fecha_exploracion" name="fecha_exploracion" value="{{request.form.fecha_exploracion or fechaExploracion}}" readonly>
 
         <label for = "peso">Peso en kg:</label>
         <input type="number" name="peso" value="{{request.form.peso or ''}}">
@@ -57,15 +70,15 @@
         <input type="number" name="latidos"   value="{{request.form.latidos or ''}}">
 
         <label for = "oxigeno">Saturación de oxígeno en %:</label>
-        <input type="number" name="oxigeno"  >
+        <input type="number" name="oxigeno"  value="{{request.form.oxigeno or ''}}">
 
-       
+        <label for = "glucosa">Glucosa en la sangre:</label>
+        <input type="number" name="glucosa"  value="{{request.form.glucosa or ''}}">
+
+        <input type = "hidden" name ="id_paciente" value="{{request.form.id_paciente or paciente}}"/>
 
         <div class="btn-group">
-          <!-- <a href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
-          </a> -->
-          <button type = "submit" href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
+          <button type = "submit"  class="btn-guardar">
             <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
           </button>
           <a href="{{ url_for('medico.medico') }}" class="btn-cancelar">
@@ -75,8 +88,28 @@
       </form>
     </div>
   </div>
-
-  
+  {{% else %}}
+    <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form>
+                    <p>Ha ocurrido un pequeño error, regresa e intenta de nuevo.
+                    </p>
+                    <p>Si el problema persiste, entonces llama
+                    </p>
+                    <div class="btn-group">
+                        <a href="{{ url_for('citasLista.citasLista') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>  
+  {{% endif %}}
 
 </body>
 </html>
