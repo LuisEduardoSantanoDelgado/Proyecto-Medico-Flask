@@ -20,112 +20,54 @@
         </div>
     </div>
 
-  <!-- {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
+    {% if errores and errores.citaNotFound%}
       <script>
-        Swal.fire({
-          icon: 'success', 
-          title: 'Mensaje',
-          text: "{{ mensajes[0] }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% endif %}
-  {% endwith %}
-
-  {% if errores and errores.pacienteNotFound %}
-    <script>
-                Swal.fire({
-                  icon: 'error', 
-                  title: 'Error',
-                  text: "{{ errores.pacienteNotFound }}",
-                  showConfirmButton: true
-                });
-            </script>
-  {% endif %}
-
-  {% if errores and errores.deleteError %}
-    <script>
       Swal.fire({
-        icon: 'error',
+        icon: 'error', 
         title: 'Error',
-        text: "{{ errores.deleteError }}",
+        text: "{{ errores.citaNotFound }}",
         showConfirmButton: true
       });
     </script>
-  {% endif %}
-
-  {% if errores and errores.dbError %}
-    <script>
+    {% elif errores and errores.pacienteNotFound%}
+      <script>
       Swal.fire({
-        icon: 'error',
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.pacienteNotFound }}",
+        showConfirmButton: true
+      });
+    </script>
+    {% elif errores and errores.dbError%}
+      <script>
+      Swal.fire({
+        icon: 'error', 
         title: 'Error',
         text: "{{ errores.dbError }}",
         showConfirmButton: true
       });
     </script>
-  {% endif %} -->
+    {% endif %}
+
+    
 
 
-    <script>
-      Swal.fire({
-                    icon: 'question', 
-                    title: 'Información',
-                    text: "Esto es solo una vista previa de Eliminar cita. No se eliminarán los datos.",
-                    showConfirmButton: true
-                });
-            </script>
-
-    <div class="card">
-            <div class="left">
-                <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Expediente" class="doctor-img">
-            </div>
-            <div class="right">
-                <form >
-                    <p>¿Estás seguro de que deseas eliminar
-                        <strong>CITA DE EJEMPLO 1</strong>?
-                    </p>
-                    <input type="hidden" name="id_paciente" value="0">
-                    <div class="btn-group">
-                        <!-- <button href="{{ url_for('citasLista.citasLista') }}" class="btn-eliminar">
-                            <img src="{{ url_for('static', filename='img/borrarUsuario.svg') }}" class="btn-icon" alt="Eliminar"> ELIMINAR
-                        </button> -->
-                        <a href="{{ url_for('citasLista.citasLista') }}" class="btn-eliminar">
-                            <img src="{{ url_for('static', filename='img/borrarUsuario.svg') }}" class="btn-icon" alt="Eliminar"> ELIMINAR
-                        </a>
-                        <a href="{{ url_for('citasLista.citasLista') }}">
-                            <button type="button" class="btn-cancelar">
-                                <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
-                            </button>
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-  <!-- {% if paciente %} -->
-    <!-- <script>
-      Swal.fire({
-                    icon: 'question', 
-                    title: 'Información',
-                    text: "Esto es solo una vista previa de Eliminar cita. No se eliminarán los datos.",
-                    showConfirmButton: true
-                });
-            </script>
+  {% if cita and nombrePaciente and not errores.dbError%} 
 
     <div class="card">
             <div class="left">
                 <img src="{{ url_for('static', filename='img/Expediente.svg') }}" alt="Expediente" class="doctor-img">
             </div>
             <div class="right">
-                <form action="/#" method="post">
-                    <p>¿Estás seguro de que deseas eliminar
-                        <strong>CITA DE EJEMPLO 1</strong>?
+                <form action="/eliminarCita" method="post">
+                    <p>¿Estás seguro de que deseas eliminar la cita de
+                        <strong>{{nombrePaciente}}</strong>?
+                        <p>del día</p>
+                        <strong>{{cita.10}}</strong>?
                     </p>
-                    <input type="hidden" name="id_paciente" value="{{ paciente.0 }}">
+                    <input type="hidden" name="id_cita" value="{{ request.form.id_cita or cita.0 }}">
                     <div class="btn-group">
-                        <button href="{{ url_for('citasLista.citasLista') }}" class="btn-eliminar">
+                        <button type="submit" class="btn-eliminar">
                             <img src="{{ url_for('static', filename='img/borrarUsuario.svg') }}" class="btn-icon" alt="Eliminar"> ELIMINAR
                         </button>
                         <a href="{{ url_for('citasLista.citasLista') }}">
@@ -136,12 +78,12 @@
                     </div>
                 </form>
             </div>
-        </div> -->
-  <!-- {% else %}
-    <p>No se pudo cargar la información del médico.</p>
-        <a href="{{ url_for('medico.medico') }}">
-            <button type="button" class="btn-regresar">Regresar</button>
+        </div> 
+  {% else %}
+    <p>No se pudo cargar la información de la cita.</p>
+        <a href="{{ url_for('citasLista.citasLista') }}">
+            <button type="button" class="btn-regresar">REGRESAR</button>
         </a>
-  {% endif %} -->
+  {% endif %}
 </body>
 </html>
