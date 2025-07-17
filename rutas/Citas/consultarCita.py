@@ -1,13 +1,14 @@
-from flask import Blueprint, render_template , request, flash, session, url_for, redirect
+from flask import Blueprint, render_template , session
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
-from datetime import datetime
+
 
 consultarCita_bp = Blueprint('consultarCita', __name__)
 #GET PRIMERA PARTE
 @consultarCita_bp.route("/consultarCita/<id_cita>")
 @login_required
 def mostrarConsultarCita(id_cita):
+    print('Ingresando a la consulta de la cita ------------------------------')
     errores = {}
     try:
         cita = execute_query("SELECT * FROM Citas WHERE ID_cita = (?) AND Estatus = (?)",(id_cita,1),fetch='one')
@@ -22,8 +23,12 @@ def mostrarConsultarCita(id_cita):
             nombreMedico = nombreMedico[0]
             nombrePaciente = nombrePaciente[0]
             edadPaciente = edadPaciente[0]
-            if not nombrePaciente:
-                print('Fallo al obtener nombre del pacient')
+
+            print(f"Lo obtenido nombre med: {nombreMedico}, nombre pac: {nombrePaciente}, edad pac: {edadPaciente}")
+            print(f"Lo tipo nombre med: {type(nombreMedico)}, nombre pac: {type(nombrePaciente)}, edad pac: {type(edadPaciente)}")
+
+            if not nombrePaciente or not edadPaciente:
+                print('Fallo al obtener nombre del paciente')
                 errores['pacienteNotFound'] = "No se obtuvo un paciente"
             if not nombreMedico:
                 print('Fallo al obtener nombre del med')

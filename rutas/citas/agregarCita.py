@@ -16,8 +16,8 @@ def mostrarAgregarCita(id_paciente):
             print(f"Campo vacio id paciente: {id_paciente}")
             errores["dbError"] = "Error al obtener datos."
         else:
-            nombrePaciente = execute_query("SELECT ISNULL(Nombres, '') + ' ' + ISNULL(Apellido_paterno, '') + ' ' + ISNULL(Apellido_materno, '') FROM Pacientes WHERE ID_pacientes = (?)", (id_paciente,), fetch="one")
-            edadPaciente = execute_query("SELECT Edad FROM Pacientes WHERE ID_pacientes = (?)", (id_paciente,), fetch="one")
+            nombrePaciente = execute_query("SELECT ISNULL(Nombres, '') + ' ' + ISNULL(Apellido_paterno, '') + ' ' + ISNULL(Apellido_materno, '') FROM Pacientes WHERE ID_paciente = (?)", (id_paciente,), fetch="one")
+            edadPaciente = execute_query("SELECT Edad FROM Pacientes WHERE ID_paciente = (?)", (id_paciente,), fetch="one")
             fechaExploracion = datetime.today().strftime('%Y-%m-%d')
             print(f"Datos obtenidos nombre del paciente: {nombrePaciente} edad: {edadPaciente} fecha de exploración {fechaExploracion}")
             if not nombrePaciente or not edadPaciente or not fechaExploracion:
@@ -75,12 +75,14 @@ def agregarCita():
                 flash("Datos iniciales guardados con éxito, termine con el diagnostico de la cita")
                 return redirect(url_for('agregarCita.mostrarAgregarCitaContinuar'))
             else:
+                print('Error sesion sin datos')
                 errores['dbError'] = "Error, sesion sin datos"
         except Exception as e:
             print(f'Error al guardar datos iniciales de cita {str(e)}')
             errores['dbError'] = "Error al guardar datos iniciales"
         
     return render_template("Citas/AgregarCita.html", nombrePaciente = None, paciente = None, edadPaciente = None, fechaExploracion = None, errores = errores)
+    
 #GET SEGUNDA PARTE
 @agregarCita_bp.route("/agregarCita/continuar")
 @login_required

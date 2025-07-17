@@ -19,7 +19,19 @@
         </a>
     </div>
   </div>
-
+  
+  {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+      <script>
+        Swal.fire({
+          icon: 'success', 
+          title: 'Mensaje',
+          text: "{{ mensajes[0] }}",
+          showConfirmButton: true
+        });
+      </script>
+      {% endif %}
+    {% endwith %}
   {% if errores and errores.pacienteNotFound %}
       <script>
         Swal.fire({

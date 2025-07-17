@@ -21,72 +21,66 @@
     </div>
   </div>
 
-  <!-- {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-      <script>
-        Swal.fire({
-          icon: 'success', 
-          title: 'Mensaje',
-          text: "{{ mensajes[0] }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.emptyValues %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.emptyValues }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% endif %}
-  {% endwith %} -->
-      <script>
+  {% if errores and errores.emptyValues %}
+    <script>
       Swal.fire({
-                    icon: 'question', 
-                    title: 'Información',
-                    text: "Esto es solo una vista previa de Editar cita. No se guardarán los datos.",
-                    showConfirmButton: true
-                });
-            </script>
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.emptyValues }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% elif errores and errores.dbError %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.dbError }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% endif %}
 
+
+  {% if not errores.emptyValues and errores.dbError %}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
     </div>
     <div class="right">
-      <form action="/#" method="POST">
-        <label>Paciente selecionado:</label>
-        <input type="text" name="paciente" placeholder="Paciente ejemplo" value="Paciente generico 1" required>
+      <form action="/editarCita" method="POST">
+        <label for = "paciente">Paciente selecionado:</label>
+        <input type="text" name="paciente"  value="{{request.form.paciente or session['cita_temp']['paciente'] }}" readonly>
+
+        <label for = "edad">Edad:</label>
+        <input type="text" name="edad"  value="{{request.form.edad or session['cita_temp']['edad'] }}" readonly>
 
         <label for="fecha_exploracion">Fecha de exploracion:</label>
-        <input type="date" id="fecha_exploracion" name="fecha_exploracion" >
+        <input type="date" id="fecha_exploracion" name="fecha_exploracion" value="{{request.form.fecha_exploracion or session['cita_temp']['fecha']}}" readonly>
 
         <label for = "peso">Peso en kg:</label>
-        <input type="number" name="peso"  value = "549517" required>
+        <input type="number" name="peso" value="{{request.form.peso or session['cita_temp']['peso']}}">
 
         <label for = "altura">Altura en cm:</label>
-        <input type="number" name="altura"  value = "405142" required>
+        <input type="number" name="altura"   value="{{request.form.altura or session['cita_temp']['altura']}}">
 
         <label for = "temperatura">Temperatura en °C:</label>
-        <input type="number" name="temperatura"  value = "575913" required>
+        <input type="number" name="temperatura"  value="{{request.form.temperatura or session['cita_temp']['temperatura']}}">
 
         <label for = "latidos">Latidos en bpm:</label>
-        <input type="number" name="latidos"  value = "582370" required>
+        <input type="number" name="latidos"   value="{{request.form.latidos or session['cita_temp']['latidos']}}">
 
         <label for = "oxigeno">Saturación de oxígeno en %:</label>
-        <input type="number" name="oxigeno"  value = "299089" required>
+        <input type="number" name="oxigeno"  value="{{request.form.oxigeno or session['cita_temp']['oxigeno']}}">
 
-       
+        <label for = "glucosa">Glucosa en la sangre:</label>
+        <input type="number" name="glucosa"  value="{{request.form.glucosa or session['cita_temp']['glucosa']}}">
+
 
         <div class="btn-group">
-          <!-- <button href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
+          <button type = "submit"  class="btn-guardar">
             <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
-          </button> -->
-          <a href="{{ url_for('agregarCita.mostrarAgregarCitaContinuar') }}" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/next.svg') }}" class="btn-icon" alt="Continuar"> CONTINUAR
-          </a>
+          </button>
           <a href="{{ url_for('citasLista.citasLista') }}" class="btn-cancelar">
             <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> CANCELAR
           </a>
@@ -94,6 +88,28 @@
       </form>
     </div>
   </div>
+  {% else %}
+    <div class="card">
+            <div class="left">
+                <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
+            </div>
+            <div class="right">
+                <form>
+                    <p>Ha ocurrido un pequeño error, regresa e intenta de nuevo.
+                    </p>
+                    <p>Si el problema persiste, entonces llama
+                    </p>
+                    <div class="btn-group">
+                        <a href="{{ url_for('citasLista.citasLista') }}">
+                            <button type="button" class="btn-cancelar">
+                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR
+                            </button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>  
+  {% endif %}
 
   
 

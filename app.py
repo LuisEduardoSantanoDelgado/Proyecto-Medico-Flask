@@ -16,6 +16,7 @@ from rutas.VistasPrincipales.citasLista import citasLista_bp
 from rutas.Citas.agregarCita import agregarCita_bp
 from rutas.Citas.eliminarCita import eliminarCita_bp
 from rutas.Citas.editarCita import editarCita_bp
+from rutas.Citas.consultarCita import consultarCita_bp
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
@@ -66,6 +67,9 @@ app.register_blueprint(agregarCita_bp)
 app.register_blueprint(eliminarCita_bp)
 #Editar cita
 app.register_blueprint(editarCita_bp)
+#Consultar cita
+app.register_blueprint(consultarCita_bp)
+
 #Cerrar sesion
 @app.route("/cerrarSesion")
 @login_required

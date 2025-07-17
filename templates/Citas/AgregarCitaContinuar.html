@@ -21,27 +21,7 @@
     </div>
   </div>
 
-  <!-- {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-      <script>
-        Swal.fire({
-          icon: 'success', 
-          title: 'Mensaje',
-          text: "{{ mensajes[0] }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.emptyValues %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.emptyValues }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% endif %}
-  {% endwith %} -->
+  
         
     {% with mensajes = get_flashed_messages() %}
     {% if mensajes %}
@@ -83,7 +63,7 @@
     {% endif %}
   {% endwith %}
 
-  {{if errores and errores.citaError}}
+  {% if errores and errores.citaError %}
       <div class="card">
             <div class="left">
                 <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
@@ -104,7 +84,7 @@
                 </form>
             </div>
         </div>  
-  {{ else }}
+  {% else %}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
@@ -125,7 +105,7 @@
 
         <div class="btn-group">
           <button type="submit" class="btn-guardar">
-            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> Guardar
+            <img src="{{ url_for('static', filename='img/Guardar.svg') }}" class="btn-icon" alt="Continuar"> GUARDAR
           </button>
     
           <a href="{{ url_for('medico.medico') }}" class="btn-cancelar">
@@ -135,7 +115,7 @@
       </form>
     </div>
   </div>
-  {{ endif }}
+  {% endif %}
 
   
 

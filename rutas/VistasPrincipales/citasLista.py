@@ -7,7 +7,7 @@ citasLista_bp = Blueprint('citasLista', __name__)
 
 @login_required
 def citasLista():
-    print('Entrando a la lista de citas')
+    print('Entrando a la lista de citas ----------------------------')
     errores = {}
     rfc = session.get("rfc")
     try:
@@ -16,8 +16,8 @@ def citasLista():
         if id_medico:
             idMedico = id_medico[0]
             tblCitas = execute_query(" SELECT Citas.ID_cita, CONCAT(Pacientes.Nombres, ' ', Pacientes.Apellido_paterno, ' ', Pacientes.Apellido_materno) AS Nombre_Paciente FROM Citas JOIN Pacientes ON Citas.ID_paciente = Pacientes.ID_paciente WHERE Citas.ID_medico = (?) AND Citas.Estatus = (?)",(idMedico,1), fetch="all")
-            # tblCitas = execute_query("SELECT * FROM Citas WHRERE ID_medico = (?) and Estatus = (?)",(idMedico,1), fetch="all")
             print(f'Tabla de citas: {tblCitas}')
+            
             if not tblCitas or len(tblCitas) == 0:
                 print('No hay citas')
                 errores["citasNotFound"] = "No se encontraron citas para mostrar"

@@ -41,7 +41,7 @@
       </script>
   {% endif %}
 
-  {{% if paciente and nombrePaciente and fechaExploracion  and edadPaciente%}}
+  {% if paciente and nombrePaciente and fechaExploracion  and edadPaciente%}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
@@ -88,7 +88,7 @@
       </form>
     </div>
   </div>
-  {{% else %}}
+  {% else %}
     <div class="card">
             <div class="left">
                 <img src="{{ url_for('static', filename='img/NoUsersImage.png') }}" alt="Expediente" class="doctor-img">
@@ -109,7 +109,7 @@
                 </form>
             </div>
         </div>  
-  {{% endif %}}
+  {% endif %}
 
 </body>
 </html>

@@ -20,7 +20,7 @@
             <a href="{{ url_for('medico.medico') }}" class="nav-icon">
                 <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Ver expediente">
             </a>
-            <a href="{{ url_for('login.home') }}" class="nav-icon">
+            <a href="{{ url_for('cerrarSesion') }}" class="nav-icon">
                 <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
             </a>
         </div>
@@ -71,67 +71,67 @@
 
 
 
-    <h2>Lista de citas registrados</h2>
     {% if errores and errores.citasNotFound %}
+    <div>
         <div>
-            <div>
-                 <div class="card w-full max-w-[950px] flex mb-8 bg-white p-8 rounded-lg shadow-xl">
-            <div class="flex-1 flex justify-center items-center">
-                <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
-            </div>
-            <div class="flex-2 px-8">
-                <form >
-                    <p>No tienes citas registradas, presiona AGREGAR CITA para añadir una
-                    </p>
-                    <p>Si se tenía que mostrar algo, cierra sesión y reintenta, si no funciona llama.
-                    </p>
-                    
-                    <div class="flex justify-center gap-6 mt-8">
-                        <a href="{{ url_for('cerrarSesion') }}" class="bg-red-500 text-white px-8 py-3 rounded-lg hover:bg-red-600">
-                            <button type="button" class="btn-eliminar">
-                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="w-6 h-6" alt="Cancelar"> CERRAR SESION
-                            </button>
-                        </a>
-                        <a href="{{ url_for('agregarCita.mostrarAgregarCita') }}" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600">
-                            <button type="button" class="btn-cancelar">
-                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="w-6 h-6" alt="Cancelar"> AGREGAR CITA
-                            </button>
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
+            <div class="card w-full max-w-[950px] flex mb-8 bg-white p-8 rounded-lg shadow-xl">
+                <div class="flex-1 flex justify-center items-center">
+                    <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
+                </div>
+                <div class="flex-2 px-8">
+                    <form >
+                        <p>No tienes citas registradas, presiona AGREGAR CITA para añadir una
+                        </p>
+                        <p>Si se tenía que mostrar algo, cierra sesión y reintenta, si no funciona llama.
+                        </p>
+                        
+                        <div class="flex justify-center gap-6 mt-8">
+                            <a href="{{ url_for('cerrarSesion') }}" class="bg-red-500 text-white px-8 py-3 rounded-lg hover:bg-red-600">
+                                <button type="button" class="btn-eliminar">
+                                    <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="w-6 h-6" alt="Cancelar"> CERRAR SESION
+                                </button>
+                            </a>
+                            <a href="{{ url_for('agregarCita.mostrarAgregarCita') }}" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600">
+                                <button type="button" class="btn-cancelar">
+                                    <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="w-6 h-6" alt="Cancelar"> AGREGAR CITA
+                                </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        {% elif errores and errores.busquedaNotFound %}
+    </div>
+    {% elif errores and errores.busquedaNotFound %}
+    <div>
         <div>
-            <div>
-                 <div class="card w-full max-w-[950px] flex mb-8 bg-white p-8 rounded-lg shadow-xl ">
-            <div class="flex-1 flex justify-center items-center">
-                <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
-            </div>
-            <div class="flex-2 px-8">
-                <form >
-                    <p>No hay coincidencias para lo que intentas buscar
-                    </p>
-                    <div class="flex justify-center gap-6 mt-8">
-                        <a href="{{ url_for('cerrarSesion') }}" class="bg-red-500 text-white px-8 py-3 rounded-lg hover:bg-red-600">
-                            <button type="button" class="btn-eliminar">
-                                <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="w-6 h-6" alt="Cancelar"> CERRAR SESION
-                            </button>
-                        </a>
-                        <a href="{{ url_for('agregarCita.mostrarAgregarCita') }}" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600">
-                            <button type="button" class="btn-cancelar">
-                                <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="w-6 h-6" alt="Cancelar"> AGREGAR CITA
-                            </button>
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
+            <div class="card w-full max-w-[950px] flex mb-8 bg-white p-8 rounded-lg shadow-xl ">
+                <div class="flex-1 flex justify-center items-center">
+                    <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
+                </div>
+                <div class="flex-2 px-8">
+                    <form >
+                        <p>No hay coincidencias para lo que intentas buscar
+                        </p>
+                        <div class="flex justify-center gap-6 mt-8">
+                            <a href="{{ url_for('cerrarSesion') }}" class="bg-red-500 text-white px-8 py-3 rounded-lg hover:bg-red-600">
+                                <button type="button" class="btn-eliminar">
+                                    <img src="{{ url_for('static', filename='img/regresar.svg') }}" class="w-6 h-6" alt="Cancelar"> CERRAR SESION
+                                </button>
+                            </a>
+                            <a href="{{ url_for('agregarCita.mostrarAgregarCita') }}" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600">
+                                <button type="button" class="btn-cancelar">
+                                    <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" class="w-6 h-6" alt="Cancelar"> AGREGAR CITA
+                                </button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+    </div>
     {% else %}
+    <h2>Lista de citas registrados</h2>
         <div class="container">
             <div class="row d-flex flex-wrap justify-content-start">
                 {% for c in tblCitas %}
@@ -141,7 +141,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{c.Nombre_Paciente}}</h5>
                                 <div class="d-flex justify-content-between">
-                                    <a href="{{ url_for('editarCita.mostrarEditarCita') }}" class="btn-editar">
+                                    <a href="{{ url_for('consultarCita.mostrarConsultarCita', id_cita = c.ID_cita) }}" class="btn-editar">
                                         <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="btn-icon" style="width: 24px; height: 24px;"> 
                                     </a>
                                     <a href="{{ url_for('eliminarCita.mostrarEliminarCita', id_cita=c.ID_cita) }}" class="btn-eliminar">
