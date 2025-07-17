@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosMedicoAdmin.css') }}">
      <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!--Sweet alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -25,7 +26,7 @@
      <!-- FILTRADO -->
     <form method="POST" class="flex space-x-3 items-center">
         <select name="filtro" class="form-select w-36">
-            <option value="Nombre">Nombre completo</option>
+            <option value="Nombre">Nombre</option>
             <option value="RFC">RFC</option>
             <option value="Rol">Rol</option>
         </select>
@@ -34,21 +35,21 @@
     </form>
 
     <!--BOTONES-->
-    <div class="nav-icons">
-        <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=session['rfc']) }}" class="nav-icon">
-            <img src="{{ url_for('static', filename='img/selfMedicoIcon.svg') }}" alt="Médico Admin">
+    <div class="nav-icons flex gap-4">
+        <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=session['rfc']) }}" class="nav-icon p-3 bg-[#d0ecf3] rounded-full shadow-lg transition-transform transform hover:scale-105">
+            <img src="{{ url_for('static', filename='img/selfMedicoIcon.svg') }}" alt="Médico Admin" class="w-14 h-14">
         </a>
-        <a href="{{ url_for('agregarMedico.mostrarAgregarMedico') }}" class="nav-icon">
-            <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" alt="Médico Admin">
+        <a href="{{ url_for('agregarMedico.mostrarAgregarMedico') }}" class="nav-icon p-3 bg-[#d0ecf3] rounded-full shadow-lg transition-transform transform hover:scale-105">
+            <img src="{{ url_for('static', filename='img/Agregar medico.svg') }}" alt="Médico Admin" class="w-14 h-14">
         </a>
-        <a href="{{ url_for('medico.medico') }}" class="nav-icon">
-            <img src="{{ url_for('static', filename='img/Expediente.svg') }}" alt="Médico Admin">
+        <a href="{{ url_for('medico.medico') }}" class="nav-icon p-3 bg-[#d0ecf3] rounded-full shadow-lg transition-transform transform hover:scale-105">
+            <img src="{{ url_for('static', filename='img/Expediente.svg') }}" alt="Médico Admin" class="w-14 h-14">
         </a>
-        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="nav-icon">
-            <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin">
+        <a href="{{ url_for('medicoAdmin.medicoAdmin') }}" class="nav-icon p-3 bg-[#d0ecf3] rounded-full shadow-lg transition-transform transform hover:scale-105">
+            <img src="{{ url_for('static', filename='img/Home.svg') }}" alt="Médico Admin" class="w-14 h-14">
         </a>
-        <a href="{{ url_for('cerrarSesion') }}" class="nav-icon">
-            <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión">
+        <a href="{{ url_for('cerrarSesion') }}" class="nav-icon p-3 bg-[#d0ecf3] rounded-full shadow-lg transition-transform transform hover:scale-105">
+            <img src="{{ url_for('static', filename='img/Cerrar sesion.svg') }}" alt="Cerrar sesión" class="w-14 h-14">
         </a>
     </div>
   </div>
@@ -86,7 +87,7 @@
                 <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" alt="Doctor" class="w-52 rounded-lg">
             </div>
             <div class="flex-2 px-8">
-                <form action="/eliminarMedico" method="post">
+                <form >
                     <p>No tienes mas compañeros, presiona AGREGAR MÉDICO para añadir uno
                     </p>
                     <p>Si se tenía que mostrar algo, cierra sesión y reintenta, si no funciona llama.
