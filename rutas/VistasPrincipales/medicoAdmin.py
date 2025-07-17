@@ -34,7 +34,7 @@ def medicoAdmin():
                 print(medico)  
             return render_template("VistasPrincipales/medicoAdmin.html", tblMedicos=tblMedicos, nombreMedico=nombreMedico)
     except Exception as e:
-        print(f"Error al obtener datos: {e}")
+        print(f"Error al obtener datos: {str(e)}")
         nombreMedico = None
     
     return render_template("VistasPrincipales/medicoAdmin.html", errores=errores, tblMedicos=[], nombreMedico=None)
