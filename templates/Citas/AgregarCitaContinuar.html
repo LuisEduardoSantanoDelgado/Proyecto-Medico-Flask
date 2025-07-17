@@ -92,16 +92,16 @@
     <div class="right">
       <form action="/agregarCita/continuar" method="POST">
         <label for="sintomas">Síntomas:</label>
-        <textarea name="sintomas" placeholder="Síntomas del paciente" value="{{request.form.sintomas or ''}}"></textarea>
+        <textarea name="sintomas" placeholder="Síntomas del paciente" >{{request.form.sintomas or ''}}</textarea>
 
         <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" value="{{request.form.diagnostico or ''}}"></textarea>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" >{{request.form.diagnostico or ''}}</textarea>
 
         <label for="tratamiento">Tratamiento:</label>
-        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" value="{{request.form.tratamiento or ''}}"></textarea>
+        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" >{{request.form.tratamiento or ''}}</textarea>
 
         <label for="estudios">Estudios:</label>
-        <textarea name="estudios" placeholder="Estudios requeridos" value="{{request.form.estudios or ''}}"></textarea>
+        <textarea name="estudios" placeholder="Estudios requeridos" >{{request.form.estudios or ''}}</textarea>
 
         <div class="btn-group">
           <button type="submit" class="btn-guardar">

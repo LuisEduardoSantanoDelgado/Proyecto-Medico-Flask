@@ -17,7 +17,6 @@ def mostrarEliminarCita(id_cita):
             print(f'Nombre paciente: {nombrePaciente}')
             if nombrePaciente:
                 nombrePaciente = nombrePaciente[0]
-                render_template()
                 return render_template("Citas/EliminarCita.html", errores = errores, nombrePaciente = nombrePaciente, cita = cita)
             else:
                 print('Nombre paciente vacia')

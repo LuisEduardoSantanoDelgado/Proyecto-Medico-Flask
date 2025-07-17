@@ -66,7 +66,8 @@ def editarCita():
 @login_required
 def mostrarEditarCitaContinuar():
     print('Mostrando editar cita segunda parte---------------------------------------------')
-    return render_template("Citas/EditarCitaContinuar.html")
+    errores = {}
+    return render_template("Citas/EditarCitaContinuar.html", errores = errores)
 
 #POST SEGUNDA PARTE
 @editarCita_bp.route("/editarCita/continuar",methods=["POST"])
@@ -104,10 +105,10 @@ def editarCitaContinuar():
             errores['emptyValues'] = "Error al obtener los datos"
         else:
             execute_query("UPDATE Citas SET Peso_paciente = (?), Altura_paciente = (?), Temperatura_paciente = (?), LPM_paciente = (?), SDO_paciente = (?), Glucosa_paciente = (?), Sintomas_paciente = (?), Diagnostico_paciente = (?), Tratamiento_paciente = (?), Estudios_paciente = (?) WHERE ID_cita = (?)", 
-                        ( session['cita_temp']['peso'], session['cita_temp']['altura'], session['cita_temp']['temperatura'], session['cita_temp']['latidos'], session['cita_temp']['oxigeno'], session['cita_temp']['glucosa'], session['cita_temp']['sintomas'], session['cita_temp']['diagnostico'], session['cita_temp']['tratamiento'], session['cita_temp']['estudios']),
+                        ( session['cita_temp']['peso'], session['cita_temp']['altura'], session['cita_temp']['temperatura'], session['cita_temp']['latidos'], session['cita_temp']['oxigeno'], session['cita_temp']['glucosa'], session['cita_temp']['sintomas'], session['cita_temp']['diagnostico'], session['cita_temp']['tratamiento'], session['cita_temp']['estudios'],session['cita_temp']['idCita'] ),
                         fetch=None, commit=True)
             flash('Cita editada con éxito')
-            redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = session['cita_temp']['idCita']))
+            return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = session['cita_temp']['idCita']))
     except Exception as e:
         print(f'Error en segunda parte post de editar: {str(e)}')
         errores['dbError'] = "Error al editar los campos"

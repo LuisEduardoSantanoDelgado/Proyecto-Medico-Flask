@@ -42,7 +42,7 @@
   {% endif %}
 
 
-  {% if not errores.emptyValues and errores.dbError %}
+  {% if not errores.emptyValues and not errores.dbError %}
   <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">

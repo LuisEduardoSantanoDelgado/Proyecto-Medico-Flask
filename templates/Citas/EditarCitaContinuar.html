@@ -52,7 +52,7 @@
     {% endif %}
   {% endwith %}
 
-  {% if not errores.emptyValues and errores.dbError %}
+  {% if not errores.emptyValues and not errores.dbError %}
     <div class="card">
     <div class="left">
       <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" alt="Doctor" class="doctor-img">
@@ -60,16 +60,16 @@
     <div class="right">
       <form action="/editarCita/continuar" method="POST">
         <label for="sintomas">Síntomas:</label>
-        <textarea name="sintomas" placeholder="Síntomas del paciente" value="{{request.form.sintomas or session['cita_temp']['sintomas']}}"></textarea>
+        <textarea name="sintomas" placeholder="Síntomas del paciente" >{{request.form.sintomas or session['cita_temp']['sintomas']}}</textarea>
 
         <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" value="{{request.form.diagnostico or session['cita_temp']['diagnostico']}}"></textarea>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" >{{request.form.diagnostico or session['cita_temp']['diagnostico']}}</textarea>
 
         <label for="tratamiento">Tratamiento:</label>
-        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" value="{{request.form.tratamiento or session['cita_temp']['tratamiento']}}"></textarea>
+        <textarea name="tratamiento" placeholder="Medicamentos e indicaciones" >{{request.form.tratamiento or session['cita_temp']['tratamiento']}}</textarea>
 
         <label for="estudios">Estudios:</label>
-        <textarea name="estudios" placeholder="Estudios requeridos" value="{{request.form.estudios or session['cita_temp']['estudios']}}"></textarea>
+        <textarea name="estudios" placeholder="Estudios requeridos" >{{request.form.estudios or session['cita_temp']['estudios']}}</textarea>
 
         <div class="btn-group">
           <button type="submit" class="btn-guardar">

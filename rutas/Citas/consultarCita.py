@@ -62,4 +62,4 @@ def mostrarConsultarCita(id_cita):
         print(f'Ocurrio el erro {str(e)}')
         errores['dbError'] = "Error durante la obtencion de la informacion de la cita" 
              
-    render_template("Citas/ConsultarCita.html", errores = errores)
+    return render_template("Citas/ConsultarCita.html", errores = errores)

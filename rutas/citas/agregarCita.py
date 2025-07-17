@@ -117,7 +117,7 @@ def agregarCitaContinuar():
                     sintomas,diagnostico,tratamiento,estudios), fetch="one", commit=True)
             print(f"Resultado obtenido de insertar {resultado}")
             if resultado:
-                match resultado.Resultado:
+                match resultado[0]:
                     case -1:
                         print('La cita se repite')
                         errores['citaExist'] = "Ya se tuvo una cita con esa persona este día"
