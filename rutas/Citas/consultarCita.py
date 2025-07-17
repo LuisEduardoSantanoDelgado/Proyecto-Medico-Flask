@@ -18,7 +18,10 @@ def mostrarConsultarCita(id_cita):
             
             nombreMedico = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Medicos WHERE ID_medico = (?)",(id_medico,), fetch="one")
             nombrePaciente = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,), fetch="one")
-
+            edadPaciente = execute_query("SELECT Edad FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,),fetch="one")
+            nombreMedico = nombreMedico[0]
+            nombrePaciente = nombrePaciente[0]
+            edadPaciente = edadPaciente[0]
             if not nombrePaciente:
                 print('Fallo al obtener nombre del pacient')
                 errores['pacienteNotFound'] = "No se obtuvo un paciente"
@@ -38,6 +41,7 @@ def mostrarConsultarCita(id_cita):
                 "oxigeno": cita[5],
                 "glucosa": cita[6],
                 "paciente": nombrePaciente,
+                "edad": edadPaciente,
                 'medico': nombreMedico,
                 "fecha": cita[10],
                 'sintomas': cita[11],
@@ -53,4 +57,4 @@ def mostrarConsultarCita(id_cita):
         print(f'Ocurrio el erro {str(e)}')
         errores['dbError'] = "Error durante la obtencion de la informacion de la cita" 
              
-    render_template("ConsultarCita.html", errores = errores)
+    render_template("Citas/ConsultarCita.html", errores = errores)
