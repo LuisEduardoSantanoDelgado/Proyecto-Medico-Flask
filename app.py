@@ -2,21 +2,13 @@ from flask import Flask, render_template, session, flash, url_for, redirect
 from rutas.login import login_bp
 from decorators.loginRequired import login_required
 # Importar las rutas de los médicos
-from rutas.VistasPrincipales.medicoAdmin import medicoAdmin_bp
-from rutas.Medicos.agregarMedico import agregarMedico_bp
-from rutas.Medicos.editarMedico import editarMedico_bp
-from rutas.Medicos.eliminarMedico import eliminarMedico_bp
+from rutas.Medicos import medicos_bps
 # Importar las rutas de los pacientes
-from rutas.VistasPrincipales.medico import medico_bp
-from rutas.Pacientes.agregarPaciente import agregarPaciente_bp
-from rutas.Pacientes.editarPaciente import editarPaciente_bp
-from rutas.Pacientes.eliminarPaciente import eliminarPaciente_bp
+from rutas.Pacientes import pacientes_bps
 #Importar las rutas de las citas
-from rutas.VistasPrincipales.citasLista import citasLista_bp
-from rutas.Citas.agregarCita import agregarCita_bp
-from rutas.Citas.eliminarCita import eliminarCita_bp
-from rutas.Citas.editarCita import editarCita_bp
-from rutas.Citas.consultarCita import consultarCita_bp
+from rutas.Citas import citas_bps
+#Importar las vistas principales
+from rutas.VistasPrincipales import vistasPrincipales_bps
 app = Flask(__name__)
 app.secret_key = "mysecretkey"
 
@@ -27,48 +19,10 @@ app.secret_key = "mysecretkey"
 #Inicio de sesión
 app.register_blueprint(login_bp)
 
-# Manejo de medicos
-#Medico administrador
-app.register_blueprint(medicoAdmin_bp)
+#Creacion de rutas
+for bp in vistasPrincipales_bps + medicos_bps + pacientes_bps + citas_bps:
+    app.register_blueprint(bp)
 
-#Medico
-
-#Agregar médico
-app.register_blueprint(agregarMedico_bp)
-
-#Edicion de médicos
-app.register_blueprint(editarMedico_bp)
-
-
-#Eliminación de médicos
-app.register_blueprint(eliminarMedico_bp)
-
-#Pacientes
-
-# Manejo de pacientes
-app.register_blueprint(medico_bp)
-
-#Agregar paciente
-app.register_blueprint(agregarPaciente_bp)
-
-#Edición de pacientes
-app.register_blueprint(editarPaciente_bp)
-
-#Eliminación de pacientes
-app.register_blueprint(eliminarPaciente_bp)
-
-#Citas
-
-#Lista de citas
-app.register_blueprint(citasLista_bp)
-#Agregar cita
-app.register_blueprint(agregarCita_bp)
-#Eliminar cita
-app.register_blueprint(eliminarCita_bp)
-#Editar cita
-app.register_blueprint(editarCita_bp)
-#Consultar cita
-app.register_blueprint(consultarCita_bp)
 
 #Cerrar sesion
 @app.route("/cerrarSesion")
