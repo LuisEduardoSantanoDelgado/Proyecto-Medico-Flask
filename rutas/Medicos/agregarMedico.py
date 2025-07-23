@@ -5,12 +5,11 @@ from utility.encriptarContrasena import encriptar_contrasena
 
 agregarMedico_bp = Blueprint('agregarMedico', __name__)
 @agregarMedico_bp.route("/agregarMedico")
-@role_required(2) 
 def mostrarAgregarMedico():
     print("Accediendo a la página de agregar médico")
     return render_template("Medicos/AgregarMedico.html")
+
 @agregarMedico_bp.route("/agregarMedico", methods = ["POST"])
-@role_required(2)
 def agregarMedico():
     print("Enviando agregar médico --------------------------")
     errores = {}
