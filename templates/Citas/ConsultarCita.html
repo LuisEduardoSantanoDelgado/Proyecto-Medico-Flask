@@ -139,8 +139,8 @@
         <a href="{{ url_for('editarCita.mostrarEditarCita') }}" class="btn-guardar">
           <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> EDITAR
         </a>
-        <a href="#" class="btn-guardar">
-          <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> GENERAR PDF
+        <a href="{{ url_for('consultarCita.descargarPDF') }}" class="btn-guardar">
+          <img src="{{ url_for('static', filename='img/Descargar_PDF.svg') }}" class="btn-icon" alt="Generar PDF"> GENERAR PDF
         </a>
         <a href="{{ url_for('citasLista.citasLista') }}" class="btn-cancelar">
           <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> REGRESAR

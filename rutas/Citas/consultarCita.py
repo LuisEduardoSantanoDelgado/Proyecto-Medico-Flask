@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template , session
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
+from utility.generarPDF import generateDocument
 
 
 consultarCita_bp = Blueprint('consultarCita', __name__)
@@ -17,10 +18,16 @@ def mostrarConsultarCita(id_cita):
             id_medico = cita.ID_medico
             id_paciente = cita.ID_paciente
             
+            rfcMedico = execute_query("SELECT RFC FROM Medicos WHERE ID_medico = (?)", (id_medico,), fetch="one")
+            cedulaMedico = execute_query("SELECT Cedula_profesional FROM Medicos WHERE ID_Medico = (?)", (id_medico,) fetch="one")
             nombreMedico = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Medicos WHERE ID_medico = (?)",(id_medico,), fetch="one")
+            correoMedico = execute_query("SELECT Correo_electronico FROM Medicos WHERE ID_medico = (?)", (id_medico,), fetch="one")
             nombrePaciente = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,), fetch="one")
             edadPaciente = execute_query("SELECT Edad FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,),fetch="one")
+            rfcMedico = rfcMedico[0]
+            cedulaMedico = cedulaMedico[0]
             nombreMedico = nombreMedico[0]
+            correoMedico = correoMedico[0]
             nombrePaciente = nombrePaciente[0]
             edadPaciente = edadPaciente[0]
 
@@ -47,8 +54,11 @@ def mostrarConsultarCita(id_cita):
                 "glucosa": cita[6],
                 "paciente": nombrePaciente,
                 "edad": edadPaciente,
-                'medico': nombreMedico,
                 "fecha": cita[10],
+                'medico': nombreMedico,
+                "rfc": rfcMedico,
+                "cedula": cedulaMedico,
+                "correo_electronico": correoMedico,
                 'sintomas': cita[11],
                 'diagnostico': cita[12],
                 'tratamiento': cita[13],
@@ -63,3 +73,7 @@ def mostrarConsultarCita(id_cita):
         errores['dbError'] = "Error durante la obtencion de la informacion de la cita" 
              
     return render_template("Citas/ConsultarCita.html", errores = errores)
+
+def descargarPDF():
+    session_data = session.get("cita_temp")
+    generateDocument(session_data)
