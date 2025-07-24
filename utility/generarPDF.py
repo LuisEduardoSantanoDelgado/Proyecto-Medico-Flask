@@ -22,7 +22,7 @@ BOLD_FONT = "Arial-Bold"
 # CARPETA DE DESTINO
 # ==================
 
-FOLDER_PATH = "Citas/"
+OUTPUT_PATH = "Citas/"
 
 # =================
 # MEDIDAS GENERALES
@@ -33,7 +33,7 @@ ELEMENT_SPACING = 2 * cm
 
 TEXT_BOX_HEIGHT = 5 * cm
 DATE_WIDTH, DATE_HEIGHT = 5 * cm, 0.5 * cm
-DOCTOR_DATA_WIDTH, DOCTOR_DATA_HEIGHT = 8 * cm, 3 * cm
+DOCTOR_DATA_WIDTH, DOCTOR_DATA_HEIGHT = 12 * cm, 3 * cm
 
 # ======================
 # IMÁGENES Y DIMENSIONES
@@ -210,8 +210,7 @@ class PDFGenerator:
         doctor_data_paragraph = Paragraph(doctor_data_text, styles_dictionary["header_footer_text"])
         left = MARGINS + CLINIC_NAME_SIZE
         right = self.document.pagesize[0] - MARGINS - CLINIC_LOGO_SIZE
-        remaining_space = right - left
-        doctor_data_x_position = left + (remaining_space - DOCTOR_DATA_WIDTH) / 2
+        doctor_data_x_position = left + ELEMENT_SPACING / 2
         doctor_data_y_position =  default_y_position + (BIGGEST_IMAGE - DOCTOR_DATA_HEIGHT) / 2
         doctor_data_paragraph.wrapOn(canvas, DOCTOR_DATA_WIDTH, DOCTOR_DATA_HEIGHT)
         doctor_data_paragraph.drawOn(canvas, doctor_data_x_position, doctor_data_y_position)
@@ -336,8 +335,16 @@ def generateDocument(session_data):
     patient_name, appointment_date = session_data["paciente"], session_data["fecha"]
     filename = createFilename(patient_name, appointment_date)
 
-    generator = PDFGenerator(FOLDER_PATH + filename, session_data)
-    for element in generator.body():
-        generator.story.append(element)
-    generator.document.build(generator.story)
-    print("Documento PDF generado exitosamente")
+    try:
+        generator = PDFGenerator(OUTPUT_PATH + filename, session_data)
+        for element in generator.body():
+            generator.story.append(element)
+        generator.document.build(generator.story)
+    except Exception as e:
+        print(f"Error al generar el documento: {e}")
+        return False
+    
+    file_relative_path = f"../{OUTPUT_PATH}{filename}"
+    print(f"Documento generado exitosamente en: {file_relative_path}")
+    return file_relative_path
+    

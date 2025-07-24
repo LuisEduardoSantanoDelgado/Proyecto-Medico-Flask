@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template , session
+from flask import Blueprint, render_template , session, flash
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
 from utility.generarPDF import generateDocument
@@ -75,5 +75,12 @@ def mostrarConsultarCita(id_cita):
     return render_template("Citas/ConsultarCita.html", errores = errores)
 
 def descargarPDF():
+    errores = {}
+
     session_data = session.get("cita_temp")
-    generateDocument(session_data)
+    resultado = generateDocument(session_data)
+    if not resultado:
+        errores['documentoPDF'] ="No se puede generar el documento PDF, inténtelo de nuevo más tarde"
+        return render_template("Citas/ConsultarCita.html", errores = errores)
+    else:
+        flash("Documento PDF generado exitosamente")
