@@ -8,7 +8,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Agregar_medico.css') }}">
 </head>
 <body>
-    <div class="header">
+
+  {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% if mensajes %}
+      <script>
+        Swal.fire({
+          title: "{{ '¡Error!' if mensajes[0][0] == 'error' else '¡Documento PDF generado!' }}",
+          text: "{{ mensajes[0][1] }}",
+          imageUrl: "{{ url_for('static', filename='Img/sad.gif') if mensajes[0][0] == 'error' else url_for('static', filename='Img/happy.gif') }}",
+          imageWidth: 300,
+          imageHeight: 200,
+          imageAlt: "GIF según la descarga del documento PDF",
+          confirmButtonText: "Aceptar"
+        });
+      </script>
+    {% endif %}
+  {% endwith %}
+
+  <div class="header">
     <h2>Cita de {{session['cita_temp']['paciente']}}</h2>
     <div class="nav-icons">
         <a href="{{ url_for('citasLista.citasLista') }}" class="nav-icon">
@@ -20,55 +37,43 @@
     </div>
   </div>
   
-  {% with mensajes = get_flashed_messages() %}
-    {% if mensajes %}
-      <script>
-        Swal.fire({
-          icon: 'success', 
-          title: 'Mensaje',
-          text: "{{ mensajes[0] }}",
-          showConfirmButton: true
-        });
-      </script>
-      {% endif %}
-    {% endwith %}
   {% if errores and errores.pacienteNotFound %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.pacienteNotFound }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.medicoNotFound %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.medicoNotFound }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.citaNotFound %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.citaNotFound }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% elif errores and errores.dbError %}
-      <script>
-        Swal.fire({
-          icon: 'error', 
-          title: 'Error',
-          text: "{{ errores.dbError }}",
-          showConfirmButton: true
-        });
-      </script>
-    {% endif %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.pacienteNotFound }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% elif errores and errores.medicoNotFound %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.medicoNotFound }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% elif errores and errores.citaNotFound %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.citaNotFound }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% elif errores and errores.dbError %}
+    <script>
+      Swal.fire({
+        icon: 'error', 
+        title: 'Error',
+        text: "{{ errores.dbError }}",
+        showConfirmButton: true
+      });
+    </script>
+  {% endif %}
 
     {% if errores.dbError or errores.citaNotFound or errores.pacienteNotFound or errores.medicoNotFound %}
      <div class="card">
