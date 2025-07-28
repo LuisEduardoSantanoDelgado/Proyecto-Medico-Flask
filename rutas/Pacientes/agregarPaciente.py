@@ -70,8 +70,8 @@ def agregarPaciente():
 
         try:
             resultado = execute_query(
-                "DECLARE @r INT; EXEC InsertarPaciente ?, ?, ?, ?, ?, ?, ?, ?, @r OUTPUT; SELECT @r AS Resultado; ",
-                ( nombres, apellido_paterno, apellido_materno, fecha_nac_txt,alergias, enfermedades_cronicas, antecedentes_familiares, id_med),
+                "DECLARE @r INT; EXEC InsertarPaciente ?, ?, ?, ?, ?, ?, ?, @r OUTPUT; SELECT @r AS Resultado; ",
+                ( nombres, apellido_paterno, apellido_materno, fecha_nac_txt,alergias, enfermedades_cronicas, antecedentes_familiares),
                 fetch="one", commit=True
             )
             if resultado:

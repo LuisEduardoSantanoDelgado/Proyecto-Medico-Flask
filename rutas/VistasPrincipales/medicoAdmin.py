@@ -5,7 +5,7 @@ from decorators.roleRequired import role_required
 
 medicoAdmin_bp = Blueprint('medicoAdmin', __name__)
 @medicoAdmin_bp.route("/medicoAdmin")
-@role_required(2)
+#@role_required(2)
 def medicoAdmin():
     errores = {}
     print("Accediendo a la lista de médicos --------------------------")

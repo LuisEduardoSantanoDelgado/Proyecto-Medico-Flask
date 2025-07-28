@@ -19,7 +19,7 @@ def mostrarConsultarCita(id_cita):
             id_paciente = cita.ID_paciente
             
             rfcMedico = execute_query("SELECT RFC FROM Medicos WHERE ID_medico = (?)", (id_medico,), fetch="one")
-            cedulaMedico = execute_query("SELECT Cedula_profesional FROM Medicos WHERE ID_Medico = (?)", (id_medico,) fetch="one")
+            cedulaMedico = execute_query("SELECT Cedula_profesional FROM Medicos WHERE ID_Medico = (?)", (id_medico,), fetch="one")
             nombreMedico = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Medicos WHERE ID_medico = (?)",(id_medico,), fetch="one")
             correoMedico = execute_query("SELECT Correo_electronico FROM Medicos WHERE ID_medico = (?)", (id_medico,), fetch="one")
             nombrePaciente = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,), fetch="one")

@@ -6,7 +6,7 @@ from rutas.Medicos import medicos_bps
 # Importar las rutas de los pacientes
 from rutas.Pacientes import pacientes_bps
 #Importar las rutas de las citas
-from rutas.Citas import citas_bps
+from rutas.citas import citas_bps
 #Importar las vistas principales
 from rutas.VistasPrincipales import vistasPrincipales_bps
 app = Flask(__name__)
