@@ -42,7 +42,7 @@ def eliminarCita():
     if id_cita:
         try:
             execute_query("UPDATE Citas SET Estatus = 0 WHERE ID_cita = (?) and Estatus = 1", (id_cita,), fetch=None, commit=True)
-            flash('Cita eliminada con éxito')
+            flash('Cita eliminada con éxito', 'eliminar')
             return redirect(url_for('citasLista.citasLista'))
         except Exception as e:
             print('Ocurrio el error al intentar eliminar {str(e)}')

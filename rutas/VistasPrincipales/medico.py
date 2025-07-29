@@ -8,6 +8,8 @@ medico_bp = Blueprint('medico', __name__)
 @login_required
 def medico():
     errores = {}
+    tblPacientes = []
+    nombreMedico = ""
     filtro = request.form.get('filtro')
     busqueda = request.form.get('busqueda')
     
@@ -15,6 +17,10 @@ def medico():
         rfc = session.get("rfc")
         idMedico = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
         nombre = execute_query("SELECT dbo.NombreCompletoMedico(?)", (rfc,), fetch="one")
+        if not filtro or not busqueda:
+            query = "SELECT * FROM Pacientes WHERE Estatus = ?"
+            tblPacientes = execute_query(query, 1, fetch="all")
+            print(tblPacientes)
         
         if not nombre:
             errores["medicoNotFound"] = "Médico no encontrado"
@@ -30,8 +36,6 @@ def medico():
             elif filtro == "Fecha":
                 query = "EXEC obtenerPacientesPorFecha @ID_medico = ?, @fecha = ?"
                 tblPacientes = execute_query(query, (idMedico[0], busqueda), fetch="all")
-            else:
-                tblPacientes = []
 
             if not tblPacientes:
                 errores["pacientesNotFound"] = "No se encontraron pacientes con los filtros seleccionados"

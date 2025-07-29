@@ -112,9 +112,9 @@ def agregarCitaContinuar():
         cita = session.get('cita_temp')
         print(f'Información de cita {cita}')
         if cita:
-            resultado = execute_query(" DECLARE @resultado INT; EXEC @resultado = sp_InsertarCita ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?; SELECT @resultado;", 
+            resultado = execute_query(" DECLARE @resultado INT; EXEC sp_InsertarCita ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado OUTPUT; SELECT @resultado;", 
                     (cita["peso"], cita["altura"], cita["temperatura"], cita["latidos"], cita["oxigeno"], cita["glucosa"], cita["idPaciente"], cita["id_medico"],
-                    sintomas,diagnostico,tratamiento,estudios), fetch="one", commit=True)
+                    sintomas, diagnostico, tratamiento, estudios), fetch="one", commit=True)
             print(f"Resultado obtenido de insertar {resultado}")
             if resultado:
                 match resultado[0]:

@@ -107,7 +107,7 @@ def editarCitaContinuar():
             execute_query("UPDATE Citas SET Peso_paciente = (?), Altura_paciente = (?), Temperatura_paciente = (?), LPM_paciente = (?), SDO_paciente = (?), Glucosa_paciente = (?), Sintomas_paciente = (?), Diagnostico_paciente = (?), Tratamiento_paciente = (?), Estudios_paciente = (?) WHERE ID_cita = (?)", 
                         ( session['cita_temp']['peso'], session['cita_temp']['altura'], session['cita_temp']['temperatura'], session['cita_temp']['latidos'], session['cita_temp']['oxigeno'], session['cita_temp']['glucosa'], session['cita_temp']['sintomas'], session['cita_temp']['diagnostico'], session['cita_temp']['tratamiento'], session['cita_temp']['estudios'],session['cita_temp']['idCita'] ),
                         fetch=None, commit=True)
-            flash('Cita editada con éxito')
+            flash('Cita editada con éxito', 'editar')
             return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = session['cita_temp']['idCita']))
     except Exception as e:
         print(f'Error en segunda parte post de editar: {str(e)}')

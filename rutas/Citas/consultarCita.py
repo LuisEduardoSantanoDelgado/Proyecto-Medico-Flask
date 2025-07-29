@@ -9,11 +9,11 @@ consultarCita_bp = Blueprint('consultarCita', __name__)
 @consultarCita_bp.route("/consultarCita/<id_cita>")
 @login_required
 def mostrarConsultarCita(id_cita):
-    print('Ingresando a la consulta de la cita ------------------------------')
+    # print('Ingresando a la consulta de la cita ------------------------------')
     errores = {}
     try:
         cita = execute_query("SELECT * FROM Citas WHERE ID_cita = (?) AND Estatus = (?)",(id_cita,1),fetch='one')
-        print(f'Informacion de cita {cita}')
+        # print(f'Informacion de cita {cita}')
         if cita: 
             id_medico = cita.ID_medico
             id_paciente = cita.ID_paciente
@@ -23,7 +23,7 @@ def mostrarConsultarCita(id_cita):
             nombreMedico = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Medicos WHERE ID_medico = (?)",(id_medico,), fetch="one")
             correoMedico = execute_query("SELECT Correo_electronico FROM Medicos WHERE ID_medico = (?)", (id_medico,), fetch="one")
             nombrePaciente = execute_query("SELECT CONCAT(Nombres, ' ',Apellido_paterno, ' ',Apellido_materno) FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,), fetch="one")
-            edadPaciente = execute_query("SELECT Edad FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,),fetch="one")
+            edadPaciente = execute_query("SELECT CAST(Edad AS VARCHAR) FROM Pacientes WHERE ID_paciente = (?)",(id_paciente,),fetch="one")
             rfcMedico = rfcMedico[0]
             cedulaMedico = cedulaMedico[0]
             nombreMedico = nombreMedico[0]
@@ -31,8 +31,8 @@ def mostrarConsultarCita(id_cita):
             nombrePaciente = nombrePaciente[0]
             edadPaciente = edadPaciente[0]
 
-            print(f"Lo obtenido nombre med: {nombreMedico}, nombre pac: {nombrePaciente}, edad pac: {edadPaciente}")
-            print(f"Lo tipo nombre med: {type(nombreMedico)}, nombre pac: {type(nombrePaciente)}, edad pac: {type(edadPaciente)}")
+            # print(f"Lo obtenido nombre med: {nombreMedico}, nombre pac: {nombrePaciente}, edad pac: {edadPaciente}")
+            # print(f"Lo tipo nombre med: {type(nombreMedico)}, nombre pac: {type(nombrePaciente)}, edad pac: {type(edadPaciente)}")
 
             if not nombrePaciente or not edadPaciente:
                 print('Fallo al obtener nombre del paciente')
@@ -43,7 +43,7 @@ def mostrarConsultarCita(id_cita):
             if errores:
                 print(f'Hay errores: {errores}')
             else:
-                print('Se empieza a agregar a la sesion -------------------')
+                # print('Se empieza a agregar a la sesion -------------------')
                 session['cita_temp'] = {
                 "idCita": id_cita,
                 "peso": cita[1],
@@ -64,7 +64,7 @@ def mostrarConsultarCita(id_cita):
                 'tratamiento': cita[13],
                 'estudios': cita[14]
                 }
-                print(f'Lo guardado en la sesion es: {session.get('cita_temp')}')
+                # print(f'Lo guardado en la sesion es: {session.get('cita_temp')}')
         else:
             print('Error al obtener datos de la cita')
             errores['citaNotFound'] = "Fallo al recuperar informacion de la cita"
@@ -79,12 +79,15 @@ def mostrarConsultarCita(id_cita):
 def descargarPDF():
 
     session_data = session.get("cita_temp")
+    print(f"Datos de la session: {session_data}")
+    id_cita = session_data.get("idCita") # type: ignore
+    print(f"ID de la cita: {id_cita}")
     resultado = generateDocument(session_data)
 
     if not resultado:
         flash("No se puede generar el documento PDF, inténtelo de nuevo más tarde", "error")
     else:
+        print(resultado)
         flash(f"Documento PDF generado exitosamente en: {resultado}", "success")
 
-    id_cita = session_data.get("idCita")
-    return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita=id_cita))
+    return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = id_cita))

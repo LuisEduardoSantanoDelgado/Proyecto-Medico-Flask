@@ -11,17 +11,27 @@
 
   {% with mensajes = get_flashed_messages(with_categories=true) %}
     {% if mensajes %}
-      <script>
-        Swal.fire({
-          title: "{{ '¡Error!' if mensajes[0][0] == 'error' else '¡Documento PDF generado!' }}",
-          text: "{{ mensajes[0][1] }}",
-          imageUrl: "{{ url_for('static', filename='Img/sad.gif') if mensajes[0][0] == 'error' else url_for('static', filename='Img/happy.gif') }}",
-          imageWidth: 300,
-          imageHeight: 200,
-          imageAlt: "GIF según la descarga del documento PDF",
-          confirmButtonText: "Aceptar"
-        });
-      </script>
+      {% if mensajes[0][0] in ["error", "success"] %}
+        <script>
+          Swal.fire({
+            title: "{{ '¡Error!' if mensajes[0][0] == 'error' else '¡Documento PDF generado!' }}",
+            text: "{{ mensajes[0][1] }}",
+            imageUrl: "{{ url_for('static', filename='Img/sad.gif') if mensajes[0][0] == 'error' else url_for('static', filename='Img/happy.gif') }}",
+            imageWidth: 300,
+            imageHeight: 200,
+            imageAlt: "GIF según la descarga del documento PDF",
+            confirmButtonText: "Aceptar"
+          });
+        </script>
+      {% else %}
+        <script>
+          Swal.fire({
+            title: "Mensaje",
+            text: "{{ mensajes[0][1] }}",
+            icon: "success"
+          });
+        </script>
+      {% endif %}
     {% endif %}
   {% endwith %}
 

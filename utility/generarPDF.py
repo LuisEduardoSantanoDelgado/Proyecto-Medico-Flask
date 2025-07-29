@@ -22,7 +22,7 @@ BOLD_FONT = "Arial-Bold"
 # CARPETA DE DESTINO
 # ==================
 
-OUTPUT_PATH = "Citas/"
+OUTPUT_PATH = "C:/Users/isaac_eosrxfr/OneDrive/Desktop/Citas/"
 
 # =================
 # MEDIDAS GENERALES
@@ -61,12 +61,14 @@ styles_dictionary = {}
 # =========================
 
 def createFilename(patient_name, appointment_date):
-
     def noAccents(text):
         return ''.join(
             character for character in unicodedata.normalize('NFD', text)
             if unicodedata.category(character) != 'Mn'
         )
+    
+    patient_name = str(patient_name)
+    appointment_date = str(appointment_date)
 
     split_name = patient_name.split()
     name = split_name[0]
@@ -276,7 +278,7 @@ class PDFGenerator:
             [Paragraph("Altura", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("altura", ""), styles_dictionary["table_text"]), Paragraph("cm", styles_dictionary["table_text"])],
             [Paragraph("Temperatura", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("temperatura", ""), styles_dictionary["table_text"]), Paragraph("°C", styles_dictionary["table_text"])],
             [Paragraph("Latidos por minuto", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("latidos", ""), styles_dictionary["table_text"]), Paragraph("---", styles_dictionary["table_text"])],
-            [Paragraph("Saturación de oxígeno", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("saturacion", ""), styles_dictionary["table_text"]), Paragraph("%", styles_dictionary["table_text"])],
+            [Paragraph("Saturación de oxígeno", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("oxigeno", ""), styles_dictionary["table_text"]), Paragraph("%", styles_dictionary["table_text"])],
             [Paragraph("Glucosa", styles_dictionary["body_text"]), Paragraph(self.appointment_data.get("glucosa", ""), styles_dictionary["table_text"]), Paragraph("mg/dL", styles_dictionary["table_text"])]
         ]
 
@@ -333,6 +335,8 @@ def generateDocument(session_data):
     setUpStyles()
 
     patient_name, appointment_date = session_data["paciente"], session_data["fecha"]
+    print(f"Nombre paciente: {patient_name}, Tipo de dato: {type(patient_name)}")
+    print(f"Fecha de la cita: {appointment_date}, Tipo de dato: {type(appointment_date)}")
     filename = createFilename(patient_name, appointment_date)
 
     try:
@@ -344,7 +348,5 @@ def generateDocument(session_data):
         print(f"Error al generar el documento: {e}")
         return False
     
-    file_relative_path = f"../{OUTPUT_PATH}{filename}"
-    print(f"Documento generado exitosamente en: {file_relative_path}")
-    return file_relative_path
-    
+    print(f"Documento generado exitosamente en: {OUTPUT_PATH}")
+    return OUTPUT_PATH
