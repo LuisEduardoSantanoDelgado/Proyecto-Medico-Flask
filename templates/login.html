@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio Sesión</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
 
+{% extends 'plantillas/base.html' %}
+{% block title %}Inicio de sesión{% endblock %}
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+{% block body%}
   <div class="container">
-    <img src="{{ url_for('static', filename='img/Img1.png') }}" alt="Logo médico" class="logo">
-
+    <div id="logo">
+      <img src="{{ url_for('static', filename='img/Img1.png') }}" alt="Logo médico" class="logo">
+    </div>
     <h2 class="titulo">INICIO SESIÓN</h2>
 
     {% with mensajes = get_flashed_messages() %}
@@ -122,6 +119,4 @@
       }
     }
   </script>
-
-</body>
-</html>
+{% endblock %}

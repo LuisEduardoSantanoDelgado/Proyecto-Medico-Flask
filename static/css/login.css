@@ -57,6 +57,14 @@ body {
   object-fit: contain;
 }
 
+#logo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+}
 .toggle-password {
   display: flex;
   align-items: center;
