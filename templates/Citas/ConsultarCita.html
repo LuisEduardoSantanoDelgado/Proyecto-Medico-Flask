@@ -114,7 +114,7 @@
         <textarea name="sintomas" placeholder="Síntomas del paciente" readonly>{{session['cita_temp']['sintomas']}}</textarea >
 
          <label for="diagnostico">Diagnóstico:</label>
-        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" readonly>{{session['cita_temp']['sintomas']}}</textarea>
+        <textarea name="diagnostico" placeholder="Diagnóstico del paciente" readonly>{{session['cita_temp']['diagnostico']}}</textarea>
 
         <label for="tratamiento">Tratamiento:</label>
         <textarea name="tratamiento" placeholder="Medicamentos e indicaciones"readonly >{{session['cita_temp']['tratamiento']}}</textarea >
@@ -154,7 +154,7 @@
         <a href="{{ url_for('editarCita.mostrarEditarCita') }}" class="btn-guardar">
           <img src="{{ url_for('static', filename='img/Cancelar.svg') }}" class="btn-icon" alt="Cancelar"> EDITAR
         </a>
-        <a href="{{ url_for('consultarCita.descargarPDF') }}" class="btn-guardar">
+        <a href="{{ url_for('consultarCita.descargarPDF') }}" target="_blank" class="btn-guardar">
           <img src="{{ url_for('static', filename='img/Descargar_PDF.svg') }}" class="btn-icon" alt="Generar PDF"> GENERAR PDF
         </a>
         <a href="{{ url_for('citasLista.citasLista') }}" class="btn-cancelar">

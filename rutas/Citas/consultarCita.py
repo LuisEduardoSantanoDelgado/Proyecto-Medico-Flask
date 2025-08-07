@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template , session, flash, redirect, url_for
+from flask import Blueprint, render_template , session, flash, redirect, url_for, send_file
 from BDAyudas.QueryExecute import execute_query
 from decorators.loginRequired import login_required
-from utility.generarPDF import generateDocument
+from utility.generarPDF import createFilename, generateDocument
+import os
 
 
 consultarCita_bp = Blueprint('consultarCita', __name__)
@@ -87,7 +88,10 @@ def descargarPDF():
     if not resultado:
         flash("No se puede generar el documento PDF, inténtelo de nuevo más tarde", "error")
     else:
-        print(resultado)
-        flash(f"Documento PDF generado exitosamente en: {resultado}", "success")
+        # Obtener el nombre de archivo
+        filename = createFilename(session_data["paciente"], session_data["fecha"])
+
+    # Redirige al navegador a la URL del PDF
+        return redirect(url_for('static', filename='pdf/' + filename))
 
     return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = id_cita))

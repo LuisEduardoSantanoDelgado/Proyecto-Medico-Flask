@@ -7,6 +7,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import os
 
 # ========================
 # CONFIGURACIÓN DE FUENTES
@@ -21,8 +22,11 @@ BOLD_FONT = "Arial-Bold"
 # ==================
 # CARPETA DE DESTINO
 # ==================
-
-OUTPUT_PATH = "C:/Users/isaac_eosrxfr/OneDrive/Desktop/Citas/"
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+print(f"Directorio base: {BASE_DIR}")
+OUTPUT_PATH = os.path.join(os.path.dirname(BASE_DIR), 'static', 'pdf')
+print(f"Ruta de salida: {OUTPUT_PATH}")
+# OUTPUT_PATH = "C:/Users/isaac_eosrxfr/OneDrive/Desktop/Citas/"
 
 # =================
 # MEDIDAS GENERALES
@@ -340,7 +344,8 @@ def generateDocument(session_data):
     filename = createFilename(patient_name, appointment_date)
 
     try:
-        generator = PDFGenerator(OUTPUT_PATH + filename, session_data)
+        file_path = os.path.join(OUTPUT_PATH, filename)
+        generator = PDFGenerator(file_path, session_data)
         for element in generator.body():
             generator.story.append(element)
         generator.document.build(generator.story)
