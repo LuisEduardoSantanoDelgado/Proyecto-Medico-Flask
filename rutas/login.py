@@ -66,5 +66,5 @@ def login():
             flash("Error al iniciar sesión", "error")
             print(f"Error: {e}")
 
-    return render_template("login.html", err=errores)
+    return render_template("login.html", errores=errores)
     

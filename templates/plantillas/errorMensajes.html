@@ -23,3 +23,55 @@
     {% endif %}
   {% endif %}
 {% endwith %}
+
+{% if errores and errores.medicoNotFound %}
+        <script>
+          Swal.fire({
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ errores.medicoNotFound }}",
+            showConfirmButton: true
+          });
+        </script>
+
+
+{% elif errores and errores.noMedicos %}
+        <script>
+          Swal.fire({
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ errores.noMedicos }}",
+            showConfirmButton: true
+          });
+        </script>
+
+
+{% elif errores and errores.citasNotFound %}
+        <script>
+          Swal.fire({
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ errores.citasNotFound }}",
+            showConfirmButton: true
+          });
+        </script>
+
+{% elif errores and errores.busquedaNotFound %}
+        <script>
+          Swal.fire({
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ errores.busquedaNotFound }}",
+            showConfirmButton: true
+          });
+        </script>
+{% elif errores and errores.dbError %}
+        <script>
+          Swal.fire({
+            icon: 'error', 
+            title: 'Error',
+            text: "{{ errores.dbError }}",
+            showConfirmButton: true
+          });
+        </script>
+{% endif %}

@@ -4,46 +4,34 @@ from decorators.loginRequired import login_required
 
 medico_bp = Blueprint('medico', __name__)
 
-@medico_bp.route("/medico", methods=["GET", "POST"])
+@medico_bp.route("/medico")
 @login_required
 def medico():
+    print("------------Entrando a la vista de pacientes------------")
     errores = {}
-    tblPacientes = []
-    nombreMedico = ""
-    filtro = request.form.get('filtro')
-    busqueda = request.form.get('busqueda')
-    
     try:
         rfc = session.get("rfc")
+        print(f" Desde medico RFC del médico: {rfc}")
         idMedico = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
+        print(f"Desde medico ID del médico: {idMedico}")
         nombre = execute_query("SELECT dbo.NombreCompletoMedico(?)", (rfc,), fetch="one")
-        if not filtro or not busqueda:
-            query = "SELECT * FROM Pacientes WHERE Estatus = ?"
-            tblPacientes = execute_query(query, 1, fetch="all")
-            print(tblPacientes)
-        
+        print(f"Desde medico Nombre del médico: {nombre}")
         if not nombre:
             errores["medicoNotFound"] = "Médico no encontrado"
         else:
             nombreMedico = nombre[0]
-            
-            if filtro == "Nombre":
-                query = "EXEC obtenerPacientesPorNombre @ID_medico = ?, @nombre = ?"
-                tblPacientes = execute_query(query, (idMedico[0], busqueda), fetch="all")
-            elif filtro == "Estado":
-                query = "EXEC obtenerPacientesPorEstado @ID_medico = ?, @estado = ?"
-                tblPacientes = execute_query(query, (idMedico[0], busqueda), fetch="all")
-            elif filtro == "Fecha":
-                query = "EXEC obtenerPacientesPorFecha @ID_medico = ?, @fecha = ?"
-                tblPacientes = execute_query(query, (idMedico[0], busqueda), fetch="all")
-
+            tblPacientes = execute_query("EXEC obtenerPacientes @ID_medico = ?", (idMedico[0],), fetch="all")
+            print(f"Desde medico Pacientes del médico: {tblPacientes}")
             if not tblPacientes:
-                errores["pacientesNotFound"] = "No se encontraron pacientes con los filtros seleccionados"
-
-        return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes, errores=errores)
-
+                errores["pacientesNotFound"] = "No se encontraron pacientes"
+            else:
+                print(f"Desde medico esto se envia a la vista: {tblPacientes} y {nombreMedico}")
+                rol = session.get("rol")
+                print(f"Desde medico Rol del médico: {rol}")
+                return render_template("VistasPrincipales/Medico.html", nombreMedico=nombreMedico, tblPacientes=tblPacientes, rol=rol, errores=errores)
     except Exception as e:
         errores["DBError"] = "Error al obtener los datos de los pacientes"
-        return render_template("VistasPrincipales/Medico.html", errores=errores, tblPacientes=[])
-
-    return render_template("VistasPrincipales/Medico.html", errores=errores, nombreMedico=[], tblPacientes=[])
+        print(f"Error: {e}")
+    if nombreMedico and not tblPacientes:
+        return render_template("VistasPrincipales/Medico.html", errores=errores, nombreMedico=nombreMedico, tblPacientes=[], rol=session.get("rol"))
+    return render_template("VistasPrincipales/Medico.html", errores=errores, nombreMedico=[], tblPacientes=[], rol=session.get("rol"))

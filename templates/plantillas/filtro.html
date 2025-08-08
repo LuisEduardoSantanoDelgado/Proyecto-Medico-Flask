@@ -1,17 +1,9 @@
 <div class="w-full flex justify-center py-4">
-    <form method="POST" class="flex flex-wrap justify-center items-center gap-4 w-full max-w-4xl px-4">
+    <form action="{{ url_for('citasLista.citasListaFiltro') }}" method="POST" class="flex flex-wrap justify-center items-center gap-4 w-full max-w-4xl px-4">
         <select name="filtro" class="w-36 p-2 rounded-md border border-gray-300">
-            {%if tipoFiltro == 'medico'%}
-            <option value="Nombre">Nombre</option>
-            <option value="RFC">RFC</option>
-            <option value="Rol">Rol</option>
-            {%elif tipoFiltro == 'paciente'%}
-            <option value="Nombre">Nombre</option>
-            <option value="RFC">Fecha de nacimiento</option>
-            {%elif tipoFiltro == 'cita'%}
+            <option value="Todo">Todo</option>
             <option value="Fecha">Fecha</option>
-            <option value="Hora">Nombre de paciente</option>
-            {%endif%}
+            <option value="Nombre">Nombre de paciente</option>
         </select>
 
         <input type="text" name="busqueda"

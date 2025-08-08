@@ -26,6 +26,8 @@ def mostrarAgregarCita(id_paciente):
             else:
                 nombrePaciente = nombrePaciente[0]
                 edadPaciente = edadPaciente[0]
+                datosPaciente = [nombrePaciente, id_paciente, edadPaciente, fechaExploracion]
+                session['datosPaciente'] = datosPaciente
                 return render_template('Citas/AgregarCita.html', nombrePaciente = nombrePaciente, paciente = id_paciente, edadPaciente = edadPaciente, fechaExploracion = fechaExploracion, errores = errores)
     except Exception as e:
         print(f'Ha ocurrido un error al intentar obtener datos del medico o del paciente: {str(e)}')
@@ -46,14 +48,46 @@ def agregarCita():
     oxigeno = request.form.get("oxigeno", "").strip()
     glucosa = request.form.get("glucosa", "").strip()
     idPaciente = request.form.get("id_paciente", "").strip()
-
     print(f"Datos llegados peso {peso} altura: {altura} temperatura: {temperatura} latidos: {latidos} oxigeno: {oxigeno} glucosa: {glucosa} id: {idPaciente}")
     print(f"Tipos llegados peso {type(peso)} altura: {type(altura)} temperatura: {type(temperatura)} latidos: {type(latidos)} oxigeno: {type(oxigeno)} glucosa: {type(glucosa)} id: {type(idPaciente)}")
-
+    
     if not peso or not altura or not temperatura or not latidos or not oxigeno or not glucosa or not idPaciente:
         print('No llego algun dato')
         errores['emptyDatos'] ="No debe de haber campos vacios"
     else:
+        try:
+            datos={
+                "peso": float(peso),
+                "altura": float(altura),
+                "temperatura": float(temperatura),
+                "latidos": float(latidos),
+                "oxigeno": float(oxigeno),
+                "glucosa": float(glucosa),
+                "idPaciente": int(idPaciente)
+            }
+            if datos['peso'] < 2 or datos['peso'] > 300:
+                print('Peso fuera de rango')
+                errores['emptyDatos'] ="Peso irreal "
+            elif datos['altura'] < 30 or datos['altura'] > 250:
+                print('Altura fuera de rango')
+                errores['emptyDatos'] ="Altura irreal "
+            elif datos['temperatura'] < 25 or datos['temperatura'] > 45:
+                print('temperatura fuera de rango')
+                errores['emptyDatos'] ="temperatura irreal "
+            elif datos['latidos'] < 30 or datos['latidos'] > 220:
+                print('latidos fuera de rango')
+                errores['emptyDatos'] ="latidos por minuto irreales "
+            elif datos['oxigeno'] < 50 or datos['oxigeno'] > 100:
+                print('oxigeno fuera de rango')
+                errores['emptyDatos'] ="saturacion de oxigeno irreal"
+            elif datos['glucosa'] < 20 or datos['glucosa'] > 600:
+                print('glucosa fuera de rango')
+                errores['emptyDatos'] ="nivel de glucosa irreal"
+        except ValueError as ve:
+            print(f'Error de conversión: {str(ve)}')
+            errores['dbError'] = "Error de conversión de datos"
+
+    if not errores:
         rfc = session.get("rfc")
         id_medico   = execute_query("SELECT dbo.IDMedico(?)", (rfc,), fetch="one")
         print(f'RFC del medico que atiende {rfc} y id: {id_medico}')
@@ -80,9 +114,9 @@ def agregarCita():
         except Exception as e:
             print(f'Error al guardar datos iniciales de cita {str(e)}')
             errores['dbError'] = "Error al guardar datos iniciales"
-        
-    return render_template("Citas/AgregarCita.html", nombrePaciente = None, paciente = None, edadPaciente = None, fechaExploracion = None, errores = errores)
-    
+
+    return render_template("Citas/AgregarCita.html", nombrePaciente = session['datosPaciente'][0], paciente = session['datosPaciente'][1], edadPaciente = session['datosPaciente'][2], fechaExploracion = session['datosPaciente'][3], errores = errores)
+
 #GET SEGUNDA PARTE
 @agregarCita_bp.route("/agregarCita/continuar")
 @login_required
@@ -107,36 +141,48 @@ def agregarCitaContinuar():
         errores['emptyDatos'] = "No debe de haber campos vacios"
     if not estudios:
         estudios = "No se requiere"
-
-    try:
-        cita = session.get('cita_temp')
-        print(f'Información de cita {cita}')
-        if cita:
-            resultado = execute_query(" DECLARE @resultado INT; EXEC sp_InsertarCita ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado OUTPUT; SELECT @resultado;", 
-                    (cita["peso"], cita["altura"], cita["temperatura"], cita["latidos"], cita["oxigeno"], cita["glucosa"], cita["idPaciente"], cita["id_medico"],
-                    sintomas, diagnostico, tratamiento, estudios), fetch="one", commit=True)
-            print(f"Resultado obtenido de insertar {resultado}")
-            if resultado:
-                match resultado[0]:
-                    case -1:
-                        print('La cita se repite')
-                        errores['citaExist'] = "Ya se tuvo una cita con esa persona este día"
-                    case 0:
-                        print('Exito al agregar cita')
-                        flash("Cita agregada con éxito")
-                        return redirect(url_for("citasLista.citasLista"))
-                    case _:
-                        print("Error inesperado")
-                        errores["dbError"] = "Algo falló"
+    if not errores:
+        try:
+            cita = session.get('cita_temp')
+            print(f'Información de cita {cita}')
+            if cita:
+                resultado = execute_query(" DECLARE @resultado INT; EXEC sp_InsertarCita ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado OUTPUT; SELECT @resultado;", 
+                        (cita["peso"], cita["altura"], cita["temperatura"], cita["latidos"], cita["oxigeno"], cita["glucosa"], cita["idPaciente"], cita["id_medico"],
+                        sintomas, diagnostico, tratamiento, estudios), fetch="one", commit=True)
+                print(f"Resultado obtenido de insertar {resultado}")
+                if resultado:
+                    match resultado[0]:
+                        case -1:
+                            print('La cita se repite')
+                            errores['citaExist'] = "Ya se tuvo una cita con esa persona este día"
+                        case 0:
+                            print('Exito al agregar cita')
+                            fila_id = execute_query(
+                                """
+                                SELECT ID_cita
+                                FROM Citas
+                                WHERE ID_paciente = ?
+                                AND ID_medico = ?
+                                AND CONVERT(date, Fecha_exploracion) = CAST(GETDATE() AS date)
+                                """,
+                                (cita["idPaciente"], cita["id_medico"]),
+                                fetch="one"
+                            )
+                            id_cita = fila_id[0]
+                            flash("Cita agregada con éxito")
+                            return redirect( url_for('consultarCita.mostrarConsultarCita', id_cita = id_cita))
+                        case _:
+                            print("Error inesperado")
+                            errores["dbError"] = "Algo falló"
+                else:
+                    print('Fallo con resultado')
+                    errores['dbError'] = "Error al obtener el resultado"
             else:
-                print('Fallo con resultado')
-                errores['dbError'] = "Error al obtener el resultado"
-        else:
-            print('Cita vacia')
-            errores['citaError'] = "Error al obtener datos anteriores"
-    except Exception as e:
-        print(f"Ocurrio el error: {str(e)}")
-        errores['dbError'] = "Error durante la insersion"
+                print('Cita vacia')
+                errores['citaError'] = "Error al obtener datos anteriores"
+        except Exception as e:
+            print(f"Ocurrio el error: {str(e)}")
+            errores['dbError'] = "Error durante la insersion"
         
     return render_template("Citas/AgregarCitaContinuar.html", errores = errores)
 

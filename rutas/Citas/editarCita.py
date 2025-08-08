@@ -47,14 +47,46 @@ def editarCita():
             print('No llego algun dato')
             errores['emptyValues'] ="No debe de haber campos vacios"
         else:
-            session['cita_temp']['peso'] = peso
-            session['cita_temp']['altura'] = altura
-            session['cita_temp']['temperatura'] = temperatura
-            session['cita_temp']['latidos'] = latidos
-            session['cita_temp']['oxigeno'] = oxigeno
-            session['cita_temp']['glucosa'] = glucosa
-            flash("Datos iniciales eitados con éxito, termine con el diagnostico de la cita")
-            return redirect(url_for('editarCita.mostrarEditarCitaContinuar'))
+            try:
+                datos={
+                    "peso": float(peso),
+                    "altura": float(altura),
+                    "temperatura": float(temperatura),
+                    "latidos": float(latidos),
+                    "oxigeno": float(oxigeno),
+                    "glucosa": float(glucosa)
+                }
+                if datos['peso'] < 2 or datos['peso'] > 300:
+                    print('Peso fuera de rango')
+                    errores['emptyValues'] ="Peso irreal "
+                elif datos['altura'] < 30 or datos['altura'] > 250:
+                    print('Altura fuera de rango')
+                    errores['emptyValues'] ="Altura irreal "
+                elif datos['temperatura'] < 25 or datos['temperatura'] > 45:
+                    print('temperatura fuera de rango')
+                    errores['emptyValues'] ="temperatura irreal "
+                elif datos['latidos'] < 30 or datos['latidos'] > 220:
+                    print('latidos fuera de rango')
+                    errores['emptyValues'] ="latidos por minuto irreales "
+                elif datos['oxigeno'] < 50 or datos['oxigeno'] > 100:
+                    print('oxigeno fuera de rango')
+                    errores['emptyValues'] ="saturacion de oxigeno irreal"
+                elif datos['glucosa'] < 20 or datos['glucosa'] > 600:
+                    print('glucosa fuera de rango')
+                    errores['emptyValues'] ="nivel de glucosa irreal"
+            except Exception as ve:
+                print(f'Error de conversión: {str(ve)}')
+                errores['dbError'] = "Error de conversión de datos"
+                
+        if not errores:
+                session['cita_temp']['peso'] = peso
+                session['cita_temp']['altura'] = altura
+                session['cita_temp']['temperatura'] = temperatura
+                session['cita_temp']['latidos'] = latidos
+                session['cita_temp']['oxigeno'] = oxigeno
+                session['cita_temp']['glucosa'] = glucosa
+                flash("Datos iniciales eitados con éxito, termine con el diagnostico de la cita")
+                return redirect(url_for('editarCita.mostrarEditarCitaContinuar'))
                 
     except Exception as e:
         print(f'Ocurrio un error durante la primera edición de list {str(e)}')
@@ -88,29 +120,30 @@ def editarCitaContinuar():
         errores['emptyValues'] = "No debe de haber campos vacios"
     if not estudios:
         estudios = "No se requiere"
-    try:
-        session['cita_temp']['sintomas'] = sintomas
-        session['cita_temp']['diagnostico'] = diagnostico
-        session['cita_temp']['tratamiento'] = tratamiento
-        session['cita_temp']['estudios'] = estudios
+    if not errores:
+        try:
+            session['cita_temp']['sintomas'] = sintomas
+            session['cita_temp']['diagnostico'] = diagnostico
+            session['cita_temp']['tratamiento'] = tratamiento
+            session['cita_temp']['estudios'] = estudios
 
-        required_fields = [
-        "idCita", "peso", "altura", "temperatura", "latidos", "oxigeno", "glucosa",
-        "paciente", "edad", "medico", "fecha", "sintomas", "diagnostico", "tratamiento", "estudios"
-        ]
-        print(f"Lo que hay en la session es: {session.get('cita_temp')}")
-        emptyValues = [field for field in required_fields if field not in session.get('cita_temp', {})]
-        print(f"Campos que no hay: {emptyValues}")
-        if emptyValues:
-            errores['emptyValues'] = "Error al obtener los datos"
-        else:
-            execute_query("UPDATE Citas SET Peso_paciente = (?), Altura_paciente = (?), Temperatura_paciente = (?), LPM_paciente = (?), SDO_paciente = (?), Glucosa_paciente = (?), Sintomas_paciente = (?), Diagnostico_paciente = (?), Tratamiento_paciente = (?), Estudios_paciente = (?) WHERE ID_cita = (?)", 
-                        ( session['cita_temp']['peso'], session['cita_temp']['altura'], session['cita_temp']['temperatura'], session['cita_temp']['latidos'], session['cita_temp']['oxigeno'], session['cita_temp']['glucosa'], session['cita_temp']['sintomas'], session['cita_temp']['diagnostico'], session['cita_temp']['tratamiento'], session['cita_temp']['estudios'],session['cita_temp']['idCita'] ),
-                        fetch=None, commit=True)
-            flash('Cita editada con éxito', 'editar')
-            return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = session['cita_temp']['idCita']))
-    except Exception as e:
-        print(f'Error en segunda parte post de editar: {str(e)}')
-        errores['dbError'] = "Error al editar los campos"
+            required_fields = [
+            "idCita", "peso", "altura", "temperatura", "latidos", "oxigeno", "glucosa",
+            "paciente", "edad", "medico", "fecha", "sintomas", "diagnostico", "tratamiento", "estudios"
+            ]
+            print(f"Lo que hay en la session es: {session.get('cita_temp')}")
+            emptyValues = [field for field in required_fields if field not in session.get('cita_temp', {})]
+            print(f"Campos que no hay: {emptyValues}")
+            if emptyValues:
+                errores['emptyValues'] = "Error al obtener los datos"
+            else:
+                execute_query("UPDATE Citas SET Peso_paciente = (?), Altura_paciente = (?), Temperatura_paciente = (?), LPM_paciente = (?), SDO_paciente = (?), Glucosa_paciente = (?), Sintomas_paciente = (?), Diagnostico_paciente = (?), Tratamiento_paciente = (?), Estudios_paciente = (?) WHERE ID_cita = (?)", 
+                            ( session['cita_temp']['peso'], session['cita_temp']['altura'], session['cita_temp']['temperatura'], session['cita_temp']['latidos'], session['cita_temp']['oxigeno'], session['cita_temp']['glucosa'], session['cita_temp']['sintomas'], session['cita_temp']['diagnostico'], session['cita_temp']['tratamiento'], session['cita_temp']['estudios'],session['cita_temp']['idCita'] ),
+                            fetch=None, commit=True)
+                flash('Cita editada con éxito', 'editar')
+                return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = session['cita_temp']['idCita']))
+        except Exception as e:
+            print(f'Error en segunda parte post de editar: {str(e)}')
+            errores['dbError'] = "Error al editar los campos"
 
     return render_template("Citas/EditarCitaContinuar.html", errores = errores)
