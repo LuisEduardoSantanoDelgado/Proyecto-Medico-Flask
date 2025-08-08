@@ -10,7 +10,7 @@ def getConnection():
     
 
     try:
-        connection = pyodbc.connect(connections[0])
+        connection = pyodbc.connect(connections[2])
         return connection
     except pyodbc.Error as e:
         raise ConnectionError(f"Error al conectar a la base de datos: {e}")

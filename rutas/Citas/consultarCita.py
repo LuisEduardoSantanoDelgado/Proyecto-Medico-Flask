@@ -81,7 +81,7 @@ def descargarPDF():
 
     session_data = session.get("cita_temp")
     print(f"Datos de la session: {session_data}")
-    id_cita = session_data.get("idCita") # type: ignore
+    id_cita = session_data.get("idCita") 
     print(f"ID de la cita: {id_cita}")
     resultado = generateDocument(session_data)
 
@@ -91,7 +91,7 @@ def descargarPDF():
         # Obtener el nombre de archivo
         filename = createFilename(session_data["paciente"], session_data["fecha"])
 
-    # Redirige al navegador a la URL del PDF
+        # Redirige al navegador a la URL del PDF
         return redirect(url_for('static', filename='pdf/' + filename))
 
     return redirect(url_for('consultarCita.mostrarConsultarCita', id_cita = id_cita))

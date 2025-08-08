@@ -37,5 +37,5 @@ def medicoAdmin():
         print(f"Error al obtener datos: {str(e)}")
         nombreMedico = None
     
-    return render_template("VistasPrincipales/medicoAdmin.html", errores=errores, tblMedicos=[], nombreMedico=None)
+    return render_template("VistasPrincipales/medicoAdmin.html", errores=errores, tblMedicos=[], nombreMedico=None, tipoFiltro='medico')
 

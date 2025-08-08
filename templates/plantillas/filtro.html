@@ -1,0 +1,26 @@
+<div class="w-full flex justify-center py-4">
+    <form method="POST" class="flex flex-wrap justify-center items-center gap-4 w-full max-w-4xl px-4">
+        <select name="filtro" class="w-36 p-2 rounded-md border border-gray-300">
+            {%if tipoFiltro == 'medico'%}
+            <option value="Nombre">Nombre</option>
+            <option value="RFC">RFC</option>
+            <option value="Rol">Rol</option>
+            {%elif tipoFiltro == 'paciente'%}
+            <option value="Nombre">Nombre</option>
+            <option value="RFC">Fecha de nacimiento</option>
+            {%elif tipoFiltro == 'cita'%}
+            <option value="Fecha">Fecha</option>
+            <option value="Hora">Nombre de paciente</option>
+            {%endif%}
+        </select>
+
+        <input type="text" name="busqueda"
+            class="flex-1 min-w-[200px] p-2 rounded-md border border-gray-300"
+            placeholder="Buscar...">
+
+        <button type="submit"
+            class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition">
+            Buscar
+        </button>
+    </form>
+</div>
