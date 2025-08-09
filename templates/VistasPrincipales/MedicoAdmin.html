@@ -49,7 +49,9 @@
   </div>
     
     
-    <h2 class="text-center text-xl font-semibold my-4">Lista de medicos registrados</h2>
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center text-blue-900 mb-6">
+        Lista de medicos registrados
+    </h2>
 
     <div class="container mx-auto px-4">
     <div class="flex flex-wrap justify-start space-x-6">
@@ -82,22 +84,23 @@
         </div>
         {% else %}
             {% for m in tblMedicos[:10] %}
-                <div class="col-md-2 mb-6">
-                    <div class="card w-full max-w-[300px] flex bg-white p-6 rounded-lg shadow-xl">
-                        <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" class="w-full h-auto rounded-lg object-cover" alt="Imagen del médico">
-                        <div class="card-body text-center mt-4">
-                            <h5 class="text-lg font-semibold text-[#003366] mb-2">{{ m.Nombre_Medico }}</h5>
-                            <div class="flex justify-between gap-2">
-                                <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=m.RFC) }}" class="text-blue-500 hover:bg-[#c3ebf7]" title="Editar médico">
-                                    <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="w-6 h-6">
-                                </a>
-                                <a href="{{ url_for('eliminarMedico.mostrarEliminarMedico', rfc=m.RFC) }}" class="text-red-500 hover:opacity-80" title="Eliminar médico">
-                                    <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="w-6 h-6">
-                                </a>
-                            </div>
+                <div class="mb-6">
+                    <div class="card w-56 min-h-[260px] bg-white rounded-2xl shadow-xl p-3 flex flex-col items-center transition transform hover:-translate-y-0.5 hover:shadow-2xl">
+                        <img src="{{ url_for('static', filename='img/MedicoIcono.svg') }}" class="w-full h-28 object-contain rounded-xl" alt="Imagen del médico">
+                        <div class="card-body w-full mt-2 text-center">
+                        <h5 class="text-lg font-bold text-blue-900 leading-tight break-words mb-2">{{ m.Nombre_Medico }}</h5>
+                        <div class="flex items-center justify-between mt-3">
+                            <a href="{{ url_for('editarMedico.mostrarEditarMedico', rfc=m.RFC) }}" class="text-blue-500 hover:opacity-80" title="Editar médico">
+                            <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="w-6 h-6">
+                            </a>
+                            <a href="{{ url_for('eliminarMedico.mostrarEliminarMedico', rfc=m.RFC) }}" class="text-red-500 hover:opacity-80" title="Eliminar médico">
+                            <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="w-6 h-6">
+                            </a>
+                        </div>
                         </div>
                     </div>
                 </div>
+
             {% endfor %}
         {% endif %}
     </div>

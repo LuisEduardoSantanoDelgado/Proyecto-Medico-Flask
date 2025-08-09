@@ -4,7 +4,7 @@
     {% block estilos %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/EstilosMedico.css') }}">
     {% endblock %}
-{% block body%}
+{% block body%} g
 
     <div class="header">
         <h2>CITAS REALIZADAS</h2>
@@ -68,29 +68,35 @@
             </div>
         </div>
     {% else %}
-        <h2>Lista de citas registrados</h2>
-        <div class="container">
-            <div class="row d-flex flex-wrap justify-content-start">
-                {% for c in tblCitas %}
-                    <div class="col-md-2 mb-4">
-                        <div class="card">
-                            <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" class="card-img-top" alt="Imagen de la cita">
-                            <div class="card-body">
-                                <h5 class="card-title">{{c.Nombre_Paciente}}</h5>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ url_for('consultarCita.mostrarConsultarCita', id_cita = c.ID_cita) }}" class="btn-editar">
-                                        <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="btn-icon" style="width: 24px; height: 24px;"> 
-                                    </a>
-                                    <a href="{{ url_for('eliminarCita.mostrarEliminarCita', id_cita=c.ID_cita) }}" class="btn-eliminar">
-                                        <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="btn-icon" style="width: 24px; height: 24px;"> 
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-center text-blue-900 mb-6">
+        Lista de citas registradas
+        </h2>
+
+        <div class="w-full px-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
+            {% for c in tblCitas %}
+            <div class="mb-6">
+                <div class="card w-56 min-h-[260px] bg-white rounded-2xl shadow-xl p-3 flex flex-col items-center transition transform hover:-translate-y-0.5 hover:shadow-2xl">
+                <img src="{{ url_for('static', filename='img/CitaIcono.svg') }}" class="w-full h-28 object-contain rounded-xl" alt="Imagen de la cita">
+                <div class="card-body w-full mt-2">
+                    <h5 class="card-title text-center font-bold text-lg text-blue-900 leading-tight break-words">
+                    {{ c.Nombre_Paciente }}
+                    </h5>
+                    <div class="flex items-center justify-between mt-3">
+                    <a href="{{ url_for('consultarCita.mostrarConsultarCita', id_cita = c.ID_cita) }}" class="btn-editar inline-flex items-center">
+                        <img src="{{ url_for('static', filename='img/editar.svg') }}" alt="Editar" class="btn-icon" style="width: 24px; height: 24px;">
+                    </a>
+                    <a href="{{ url_for('eliminarCita.mostrarEliminarCita', id_cita=c.ID_cita) }}" class="btn-eliminar inline-flex items-center">
+                        <img src="{{ url_for('static', filename='img/Eliminar.svg') }}" alt="Eliminar" class="btn-icon" style="width: 24px; height: 24px;">
+                    </a>
                     </div>
-                {% endfor %}
+                </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
+        </div>
+
     {% endif %}
     {% block scripts %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
